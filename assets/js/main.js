@@ -5,10 +5,8 @@ jQuery(document).ready(function($) {
   /* Collapse nav-bar on click */
   $(function(){
     $(".navbar-nav li a").click(function(event) {
-      console.log(this)
       /* Collapse if not a dropdpwn menu */
       if (!$(this).hasClass("dropdown-toggle")){
-        console.log("wank")
         $(".navbar-collapse").collapse('hide');
       }
     });
