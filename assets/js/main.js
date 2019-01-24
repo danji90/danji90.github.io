@@ -7,7 +7,7 @@ jQuery(document).ready(function($) {
     $(".navbar-nav li a").click(function(event) {
       console.log(this)
       /* Collapse if not a dropdpwn menu */
-      if (!$(this).hasClass("dropdown-toggle")){
+      if ($(this).not('#navbarDropdown')){
         $(".navbar-collapse").collapse('hide');
       }
     });
