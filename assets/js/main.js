@@ -8,6 +8,7 @@ jQuery(document).ready(function($) {
       console.log(this)
       /* Collapse if not a dropdpwn menu */
       if ($(this).not('#navbarDropdown')){
+        console.log("wank")
         $(".navbar-collapse").collapse('hide');
       }
     });
