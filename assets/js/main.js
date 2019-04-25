@@ -1,78 +1,75 @@
 jQuery(document).ready(function($) {
-
-  /*===== Navigation =====*/
-
-  /* Collapse nav-bar on click */
-  $(function(){
-    $(".navbar-nav li a").click(function(event) {
-      /* Collapse if not a dropdpwn menu */
-      if (!$(this).hasClass("dropdown-toggle")){
-        $(".navbar-collapse").collapse('hide');
+//  ===== Navigation =====
+/* Collapse nav-bar on click */
+  $(function() {
+    $('.navbar-nav li a').click(function(event) {
+      /* Colla  pse if not a dropdpwn menu */
+      if (!$(this).hasClass('dropdown-toggle')) {
+        $('.navbar-collapse').collapse('hide');
       }
     });
   });
 
   /* Scroll animations */
-  $("#navHome").click(function() {
-      $([document.documentElement, document.body]).animate({
-          scrollTop: $("#home").offset().top
-      }, 1000);
+  $('#navHome').click(function() {
+    $([document.documentElement, document.body]).animate({
+      scrollTop: $('#home').offset().top,
+    }, 1000);
   });
 
-  $("#navAbout").click(function() {
-      $([document.documentElement, document.body]).animate({
-          scrollTop: $("#about").offset().top
-      }, 1000);
+  $('#navAbout').click(function() {
+    $([document.documentElement, document.body]).animate({
+      scrollTop: $('#about').offset().top,
+    }, 1000);
   });
 
-  $("#navXP").click(function() {
-      $([document.documentElement, document.body]).animate({
-          scrollTop: $("#xp").offset().top
-      }, 1000);
+  $('#navXP').click(function() {
+    $([document.documentElement, document.body]).animate({
+      scrollTop: $('#xp').offset().top,
+    }, 1000);
   });
 
-  $("#navMap").click(function() {
-      $([document.documentElement, document.body]).animate({
-          scrollTop: $("#mapSec").offset().top
-      }, 1000);
+  $('#navMap').click(function() {
+    $([document.documentElement, document.body]).animate({
+      scrollTop: $('#mapSec').offset().top,
+    }, 1000);
   });
 
-  $("#navProjects").click(function() {
-      $([document.documentElement, document.body]).animate({
-          scrollTop: $("#projects").offset().top
-      }, 1000);
+  $('#navProjects').click(function() {
+    $([document.documentElement, document.body]).animate({
+      scrollTop: $('#projects').offset().top,
+    }, 1000);
   });
 
-  $("#navGithub").click(function() {
-      $([document.documentElement, document.body]).animate({
-          scrollTop: $("#githubSec").offset().top
-      }, 1000);
+  $('#navGithub').click(function() {
+    $([document.documentElement, document.body]).animate({
+      scrollTop: $('#githubSec').offset().top,
+    }, 1000);
   });
 
-  $("#navEdu").click(function() {
-      $([document.documentElement, document.body]).animate({
-          scrollTop: $("#education").offset().top
-      }, 1000);
+  $('#navEdu').click(function() {
+    $([document.documentElement, document.body]).animate({
+      scrollTop: $('#education').offset().top,
+    }, 1000);
   });
 
-  $("#navSkills").click(function() {
-      $([document.documentElement, document.body]).animate({
-          scrollTop: $("#skills").offset().top
-      }, 1000);
+  $('#navSkills').click(function() {
+    $([document.documentElement, document.body]).animate({
+      scrollTop: $('#skills').offset().top,
+    }, 1000);
   });
 
 
-
-  /*======= Skillset *=======*/
+  /* ======= Skillset *=======*/
   $('.level-bar-inner').css('width', '0');
 
   $('.level-bar-inner').each(function() {
-      var itemWidth = $(this).data('level');
-      // $(this).css('width', itemWidth)
-      $(this).animate({
-        width: itemWidth
-      }, 800);
-    })
+    var itemWidth = $(this).data('level');
+    // $(this).css('width', itemWidth)
+    $(this).animate({
+      width: itemWidth,
+    }, 800);
+  });
 
   /* Bootstrap Tooltip for Skillset */
   $('.level-label').tooltip();
@@ -117,204 +114,294 @@ jQuery(document).ready(function($) {
 
 
   /* Github Calendar - https://github.com/IonicaBizau/github-calendar */
-  GitHubCalendar("#github-graph", "danji90");
+  GitHubCalendar('#github-graph', 'danji90');
 
 
   /* Github Activity Feed - https://github.com/caseyscarborough/github-activity */
-  //GitHubActivity.feed({ username: "danji90", selector: "#ghfeed" });
+  // GitHubActivity.feed({ username: "danji90", selector: "#ghfeed" });
 
 
-  ///////////////////////Map object + Features/////////////////////////
+  // /////////////////////Map object + Features/////////////////////////
 
-  ////Leaflet////
+  // //Leaflet////
 
   // Define map attribution variable
-  var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+  let mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
     '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-    'Imagery � <a href="http://mapbox.com">Mapbox</a>'
+    'Imagery � <a href="http://mapbox.com">Mapbox</a>';
 
   // Define basemap source URL
-  var mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibmdhdmlzaCIsImEiOiJjaXFheHJmc2YwMDdoaHNrcWM4Yjhsa2twIn0.8i1Xxwd1XifUU98dGE9nsQ';
+  let mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibmdhdmlzaCIsImEiOiJjaXFheHJmc2YwMDdoaHNrcWM4Yjhsa2twIn0.8i1Xxwd1XifUU98dGE9nsQ';
 
   // Define baselayers
-  var grayscale = L.tileLayer(mbUrl, {
+  let grayscale = L.tileLayer(mbUrl, {
     id: 'mapbox.light',
     attribution: mbAttr,
     maxZoom: 22,
-    maxNativeZoom: 18
-  })
-  var streets = L.tileLayer(mbUrl, {
+    maxNativeZoom: 18,
+  });
+  let streets = L.tileLayer(mbUrl, {
     id: 'mapbox.streets',
     attribution: mbAttr,
     maxZoom: 22,
-    maxNativeZoom: 18
-  })
-  var outdoors = L.tileLayer(mbUrl, {
+    maxNativeZoom: 18,
+  });
+  let outdoors = L.tileLayer(mbUrl, {
     id: 'mapbox.outdoors',
     attribution: mbAttr,
     maxZoom: 22,
-    maxNativeZoom: 18
-  })
-  var satellite = L.tileLayer(mbUrl, {
+    maxNativeZoom: 18,
+  });
+  let satellite = L.tileLayer(mbUrl, {
     id: 'mapbox.satellite',
     attribution: mbAttr,
     maxZoom: 22,
-    maxNativeZoom: 18
-  })
-  var dark = L.tileLayer(mbUrl, {
+    maxNativeZoom: 18,
+  });
+  let dark = L.tileLayer(mbUrl, {
     id: 'mapbox.dark',
     attribution: mbAttr,
     maxZoom: 22,
-    maxNativeZoom: 18
-  })
-  var satellitestreets = L.tileLayer(mbUrl, {
+    maxNativeZoom: 18,
+  });
+  let satellitestreets = L.tileLayer(mbUrl, {
     id: 'mapbox.streets-satellite',
     attribution: mbAttr,
     maxZoom: 22,
-    maxNativeZoom: 18
+    maxNativeZoom: 18,
   });
 
   // Main map object
-  var map = L.map('map', {
+  let map = L.map('map', {
     center: [40, -20],
     zoom: 2,
     layers: [streets],
     maxZoom: 22,
-    maxNativeZoom: 18
+    maxNativeZoom: 18,
   });
 
   // disable default scroll
   map.scrollWheelZoom.disable();
 
   // Ctrl+Scroll enable
-  $("#map").on('mousewheel DOMMouseScroll', function (event) {
+  $('#map').on('mousewheel DOMMouseScroll', function(event) {
     event.stopPropagation();
-     if (event.ctrlKey == true) {
-             event.preventDefault();
-         map.scrollWheelZoom.enable();
-           $('#map').removeClass('map-scroll');
-         setTimeout(function(){
-             map.scrollWheelZoom.disable();
-         }, 1000);
-     } else {
-         map.scrollWheelZoom.disable();
-         $('#map').addClass('map-scroll');
-     }
-   });
+    if (event.ctrlKey == true) {
+      event.preventDefault();
+      map.scrollWheelZoom.enable();
+      $('#map').removeClass('map-scroll');
+      setTimeout(function() {
+        map.scrollWheelZoom.disable();
+      }, 1000);
+    } else {
+      map.scrollWheelZoom.disable();
+      $('#map').addClass('map-scroll');
+    }
+  });
 
-  $(window).on('mousewheel DOMMouseScroll', function (event) {
-       $('#map').removeClass('map-scroll');
-    })
+  $(window).on('mousewheel DOMMouseScroll', function(event) {
+    $('#map').removeClass('map-scroll');
+  });
+
+  // Add method to layer control class
+  L.Control.Layers.include({
+    getOverlays: function() {
+      // create hash to hold all layers
+      var control, layers;
+      layers = {};
+      control = this;
+
+      // loop thru all layers in control
+      control._layers.forEach(function(obj) {
+        var layerName;
+
+        // check if layer is an overlay
+        if (obj.overlay) {
+          // get name of overlay
+          layerName = obj.name;
+          // store whether it's present on the map or not
+          return layers[layerName] = control._map.hasLayer(obj.layer);
+        }
+      });
+
+      return layers;
+    }
+  });
 
 
-  //// Map markers & legend
+  // // Map markers & legend
 
-  //Education
+  // time slider
 
-  var mcg = L.markerClusterGroup({
-      spiderfyOnMaxZoom: false,
-      showCoverageOnHover: false
+  let dt_from = '1990/09/12 23:59:00';
+  let dt_to = '2019/05/02 00:00:00';
+
+  $('.slider-time').html('13.09.1990');
+  $('.slider-time2').html('02.05.2019');
+
+  let startDate = Date.parse(dt_from);
+  let endDate = Date.parse(dt_to);
+
+  let min_val = startDate/1000;
+  let max_val = endDate/1000;
+
+  function zeroPad(num, places) {
+    let zero = places - num.toString().length + 1;
+    return Array(+(zero > 0 && zero)).join('0') + num;
+  }
+  function formatDT(__dt) {
+    var year = __dt.getFullYear();
+    var month = zeroPad(__dt.getMonth()+1, 2);
+    var date = zeroPad(__dt.getDate(), 2);
+    // var hours = zeroPad(__dt.getHours(), 2);
+    // var minutes = zeroPad(__dt.getMinutes(), 2);
+    // var seconds = zeroPad(__dt.getSeconds(), 2);
+    // return year + '-' + month + '-' + date + ' ' + hours + ':' + minutes + ':' + seconds;
+    return date + '.' + month + '.' + year
+  };
+
+
+  $('#slider-range').slider({
+    range: true,
+    min: min_val,
+    max: max_val,
+    step: 10,
+    values: [min_val, max_val],
+    slide: function(e, ui) {
+      var dt_cur_from = new Date(ui.values[0]*1000); // .format("yyyy-mm-dd hh:ii:ss");
+      $('.slider-time').html(formatDT(dt_cur_from));
+      var dt_cur_to = new Date(ui.values[1]*1000); // .format("yyyy-mm-dd hh:ii:ss");
+      $('.slider-time2').html(formatDT(dt_cur_to));
+
+      // Get active layers
+      active = control.getOverlays()
+
+      // Set time slider global parameters
+      startDate = dt_cur_from;
+      endDate = dt_cur_to
+
+      // Clear present layers
+      eduLayer.clearLayers()
+      workLayer.clearLayers()
+      residentLayer.clearLayers()
+
+      // Redefine layers and add to map on time slider change
+      eduSubgroup = createFilteredLayer(education, eduLayer, startDate, endDate)
+      workSubgroup = createFilteredLayer(work, workLayer, startDate, endDate)
+      resiSubgroup = createFilteredLayer(residence, residentLayer, startDate, endDate)
+
+      // Only add to map if they are currently active
+      if (active.Education){eduSubgroup.addTo(map)}
+      if (active.Work){workSubgroup.addTo(map)}
+      if (active.Resident){resiSubgroup.addTo(map)}
+    },
+  });
+
+  // Add general marker cluster group
+
+  let mcg = L.markerClusterGroup({
+    spiderfyOnMaxZoom: false,
+    showCoverageOnHover: false,
   }).addTo(map);
 
-  var eduLayer = L.featureGroup.subGroup(mcg);
-  var eduMarkers =  L.geoJSON(education, {
+
+  // function for adding marker layer
+
+  function createFilteredLayer(markerArray, layer, start, end) {
+
+    // data = timeFilter(markerArray, start, end)
+
+    let subgroup = layer
+    let markers = L.geoJSON(markerArray, {
       pointToLayer: function(feature, latlng) {
         var icon = L.divIcon({
           className: 'mapIcon',
-          html: feature.properties.icon
-          });
+          html: feature.properties.icon,
+        });
         return L.marker(latlng, {icon: icon});
       },
-      onEachFeature: function (feature, layer) {
-        layer.bindPopup('<p align="center"><strong>'+ feature.properties.type + '</strong><p><h6>'+feature.properties.title+'</h6><p><a href="'+feature.properties.link+'" target="_blank">'+feature.properties.facility+'</a>, '+feature.properties.city+', '+feature.properties.country+'</p><p>'+feature.properties.timestamp+'</p><p><strong>Descripton</strong>: '+feature.properties.description);
-      }
-    })
-  eduLayer.addLayer(eduMarkers)
-  eduLayer.addTo(map)
-  eduLayer.on('add', function(){
-    map.fitBounds(mcg.getBounds());
-  })
-
-  // Work
-
-  var workLayer = L.featureGroup.subGroup(mcg);
-  var workMarkers =  L.geoJSON(work, {
-      pointToLayer: function(feature, latlng) {
-        var icon = L.divIcon({
-          className: 'mapIcon',
-          html: feature.properties.icon
-          });
-        return L.marker(latlng, {icon: icon});
+      filter: function(feature, layer) {
+        let eventStart = new Date(String(feature.properties.timestamp[0][0]));
+        let eventEnd = new Date(String(feature.properties.timestamp[0][1]));
+        if (eventStart.getTime()>startDate && eventStart.getTime()<endDate || startDate>eventStart.getTime() && endDate<eventEnd.getTime()) {
+          return true;
+        } else {
+          return false
+        }
       },
-      onEachFeature: function (feature, layer) {
-        layer.bindPopup('<p align="center"><strong>'+ feature.properties.type + '</strong><p><h6>' + feature.properties.title+'</h6><p><a href="'+feature.properties.link+'" target="_blank">'+feature.properties.facility+'</a>, '+feature.properties.city+', '+feature.properties.country+'</p><p>'+feature.properties.timestamp+'</p><p><strong>Descripton</strong>: '+feature.properties.description);
-      }
-    })
-  workLayer.addLayer(workMarkers)
-  workLayer.addTo(map)
-  workLayer.on('add', function(){
-    map.fitBounds(mcg.getBounds());
-  })
+      onEachFeature: function(feature, layer) {
+        // layer.bindPopup('<p align="center"><strong>'+ feature.properties.type + '</strong><p><h6>'+feature.properties.title+'</h6><p><a href="'+feature.properties.link+'" target="_blank">'+feature.properties.facility+'</a>, '+feature.properties.city+', '+feature.properties.country+'</p><p>'+feature.properties.timestamp+'</p><p><strong>Descripton</strong>: '+feature.properties.description);
+        if (feature.properties.type == 'Work' || feature.properties.type == 'Education'){
+          layer.bindPopup('<p align="center"><strong>'+ feature.properties.type + '</strong><p><h6>'+feature.properties.title+'</h6><p><a href="'+feature.properties.link+'" target="_blank">'+feature.properties.facility+'</a>, '+feature.properties.city+', '+feature.properties.country+'</p><p>'+ new Date(feature.properties.timestamp[0][0]).toLocaleString("en-us", { month: "long" }) + ' ' + new Date(feature.properties.timestamp[0][0]).getFullYear() + ' - '+ new Date(feature.properties.timestamp[0][1]).toLocaleString("en-us", { month: "long" }) + ' ' + new Date(feature.properties.timestamp[0][1]).getFullYear() +'</p><p><strong>Descripton</strong>: '+feature.properties.description);
+        } else {
+          layer.bindPopup('<p align="center"><strong>'+ feature.properties.type + '</strong><p>' + feature.properties.city+', '+feature.properties.country +'</p><p>'+ new Date(feature.properties.timestamp[0][0]).toLocaleString("en-us", { month: "long" }) + ' ' + new Date(feature.properties.timestamp[0][0]).getFullYear() + ' - '+ new Date(feature.properties.timestamp[0][1]).toLocaleString("en-us", { month: "long" }) + ' ' + new Date(feature.properties.timestamp[0][1]).getFullYear() +'</p><p><strong>Descripton</strong>: '+feature.properties.description);
+        }
 
-
-  var residentLayer = L.featureGroup.subGroup(mcg);
-  var residentMarkers =  L.geoJSON(residence, {
-      pointToLayer: function(feature, latlng) {
-        var icon = L.divIcon({
-          className: 'mapIcon',
-          html: feature.properties.icon
-          });
-        return L.marker(latlng, {icon: icon});
       },
-      onEachFeature: function (feature, layer) {
-        layer.bindPopup('<p align="center"><strong>'+ feature.properties.type + '</strong><p>' + feature.properties.city+', '+feature.properties.country+'</p><p>'+feature.properties.timestamp+'</p><p><strong>Descripton</strong>: '+feature.properties.description);
-      }
-    })
-  residentLayer.addLayer(residentMarkers)
-  residentLayer.addTo(map)
-  residentLayer.on('add', function(){
-    map.fitBounds(mcg.getBounds());
-  })
+    });
 
-  var countriesLayer = L.featureGroup();
-  var coutryPolygons =  L.geoJSON(countries, {
-      style: function (feature) {
-    		return {
-          color: "#FF6347"
-        };
-    	},
-      onEachFeature: function (feature, layer) {
-        layer.bindPopup('<p align="center"><strong>'+ feature.properties.sovereignt + '</strong><p>');
-      }
-    })
-  countriesLayer.addLayer(coutryPolygons)
-  // countriesLayer.addTo(map)
-  countriesLayer.on('add', function(){
-    map.fitBounds(countriesLayer.getBounds());
-  })
+    subgroup.addLayer(markers);
+    subgroup.on('add', function() {
+      map.fitBounds(mcg.getBounds());
+    });
 
-  var remWork = map.on('overlayremove', function(a) { map.removeLayer(workLayer)});
-
-  var overlays = {
-    "Education": eduLayer,
-    "Work": workLayer,
-    "Resident": residentLayer,
-    "Countries explored": countriesLayer
+    return subgroup
   }
 
-  var baseLayers = {
-    "Topographic": streets,
-    "Gray": dark,
-    "Imagery": satellite
+  let eduLayer = L.featureGroup.subGroup(mcg);
+
+  let workLayer = L.featureGroup.subGroup(mcg);
+
+  let residentLayer = L.featureGroup.subGroup(mcg);
+
+  let countriesLayer = L.featureGroup();
+  let countryPolygons = L.geoJSON(countries, {
+    style: function(feature) {
+    		return {
+        color: '#FF6347'
+      };
+    	},
+    onEachFeature: function(feature, layer) {
+      layer.bindPopup('<p align="center"><strong>'+ feature.properties.sovereignt + '</strong><p>');
+    },
+  });
+  countriesLayer.addLayer(countryPolygons);
+  // countriesLayer.addTo(map)
+  countriesLayer.on('add', function() {
+    map.fitBounds(countriesLayer.getBounds());
+  });
+
+  // var remWork = map.on('overlayremove', function(a) { map.removeLayer(workLayer)});
+
+  let overlays = {
+    'Education': eduLayer,
+    'Work': workLayer,
+    'Resident': residentLayer,
+    'Countries explored': countriesLayer,
+  };
+
+  let baseLayers = {
+    'Topographic': streets,
+    'Gray': dark,
+    'Imagery': satellite,
   };
 
   // map.on('layeradd', function(e) {
   //   map.fitBounds(mcg.getBounds());
   // })
 
-  L.control.layers(baseLayers, overlays, {
-    autoZIndex: true
-    }).addTo(map);
+  let control = new L.control.layers(baseLayers, overlays, {
+    autoZIndex: true,
+  }).addTo(map);
 
+  eduSubgroup = createFilteredLayer(education, eduLayer, startDate, endDate)
+  workSubgroup = createFilteredLayer(work, workLayer, startDate, endDate)
+  resiSubgroup = createFilteredLayer(residence, residentLayer, startDate, endDate)
+
+  eduSubgroup.addTo(map)
+  workSubgroup.addTo(map)
+  resiSubgroup.addTo(map)
+
+  // console.log(control.getOverlays());
 
 });
