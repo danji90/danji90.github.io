@@ -267,11 +267,11 @@ const work = {
         "type": "Work",
         "city": "Freiburg",
         "country": "Germany",
-        "facility": "GeOps - Spatial Web Developent",
+        "facility": "geOps - Spatial Web Developent",
         "link": "https://geops.ch/",
         "title": "Frontend web developer",
         "timestamp": [
-          ["2019-05-01T00:00:00.000Z", "2019-05-02T00:00:00.000Z"]
+          ["2019-05-01T00:00:00.000Z", "2021-03-08T00:00:00.000Z"]
         ],
         "icon": "<i class='fas fa-briefcase fa-2x'></i>",
         "description": "Frontend UI development for mainly mobility and traffic applications"

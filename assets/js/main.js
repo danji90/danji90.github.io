@@ -208,10 +208,10 @@ jQuery(document).ready(function($) {
   // time slider
 
   let dt_from = '1990/09/12 23:59:00';
-  let dt_to = '2019/05/02 00:00:00';
+  let dt_to = '2021/08/03 00:00:00';
 
   $('.slider-time').html('13.09.1990');
-  $('.slider-time2').html('02.05.2019');
+  $('.slider-time2').html('08.03.2021');
 
   let startDate = Date.parse(dt_from);
   let endDate = Date.parse(dt_to);
