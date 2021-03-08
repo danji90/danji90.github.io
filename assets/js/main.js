@@ -125,56 +125,30 @@ jQuery(document).ready(function($) {
 
   // //Leaflet////
 
-  // Define map attribution variable
-  let mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-    '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-    'Imagery � <a href="http://mapbox.com">Mapbox</a>';
-
-  // Define basemap source URL
-  let mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibmdhdmlzaCIsImEiOiJjaXFheHJmc2YwMDdoaHNrcWM4Yjhsa2twIn0.8i1Xxwd1XifUU98dGE9nsQ';
-
   // Define baselayers
-  let grayscale = L.tileLayer(mbUrl, {
-    id: 'mapbox.light',
-    attribution: mbAttr,
+  let streets = L.tileLayer('https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png', {
     maxZoom: 22,
     maxNativeZoom: 18,
-  });
-  let streets = L.tileLayer(mbUrl, {
-    id: 'mapbox.streets',
-    attribution: mbAttr,
-    maxZoom: 22,
-    maxNativeZoom: 18,
-  });
-  let outdoors = L.tileLayer(mbUrl, {
-    id: 'mapbox.outdoors',
-    attribution: mbAttr,
-    maxZoom: 22,
-    maxNativeZoom: 18,
-  });
-  let satellite = L.tileLayer(mbUrl, {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  })
+  let satellite = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibmdhdmlzaCIsImEiOiJjaXFheHJmc2YwMDdoaHNrcWM4Yjhsa2twIn0.8i1Xxwd1XifUU98dGE9nsQ', {
     id: 'mapbox.satellite',
-    attribution: mbAttr,
+    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+    '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+    'Imagery � <a href="http://mapbox.com">Mapbox</a>',
     maxZoom: 22,
     maxNativeZoom: 18,
   });
-  let dark = L.tileLayer(mbUrl, {
-    id: 'mapbox.dark',
-    attribution: mbAttr,
+  let relief =  L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
     maxZoom: 22,
     maxNativeZoom: 18,
-  });
-  let satellitestreets = L.tileLayer(mbUrl, {
-    id: 'mapbox.streets-satellite',
-    attribution: mbAttr,
-    maxZoom: 22,
-    maxNativeZoom: 18,
+    attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
   });
 
   // Main map object
   let map = L.map('map', {
-    center: [40, -20],
-    zoom: 2,
+    center: [1051773.48, 6092948.38],
+    zoom: 10,
     layers: [streets],
     maxZoom: 22,
     maxNativeZoom: 18,
@@ -382,13 +356,9 @@ jQuery(document).ready(function($) {
 
   let baseLayers = {
     'Topographic': streets,
-    'Gray': dark,
+    'Relief': relief,
     'Imagery': satellite,
   };
-
-  // map.on('layeradd', function(e) {
-  //   map.fitBounds(mcg.getBounds());
-  // })
 
   let control = new L.control.layers(baseLayers, overlays, {
     autoZIndex: true,
@@ -401,7 +371,5 @@ jQuery(document).ready(function($) {
   eduSubgroup.addTo(map)
   workSubgroup.addTo(map)
   resiSubgroup.addTo(map)
-
-  // console.log(control.getOverlays());
 
 });

@@ -37,6 +37,19 @@
 
     <!-- FontAwesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js" integrity="sha384-3LK/3kTpDE/Pkp8gTNp2gR/2gOiwQ6QaO7Td0zV76UFJVhqLl4Vl3KL1We6q6wR9" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="node_modules/jquery-ui-dist/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="node_modules/popper.js/dist/umd/popper.min.js"></script>
+    <script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- <script type="text/javascript" src="node_modules/jquery-rss/dist/jquery.rss.min.js"></script> -->
+    <!-- github calendar plugin -->
+    <script src="https://unpkg.com/github-calendar@latest/dist/github-calendar.min.js"></script>
+    <!-- github activity plugin -->
+    <script type="text/javascript" src="node_modules/mustache/mustache.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/github-activity/github-activity-0.1.5.min.js"></script>
+    <!-- custom js -->
+    <script type="text/javascript" src="mapping.js"></script>
+    <script type="text/javascript" src="assets/js/main.js"></script>
 
     <!-- HERE API -->
     <!-- <meta name="viewport" content="initial-scale=1.0, width=device-width" />
@@ -50,7 +63,13 @@
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
 
     <!-- github calendar css -->
-    <link rel="stylesheet" href="node_modules/github-calendar/dist/github-calendar.css">
+    <script
+    src="https://unpkg.com/github-calendar@latest/dist/github-calendar.min.js">
+    </script>
+    <link
+    rel="stylesheet"
+    href="https://unpkg.com/github-calendar@latest/dist/github-calendar-responsive.css"
+    />
     <!-- github acitivity css -->
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/octicons/2.0.2/octicons.min.css">
     <link rel="stylesheet" href="assets/plugins/github-activity/github-activity-0.1.5.min.css">
@@ -140,7 +159,7 @@
                           <div class="content">
                             <ul class="fa-ul">
                               <li><span class="fa-li" ><i class="fas fa-birthday-cake"></i></span><span class="sr-only">Date of Birth:</span>13.09.1990</li>
-                              <li><span class="fa-li" ><i class="fas fa-map-marker-alt"></i></span><span class="sr-only">Location:</span>Peter-Thumb-Straße 16 <br> 79100 Freiburg im Breisgau <br> Germany</li>
+                              <li><span class="fa-li" ><i class="fas fa-map-marker-alt"></i></span><span class="sr-only">Location:</span>Längenhardstraße 18<br> 79104 Freiburg im Breisgau <br> Germany</li>
                               <li><span class="fa-li" ><i class="fa fa-phone"></i></span><span class="sr-only">Telephone:</span>+49 163 664 3351 <br> +39 320 010 3173</li>
                               <li><span class="fa-li" ><i class="fas fa-envelope"></i></span><span class="sr-only">Email:</span>danji_ma90@hotmail.com</li>
                             </ul>
@@ -173,7 +192,7 @@
                   <div style="width: 100%; height: 600px; background: grey" id="map"></div><!--//content-->
                   <!-- Time slider -->
                   <div class="slider-nav">
-                    <div id="slider-range"></div>
+                    <div class="slider-range-wrapper"><div id="slider-range"></div></div>
                     <div id="time-range">
                       <p><span class="slider-time"></span> - <span class="slider-time2"></span></p>
                     </div>
@@ -190,11 +209,11 @@
                        <div class="content">
 
                            <div class="item featured text-center">
-                               <h3 class="title"><a href="http://www.senviro.uji.es/" target="_blank">SEnviro for Agriculture</a></h3>
-                               <h4 class="subtitle"><a href="https://www.uji.es/" target="_blank">Universitat Jaume I</a></h4>
+                               <h3 class="title"><a href="https://mapset.io/" target="_blank">mapset</a></h3>
+                               <h4 class="subtitle"><a href="https://www.geops.ch/" target="_blank">geOps - Spatial Web</a></h4>
                                <div class="featured-image has-ribbon">
-                                 <a  href="http://www.senviro.uji.es/" target="_blank">
-                                 <img class="img-fluid project-image" src="assets/images/projects/senviro3.jpg" alt="SEnviro for Agriculture" />
+                                 <a  href="https://mapset.io/" target="_blank">
+                                 <img class="img-fluid project-image" src="assets/images/projects/plan_editor2.png" alt="mapset" />
                                  </a>
                                  <div class="ribbon">
                                      <div class="text">New</div>
@@ -202,51 +221,85 @@
                                </div>
 
                                <div class="desc text-left">
-                                   <p>This project emerged at Universitat Jaume I and focuses on the development of an IoT full stack for monitoring vineyards. In the scope of my Master Thesis (<i>Interoperability Enhancement of IoT Sensor Network Applications for Environmental Monitoring Using Open Web Standards</i>), my work consisted of the deployment and comparison of open source Sensor Web Standard implementations to increase the potential interoperability for agricultural IoT applications.</p>
+                                   <p><strong>mapset - Plan Editor</strong> enables the creation of meaningful station maps quickly and easily. Public transport replacement services or construction sites can be depicted, as can the situation at major events that require the guidance of passengers. In just a few minutes, you can create a plan that provides targeted information and has a high graphic quality. Plans can be exported 
+                                    as static images or embedded into parent websites. Basemaps are optimized to show those details that are relevant for public transport.</p>
                                    <div class="item row">
                                      <div class="col-md-7 col-12">
-                                       <img class="img-fluid" src="assets/images/projects/senviroConnect.jpg" alt="senviro" />
-                                       <!-- <br><br>
-                                       <a href="http://geomundus.org/2018/" target="_blank">
-                                       <img class="img-fluid project-image" src="assets/images/projects/geomundus1.jpg" alt="geomundus2018" />
-                                       </a> -->
+                                       <a href="https://editor.mapset.io/" target="_blank">
+                                        <img class="img-fluid" src="assets/images/projects/plan_editor1.png" alt="mapset" />
+                                       </a>
                                      </div>
                                      <div class="desc col-md-5 col-12">
                                        <p> <strong>Tools used</strong>:
                                          <ul>
-                                           <li>Linux - Ubuntu</li>
-                                           <li><a href="https://www.docker.com/" target="_blank">Docker</a></li>
-                                           <li>Python </li>
-                                           <li><a href="https://www.rabbitmq.com/" target="_blank">RabbitMQ</a></li>
-                                           <li><a href="https://www.iosb.fraunhofer.de/servlet/is/80113/" target="_blank">FROST-Server</a></li>
-                                           <li><a href="https://52north.org/software/software-projects/sos/" target="_blank">52North-SOS</a></li>
-                                           <li><a href="https://iot.mozilla.org/wot/" target="_blank">WebThing API</a></li>
-                                           <li><a href="https://cloud.google.com/" target="_blank">Google Cloud Platform</a></li>
-                                           <li><a href="https://www.getpostman.com/" target="_blank">Postman</a></li>
+                                           <li><a href="https://reactjs.org/" target="_blank">ReactJs</a></li>
+                                           <li><a href="https://openlayers.org/" target="_blank">Openlayers</a></li>
+                                           <li><a href="https://docs.mapbox.com/mapbox-gl-js/api/" target="_blank">mapbox-gl-js</a></li>
+                                           <li><a href="https://openid.net/connect/" target="_blank">https://openid.net/connect/</a></li>
+                                           <li><a href="https://www.geops.ch/solution/routing" target="_blank">geOps - Routing</a></li>
+                                           <li><a href="https://openlayers-editor.geops.de/" target="_blank">OpenLayers - Editor</a></li>
+                                           <li><a href="https://www.cypress.io/" target="_blank">Cypress</a></li>
+                                           <li><a href="https://enzymejs.github.io/enzyme/" target="_blank">Enzyme</a></li>
+                                           <li><a href="https://jestjs.io/" target="_blank">Jest</a></li>
+                                           <li><a href="https://eslint.org/" target="_blank">ESLint</a></li>
                                          </ul>
                                        </p>
                                      </div><!--//desc-->
                                    </div><!--//item-->
 
-                                   <p> <strong>Keywords:</strong> Sensors, Internet of Things, Environmental Monitoring, Smart Farming, MQTT, <a href="https://www.opengeospatial.org/" target="_blank">OGC</a>, Interoperability, <a href="https://www.opengeospatial.org/standards/sensorthings" target="_blank">SensorThings API</a>, <a href="https://www.opengeospatial.org/standards/sos" target="_blank">SOS</a>, <a href="https://iot.mozilla.org/" target="_blank">Mozilla IoT</a>, <a href="https://pika.readthedocs.io/en/stable/" target="_blank">Pika</a></p>
+                                   <p> <strong>Keywords:</strong>UI design, map & data visualisation, situaltional plans, vector tiles, KML, React, Javascript ES6, SCSS, JSX, </p>
                                </div>
                                <!-- <a class="btn btn-cta-secondary" href="https://themes.3rdwavemedia.com/bootstrap-templates/startup/velocity-bootstrap-theme-for-startup-products/" target="_blank"><i class="fas fa-thumbs-up"></i> Back my project</a> -->
                            </div>
+
                            <hr class="divider" />
 
-                           <!-- <div class="item row">
+                           <div class="item row">
+                            <div class="col-md-4 col-12">
+                              <a href="https://mobility-toolbox-js.geops.io/home" target="_blank">
+                              <img class="img-fluid project-image" src="assets/images/projects/mobilitytoolboxjs2.png" alt="mobility-toolbox-js" />
+                              </a>
+                            </div>
+                            <div class="desc col-md-8 col-12">
+                                <h3 class="title"><a href="https://mobility-toolbox-js.geops.io/home" target="_blank">mobility-toolbox-js</a></h3>
+                                <h4 class="subtitle"><a href="https://www.geops.ch/" target="_blank">geOps - Spatial Web</a></h4>
+                                <p class="mb-2">Toolbox for JavaScript applications in the domains of mobility and logistics. The tools in this library have been inspired by many projects realized for public transport agencies, mobility providers and logistics companies.
+                                <p class="mb-2"> <strong>Tools used:</strong> <a href="https://openlayers.org/" target="_blank">Openlayers</a>, <a href="https://docs.mapbox.com/mapbox-gl-js/api/" target="_blank">mapbox-gl-js</a>, <a href="https://material-ui.com/" target="_blank">Material-UI</a></p>
+                                <p><a class="more-link" href="https://mobility-toolbox-js.geops.io/home" target="_blank"><i class="fas fa-external-link-alt"></i>Find out more</a></p>
+                            </div><!--//desc-->
+                          </div><!--//item-->
+
+                           <hr class="divider" />
+
+                           <div class="item row">
                              <div class="col-md-4 col-12">
                                <a  href="http://www.senviro.uji.es/" target="_blank">
                                <img class="img-fluid project-image" src="assets/images/projects/senviro3.jpg" alt="SEnviro for Agriculture" />
+                               </a>
+                               <br><br>
+                               <a href="http://www.senviro.uji.es/" target="_blank">
+                               <img class="img-fluid project-image" src="assets/images/projects/senviroConnect.jpg" alt="senviroConnect" />
                                </a>
                              </div>
                              <div class="desc col-md-8 col-12">
                                  <h3 class="title"><a href="http://www.senviro.uji.es/" target="_blank">SEnviro for Agriculture</a></h3>
                                  <h4 class="subtitle"><a href="https://www.uji.es/">Universitat Jaume I</a></h4>
                                  <p class="mb-2">This project emerged at Universitat Jaume I and focuses on the development of an IoT full stack for monitoring vineyards. In the scope of my Master Thesis (<i>Interoperability Enhancement of IoT Sensor Network Applications for Environmental Monitoring Using Open Web Standards</i>), my work consisted of the deployment and comparison of open source Sensor Web Standard implementations (Sensor Observation Service, SensorThings API and WebThing API) to increase the potential interoperability for agricultural IoT applications.</p>
+                                 <p class="mb-2"> <strong>Tools used:</strong> Linux - Ubuntu,
+                                    <a href="https://www.docker.com/" target="_blank">Docker</a>,
+                                    Python,
+                                    <a href="https://www.rabbitmq.com/" target="_blank">RabbitMQ</a>,
+                                    <a href="https://www.iosb.fraunhofer.de/servlet/is/80113/" target="_blank">FROST-Server</a>,
+                                    <a href="https://52north.org/software/software-projects/sos/" target="_blank">52North-SOS</a>,
+                                    <a href="https://iot.mozilla.org/wot/" target="_blank">WebThing API</a>,
+                                    <a href="https://cloud.google.com/" target="_blank">Google Cloud Platform</a>,
+                                    <a href="https://www.getpostman.com/" target="_blank">Postman</a>
                                  <p><a class="more-link" href="http://www.senviro.uji.es/" target="_blank"><i class="fas fa-external-link-alt"></i>Find out more</a></p>
                              </div>
-                           </div> -->
+                           </div>
+
+                          <hr class="divider" />
+                           
                            <div class="item row">
                              <div class="col-md-4 col-12">
                                <a href="http://geomundus.org/2018/" target="_blank">
@@ -342,13 +395,19 @@
                       <h2 class="heading">Work Experience</h2>
                       <div class="content">
                           <div class="item">
-                              <h3 class="title">Frontend Spatial Web Developer - <span class="place"><a href="https://geops.ch/" target="_blank">GeOps Spatial Web</a></span> <span class="year">(May 2019 - present)</span></h3>
-                              <p>After receiving my Master degree it was clear to me, that I would look for a job in spatial web development, in accordance to my acquired skills and interests. In April 2019 I signed the contract at GeOps, starting in May 2019. <strong>More details coming soon</strong></p>
+                              <h3 class="title">Frontend Spatial Web Developer - <span class="place"><a href="https://geops.ch/" target="_blank">geOps Spatial Web</a></span> <span class="year">(May 2019 - present)</span></h3>
+                              <p>After receiving my Master degree I decided to look for a job in spatial web development, in accordance to my acquired skills and interests. In April 2019 I signed the contract at <a href="https://geops.ch/" target="_blank">geOps</a>, starting in May 2019.</p>
                               <p>Core tasks:
                                 <ul>
-                                  <li>User interface enhancement for traffic-related web applications</li>
-                                  <li>Creation of UI components using <a href="https://reactjs.org/" target="_blank">ReactJs</a></li>
-                                  <li><strong>More details coming soon</strong></li>
+                                  <li>UI component engineering with <a href="https://reactjs.org/" target="_blank">ReactJs</a></li>
+                                  <li>Continuous frontend development in <a href="https://www.geops.ch/solution" target="_blank">geOps web applications</a></li>
+                                  <li>Expansion and maintenance of geops frontend <a href="https://github.com/geops" target="_blank">libraries and packages</a></li>
+                                  <li>Responsible for the Continuous Integration (CI) of <a href="https://mapset.io" target="_blank">mapset</a> plan editor</li>
+                                  <li>Component engineering for geOps ReactJs libraries (<a href="https://react-spatial.geops.de/" target="_blank">react-spatial</a>, <a href="https://trafimage-maps.geops.ch/" target="_blank">trafimage-maps</a>)</li>
+                                  <li>App quality assessment with Unit and E2E Tests using <a href="https://enzymejs.github.io/enzyme/" target="_blank">enzyme</a>, <a href="https://jestjs.io/" target="_blank">jest</a> and <a href="https://www.cypress.io/" target="_blank">cypress</a></li>
+                                  <li>Consumption of external and <a href="https://developer.geops.io/" target="_blank">inhouse APIs</a></li>
+                                  <li>Building interactive map components using open-source libraries such as <a href="https://openlayers.org/" target="_blank">openlayers</a> and <a href="https://www.mapbox.com/mapbox-gljs" target="_blank">mapbox GL</a></li>
+                                  <li>Writing Blog articles for the <a href="https://www.geops.ch/blog" target="_blank">geOps blog</a></li>
                                 </ul>
                               </p>
                           </div><!--//item-->
@@ -481,7 +540,7 @@
                         <h2 class="heading">Skills</h2>
                         <div class="content">
                             <p class="intro">
-                                During my academic and professional career I acquired a variety of technical skills. My BSc taught me the basics of models, simulations and got me started in GIS, Remote Sensing, database design and SQL. My database skills were furthered in my subsequent job at EURAC research, where I also started programming in Python and javaScript and working on Linux. Finally, I consolidated these skills during my MSc and acquired several others, including R, NoSQL, HTML and CSS. My skills and the corresponding skill levels are listed below:</p>
+                                During my academic and professional career I acquired a variety of technical skills. My BSc taught me the basics of models, simulations and got me started in GIS, Remote Sensing, database design and SQL. My database skills were furthered in my subsequent job at EURAC research, where I also started programming in Python and javaScript and working on Linux. Finally, I consolidated these skills during my MSc and acquired several others, including R, NoSQL, HTML and CSS. At geOps - Spatial Web I gained good practical expreience using an array of mostly frontend web technologies, achieving senior developer status. My skills and the corresponding skill levels are listed below:</p>
                             <div class="skillset">
 
                               <div class="item">
@@ -533,7 +592,7 @@
                               </div><!--//item-->
 
                               <div class="item">
-                                  <h3 class="level-title">Javascript<span class="level-label" data-toggle="tooltip" data-placement="left" data-animation="true" title="My skills in javascript are mainly grounded on several web applications created during my MSc degree. I regularly use NodeJs, ExpressJs, jQuery, jQuery Mobile. I have worked a lot with mapping libraries like LeafletJs or Google Maps Api."><i class="fas fa-info-circle"></i></span></h3>
+                                  <h3 class="level-title">Javascript ES6<span class="level-label" data-toggle="tooltip" data-placement="left" data-animation="true" title="My skills in javascript are mainly grounded on several web applications created during my MSc degree. I regularly use NodeJs, ExpressJs, jQuery, jQuery Mobile. I have worked a lot with mapping libraries like LeafletJs or Google Maps Api."><i class="fas fa-info-circle"></i></span></h3>
                                   <div class="level-bar">
                                       <div class="level-bar-inner" data-level="80%">
                                       </div>
@@ -551,7 +610,7 @@
                               <div class="item">
                                   <h3 class="level-title">ReactJs<span class="level-label" data-toggle="tooltip" data-placement="left" data-animation="true" title="I have some experience with mobile application developent with AndroidStudio in ReactJs. Furthermore I create React UI components for spatial web projects."><i class="fas fa-info-circle"></i></span></h3>
                                   <div class="level-bar">
-                                      <div class="level-bar-inner" data-level="40%">
+                                      <div class="level-bar-inner" data-level="80%">
                                       </div>
                                   </div><!--//level-bar-->
                               </div><!--//item-->
@@ -559,7 +618,7 @@
                               <div class="item">
                                   <h3 class="level-title">Python<span class="level-label" data-toggle="tooltip" data-placement="left" data-animation="true" title="Several projects I worked on included automation, data analysis and processing in Python. I have worked with Python framworks like Anaconda and have used advanced data analysis lib such as numpy and pandas."><i class="fas fa-info-circle"></i></span></h3>
                                   <div class="level-bar">
-                                      <div class="level-bar-inner" data-level="80%">
+                                      <div class="level-bar-inner" data-level="60%">
                                       </div>
                                   </div><!--//level-bar-->
                               </div><!--//item-->
@@ -567,7 +626,7 @@
                               <div class="item">
                                   <h3 class="level-title">R<span class="level-label" data-toggle="tooltip" data-placement="left" data-animation="true" title="R was necessary in countless projects during my university career. I have used several visualisation libraries, created Shiny Apps and performed data and spatial analyses in R."><i class="fas fa-info-circle"></i></span></h3>
                                   <div class="level-bar">
-                                      <div class="level-bar-inner" data-level="70%">
+                                      <div class="level-bar-inner" data-level="60%">
                                       </div>
                                   </div><!--//level-bar-->
                               </div><!--//item-->
@@ -575,7 +634,7 @@
                               <div class="item">
                                   <h3 class="level-title">MQTT &amp; RabbitMQ<span class="level-label" data-toggle="tooltip" data-placement="left" data-animation="true" title="I've used RabbitMQ message broker platform to write broker applications connecting IoT devices with Sensor Web Standard databases using Python and MQTT publish/subscribe messaging."><i class="fas fa-info-circle"></i></span></h3>
                                   <div class="level-bar">
-                                      <div class="level-bar-inner" data-level="60%">
+                                      <div class="level-bar-inner" data-level="40%">
                                       </div>
                                   </div><!--//level-bar-->
                               </div><!--//item-->
@@ -614,9 +673,10 @@
                     <div class="section-inner">
                         <h2 class="heading">Articles</h2>
                         <div class="content">
-                            <p>Academic Writing examples of mine (unpublished):</p>
+                            <p>Academic Writing examples of mine:</p>
                             <ul>
-                              <li><a title="Download article" href="assets/documents/MarshHunnD_SocialMediaMobility.pdf" download>Using Data from Location Based Social Networks in Human Mobility Analysis</a></li>
+                              <li><a title="Download article" href="https://ieeexplore.ieee.org/abstract/document/9224992">A Comparative Study in the Standardization of IoT Devices Using Geospatial Web Standards</a></li>
+                              <li><a title="Download article" href="assets/documents/MarshHunnD_SocialMediaMobility.pdf" download>Using Data from Location Based Social Networks in Human Mobility Analysis</a> (unpublished)</li>
                             </ul>
                         </div><!--//content-->
                     </div><!--//section-inner-->
@@ -651,6 +711,7 @@
                         <h2 class="heading">Conferences</h2>
                         <div class="content">
                             <ul class="list-unstyled">
+                                <li><i class="far fa-calendar-alt"></i> <a href="http://geomundus.org/2019/" target="_blank">GeoMundus Conference 2019</a> (Castellón de la Plana)</li>
                                 <li><i class="far fa-calendar-alt"></i> <a href="http://geomundus.org/2018/" target="_blank">GeoMundus Conference 2018</a> (Lisbon)</li>
                                 <li><i class="far fa-calendar-alt"></i> <a href="http://geomundus.org/2017/" target="_blank">GeoMundus Conference 2017</a> (Münster)</li>
                                 <!-- <li><i class="far fa-calendar-alt"></i> <a href="#">Hive</a> (Seattle)</li> -->
@@ -705,20 +766,5 @@
                 <small class="copyright">Designed by  <a href="https://github.com/danji90/portfolio" target="_blank"><i class="fab fa-github"></i> Daniel Marsh-Hunn</a></small>
         </div><!--//container-->
     </footer><!--//footer-->
-
-    <!-- Javascript -->
-    <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
-    <script type="text/javascript" src="node_modules/jquery-ui-dist/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="node_modules/popper.js/dist/umd/popper.min.js"></script>
-    <script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!-- <script type="text/javascript" src="node_modules/jquery-rss/dist/jquery.rss.min.js"></script> -->
-    <!-- github calendar plugin -->
-    <script type="text/javascript" src="node_modules/github-calendar/dist/github-calendar.min.js"></script>
-    <!-- github activity plugin -->
-    <script type="text/javascript" src="node_modules/mustache/mustache.min.js"></script>
-    <script type="text/javascript" src="assets/plugins/github-activity/github-activity-0.1.5.min.js"></script>
-    <!-- custom js -->
-    <script type="text/javascript" src="mapping.js"></script>
-    <script type="text/javascript" src="assets/js/main.js"></script>
 </body>
 </html>
