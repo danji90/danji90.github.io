@@ -21,7 +21,7 @@ jobs:
         run: |
           git config user.email "danji_ma90@hotmail.com"
           git config user.name "danji90"
-        run: npm install && npm run deploy
+          npm install && npm run deploy
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.7
