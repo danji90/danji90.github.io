@@ -1,0 +1,125 @@
+import 'react-app-polyfill/stable';
+import React from 'react';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import './App.css';
+
+import Portfolio from './components/Portfolio/Portfolio';
+
+const primaryColor = '#63a000';
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: primaryColor,
+    },
+    secondary: {
+      main: '#f55',
+    },
+    text: {
+      primary: '#565656',
+    },
+  },
+  colors: {
+    primary: primaryColor,
+    secondary: '#f55',
+  },
+  typography: {
+    fontSize: 16,
+  },
+  overrides: {
+    MuiTypography: {
+      h1: {
+        fontSize: 36,
+        fontFamily: "'Montserrat', sans-serif",
+        margin: '15px 0',
+        fontWeight: 'bold',
+      },
+      h2: {
+        fontSize: 24,
+        margin: '12px 0',
+        fontFamily: "'Montserrat', sans-serif",
+        fontWeight: 'bold',
+      },
+      h3: {
+        fontSize: 20,
+        fontFamily: "'Montserrat', sans-serif",
+        margin: '8px 0',
+        fontWeight: 'bold',
+      },
+      h4: {
+        fontSize: 18,
+        fontFamily: "'Montserrat', sans-serif",
+        margin: '6px 0',
+        fontWeight: 'bold',
+      },
+    },
+    MuiCardContent: {
+      root: {
+        height: 120,
+      },
+    },
+    MuiList: {
+      root: {
+        fontSize: 16,
+      },
+    },
+    MuiAppBar: {
+      root: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+      },
+    },
+    MuiTabs: {
+      root: {
+        height: '100%',
+      },
+      flexContainer: {
+        height: '100%',
+      },
+    },
+    MuiTab: {
+      root: {
+        textTransform: 'unset',
+        color: '#fff',
+      },
+    },
+    MuiBox: {
+      root: {
+        padding: 20,
+      },
+    },
+    MuiButton: {
+      root: {
+        textTransform: 'unset',
+        color: 'white',
+        backgroundColor: '#63a000',
+        transition: 'opacity 300ms',
+        '&:hover': {
+          backgroundColor: '#63a000',
+          opacity: 0.8,
+        },
+      },
+    },
+  },
+  styles: {
+    link: {
+      textDecoration: 'none',
+      color: primaryColor,
+      '&:hover': {
+        textDecoration: 'underline',
+      },
+    },
+  },
+});
+
+function App() {
+  return (
+    <div className="App">
+      <ThemeProvider theme={theme}>
+        <Portfolio />
+      </ThemeProvider>
+    </div>
+  );
+}
+
+export default App;
