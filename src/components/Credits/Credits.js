@@ -20,7 +20,7 @@ function Credits() {
     <Container title="Credits">
       <List />
       {credits.map((credit) => (
-        <ListItem>
+        <ListItem key={credit.name}>
           <Link
             href={credit.url}
             target="_blank"
