@@ -19,9 +19,9 @@ jobs:
 
       - name: Install and build
         run: |
-          git config --global user.name $user_name
-          git config --global user.email $user_email
-          git remote set-url origin https://${github_token}@github.com/${repository}
+          git config --global user.name danji90
+          git config --global user.email danji_ma90@hotmail.com
+          git remote set-url origin https://danji90:${github_token}@github.com/danji90/danji90.github.io
           npm install && npm run deploy
         env:
           user_name: 'github-actions[bot]'
