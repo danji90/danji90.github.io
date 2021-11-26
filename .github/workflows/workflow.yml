@@ -22,11 +22,6 @@ jobs:
           git config --global user.name danji90
           git config --global user.email danji_ma90@hotmail.com
           git remote set-url origin https://${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}@github.com/${{ github.repository }}
-        env:
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
-          github_token: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
-          repository: ${{ github.repository }}
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.7
