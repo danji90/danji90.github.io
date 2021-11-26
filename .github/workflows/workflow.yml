@@ -18,6 +18,9 @@ jobs:
         uses: actions/checkout@v1
 
       - name: Install and build
+        run: |
+          git config user.email "danji_ma90@hotmail.com"
+          git config user.name "danji90"
         run: npm install && npm run deploy
 
       - name: Deploy 🚀
