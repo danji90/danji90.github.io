@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
 import React from 'react';
