@@ -98,7 +98,6 @@ const useStyles = makeStyles((theme) => ({
     padding: '20px 0',
   },
   portraitWrapper: {
-    width: 200,
     margin: 'auto',
   },
 }));
@@ -149,13 +148,11 @@ const NavBar = () => {
   const [value, setValue] = useState('home');
   const [anchor, setMenuAnchor] = useState();
   const sections = useSelector((state) => state.sections);
-  // const activeSection = useSelector((state) => state.activeSection);
   const xpOpen = useSelector((state) => state.xpOpen);
   const menuOpen = useSelector((state) => state.menuOpen);
   const onItemClick = useCallback(
     (section) => {
       if (section.id === 'experience') {
-        // dispatch(setActiveSection(activeSection));
         dispatch(setXpOpen(!xpOpen));
         return;
       }
@@ -164,7 +161,6 @@ const NavBar = () => {
       window.location.hash = section.id;
       const targetElement = document.getElementById(section.id);
       targetElement && targetElement.scrollIntoView();
-      // dispatch(setActiveSection(section));
     },
     [dispatch, xpOpen],
   );
@@ -268,7 +264,7 @@ const NavBar = () => {
           anchor="right"
         >
           <div className={classes.portraitWrapper}>
-            <Portrait />
+            <Portrait size={150} />
           </div>
           <List className={classes.list}>
             {sections

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
 import portrait from '../../assets/images/daniel1.jpg';
 
@@ -8,8 +9,8 @@ const useStyles = makeStyles((theme) => ({
     border: '4px solid #565656',
     borderRadius: '50%',
     overflow: 'hidden',
-    maxWidth: 200,
-    maxHeight: 200,
+    width: (props) => props.size,
+    height: (props) => props.size,
     [theme.breakpoints.up('md')]: {
       maxWidth: 250,
       maxHeight: 250,
@@ -27,13 +28,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Portrait() {
-  const classes = useStyles();
+function Portrait({ size }) {
+  const classes = useStyles({ size });
   return (
     <div className={classes.portraitContainer}>
       <img src={portrait} alt="error" className={classes.portraitImg} />
     </div>
   );
 }
+
+Portrait.defaultProps = {
+  size: 200,
+};
+
+Portrait.propTypes = {
+  size: PropTypes.number,
+};
 
 export default Portrait;
