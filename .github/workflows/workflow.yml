@@ -18,10 +18,12 @@ jobs:
         uses: actions/checkout@v1
 
       - name: Install and build
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           git config user.email "danji_ma90@hotmail.com"
           git config user.name "danji90"
-          git remote set-url origin https://danji90:${{ secrets.GH_TOKEN }}@github.com/danji90/danji90.github.io
+          git remote set-url origin https://danji90:"$GH_TOKEN"@github.com/danji90/danji90.github.io
           npm install && npm run deploy
 
       - name: Deploy 🚀
