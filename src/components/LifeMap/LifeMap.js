@@ -377,7 +377,7 @@ class LifeMap extends Component {
           </div>
         </div>
         <div className={classes.timeSlider}>
-          <Typography variant="h3">
+          <Typography variant="h3" align="center">
             {`${format(timeSpan[0], 'dd.MM.yyyy')} - ${format(
               timeSpan[1],
               'dd.MM.yyyy',
@@ -387,8 +387,6 @@ class LifeMap extends Component {
             <Slider
               min={initialTimeSpan[0]}
               max={initialTimeSpan[1]}
-              // valueLabelDisplay="auto"
-              // valueLabelFormat={() => {return 'wank'}}
               onChange={(evt, value) => this.setState({ timeSpan: value })}
               value={timeSpan}
             />

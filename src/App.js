@@ -81,6 +81,7 @@ const theme = createMuiTheme({
       root: {
         textTransform: 'unset',
         color: '#fff',
+        minWidth: '0 !important',
       },
     },
     MuiBox: {
