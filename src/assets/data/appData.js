@@ -527,7 +527,7 @@ const initialState = {
       list: {
         header: 'Core tasks:',
         items: [
-          'UI component engineering with ReactJs <a href="https://reactjs.org/" target="_blank rel"noopener noreferrer">ReactJs</a>',
+          'UI component engineering with <a href="https://reactjs.org/" target="_blank rel"noopener noreferrer">ReactJs</a>',
           'Continuous frontend development in <a href="https://geops.ch/solution" target="_blank rel"noopener noreferrer">geOps client applications</a>',
           'Expansion and maintenance of <a href="https://github.com/geops" target="_blank rel"noopener noreferrer">geOps frontend libraries and packages</a>',
           'Application quality assessment through E2E and unit tests',
