@@ -165,7 +165,7 @@ const NavBar = () => {
   const onItemClick = useCallback(
     (section) => {
       dispatch(setMenuOpen(false));
-      dispatch(setXpOpen(!xpOpen));
+      dispatch(setXpOpen(section.id !== 'experience' ? !xpOpen : false));
       if (section.id !== 'experience') {
         setHash(section.id);
       }
