@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { IoMdArrowDropdown, IoMdArrowDropup } from 'react-icons/io';
 import {
@@ -142,28 +142,61 @@ const renderExperienceMenu = (
   );
 };
 
+let scrollTimeout;
+let hashTimeout;
+
+const scrollToSection = (sectionId) => {
+  const targetElement = document.getElementById(sectionId);
+  targetElement &&
+    targetElement.scrollIntoView({
+      behavior: 'smooth',
+    });
+};
+
 const NavBar = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [value, setValue] = useState('home');
+  const [hash, setHash] = useState();
   const [anchor, setMenuAnchor] = useState();
   const sections = useSelector((state) => state.sections);
   const xpOpen = useSelector((state) => state.xpOpen);
   const menuOpen = useSelector((state) => state.menuOpen);
   const onItemClick = useCallback(
     (section) => {
-      if (section.id === 'experience') {
-        dispatch(setXpOpen(!xpOpen));
-        return;
-      }
       dispatch(setMenuOpen(false));
-      dispatch(setXpOpen(false));
-      window.location.hash = section.id;
-      const targetElement = document.getElementById(section.id);
-      targetElement && targetElement.scrollIntoView();
+      dispatch(setXpOpen(!xpOpen));
+      if (section.id !== 'experience') {
+        setHash(section.id);
+      }
     },
     [dispatch, xpOpen],
   );
+
+  useEffect(() => {
+    scrollToSection(window.location.hash?.split('#')[1]);
+    setHash(window.location.hash?.split('#')[1]);
+  }, []);
+
+  useEffect(() => {
+    const scrollListener = () => {
+      clearTimeout(scrollTimeout);
+      clearTimeout(hashTimeout);
+      scrollTimeout = setTimeout(() => {
+        window.location.hash = hash;
+      }, 100);
+    };
+    window.addEventListener('scroll', scrollListener);
+
+    // In case hash should be changed but no scrolling is triggered
+    clearTimeout(hashTimeout);
+    hashTimeout = setTimeout(() => {
+      window.location.hash = hash;
+    }, 100);
+
+    scrollToSection(hash);
+    return () => window.removeEventListener('scroll', scrollListener);
+  }, [hash]);
 
   return (
     <>
@@ -195,7 +228,7 @@ const NavBar = () => {
                 return (
                   <Tab
                     key={sect.id}
-                    href={`#${sect.id}`}
+                    onClick={() => onItemClick(sect)}
                     value={sect.id}
                     label={(
                       <span className={classes.tabLabel}>
