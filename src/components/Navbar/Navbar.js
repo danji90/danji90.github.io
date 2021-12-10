@@ -190,6 +190,14 @@ const NavBar = () => {
     },
     [dispatch, xpOpen],
   );
+  const scrollListener = useCallback(() => {
+    clearTimeout(scrollTimeout);
+    clearTimeout(hashTimeout);
+    scrollTimeout = setTimeout(() => {
+      window.location.hash = hash;
+      document.removeEventListener('scroll', scrollListener);
+    }, 100);
+  }, [hash]);
 
   useEffect(() => {
     scrollToSection(window.location.hash?.split('#')[1]);
@@ -197,23 +205,14 @@ const NavBar = () => {
   }, []);
 
   useEffect(() => {
-    const scrollListener = () => {
-      clearTimeout(scrollTimeout);
-      clearTimeout(hashTimeout);
-      scrollTimeout = setTimeout(() => {
-        window.location.hash = hash;
-      }, 100);
-    };
-    window.addEventListener('scroll', scrollListener);
-
+    document.addEventListener('scroll', scrollListener);
     // In case hash should be changed but no scrolling is triggered
     clearTimeout(hashTimeout);
     hashTimeout = setTimeout(() => {
       window.location.hash = hash;
     }, 100);
     scrollToSection(hash);
-    // return () => window.removeEventListener('scroll', scrollListener);
-  }, [hash]);
+  }, [hash, scrollListener]);
 
   return (
     <>
