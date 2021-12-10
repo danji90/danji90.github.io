@@ -69,6 +69,10 @@ const useStyles = makeStyles((theme) => ({
       top: 'unset',
     },
   },
+  hashAnchor: {
+    position: 'absolute',
+    top: -70,
+  },
 }));
 
 function Home() {
@@ -78,50 +82,53 @@ function Home() {
   );
 
   return (
-    <div className={classes.homeContainer} id={section.id}>
-      <Portrait />
-      <div className={classes.generalContainer}>
-        <Typography variant="h1">Daniel Marsh-Hunn</Typography>
-        <Typography variant="h2">
-          GI Researcher & Spatial Web Developer
-        </Typography>
-        <div className={classes.linksContainer}>
-          <IconButton
-            href="https://www.linkedin.com/in/daniel-marsh-hunn-44097959/"
-            title="LinkedIn"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={classes.iconBtn}
-          >
-            <FaLinkedinIn size={25} />
-          </IconButton>
-          <IconButton
-            href="https://github.com/danji90"
-            title="Github"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={classes.iconBtn}
-          >
-            <FaGithubAlt size={25} />
-          </IconButton>
-          <IconButton
-            href={cvPdf}
-            download
-            title="Download CV"
-            className={classes.iconBtn}
-          >
-            <FaFilePdf size={25} />
-          </IconButton>
+    <div style={{ position: 'relative' }}>
+      <div className={classes.hashAnchor} id={section.id} />
+      <div className={classes.homeContainer}>
+        <Portrait />
+        <div className={classes.generalContainer}>
+          <Typography variant="h1">Daniel Marsh-Hunn</Typography>
+          <Typography variant="h2">
+            GI Researcher & Spatial Web Developer
+          </Typography>
+          <div className={classes.linksContainer}>
+            <IconButton
+              href="https://www.linkedin.com/in/daniel-marsh-hunn-44097959/"
+              title="LinkedIn"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={classes.iconBtn}
+            >
+              <FaLinkedinIn size={25} />
+            </IconButton>
+            <IconButton
+              href="https://github.com/danji90"
+              title="Github"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={classes.iconBtn}
+            >
+              <FaGithubAlt size={25} />
+            </IconButton>
+            <IconButton
+              href={cvPdf}
+              download
+              title="Download CV"
+              className={classes.iconBtn}
+            >
+              <FaFilePdf size={25} />
+            </IconButton>
+          </div>
         </div>
+        <Button
+          title="Write e-mail"
+          href="mailto:danji_ma90@hotmail.com"
+          className={classes.contactBtn}
+        >
+          <FaPaperPlane size={18} style={{ marginRight: 10 }} />
+          <strong>Contact me</strong>
+        </Button>
       </div>
-      <Button
-        title="Write e-mail"
-        href="mailto:danji_ma90@hotmail.com"
-        className={classes.contactBtn}
-      >
-        <FaPaperPlane size={18} style={{ marginRight: 10 }} />
-        <strong>Contact me</strong>
-      </Button>
     </div>
   );
 }

@@ -201,7 +201,7 @@ const NavBar = () => {
 
   useEffect(() => {
     scrollToSection(window.location.hash?.split('#')[1]);
-    setHash(window.location.hash?.split('#')[1]);
+    setHash(window.location.hash?.split('#')[1] || 'home');
   }, []);
 
   useEffect(() => {
