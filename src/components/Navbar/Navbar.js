@@ -200,8 +200,9 @@ const NavBar = () => {
   }, [hash]);
 
   useEffect(() => {
-    scrollToSection(window.location.hash?.split('#')[1]);
     setHash(window.location.hash?.split('#')[1] || 'home');
+    return () => document.removeEventListener('scroll', scrollListener);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -212,6 +213,7 @@ const NavBar = () => {
       window.location.hash = hash;
     }, 100);
     scrollToSection(hash);
+    return () => document.removeEventListener('scroll', scrollListener);
   }, [hash, scrollListener]);
 
   return (
