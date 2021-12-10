@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { IoMdArrowDropdown, IoMdArrowDropup } from 'react-icons/io';
 import {
@@ -14,6 +15,8 @@ import {
   Paper,
   MenuList,
   MenuItem,
+  useTheme,
+  useMediaQuery,
 } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import { Menu as MenuBtn, Close } from '@material-ui/icons';
@@ -102,15 +105,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const renderExperienceMenu = (
-  tabs,
-  onItemClick,
-  classes,
-  xpOpen,
-  anchor,
-  dispatch,
-  setMenuAnchor,
-) => {
+const ExperienceMenu = ({ tabs, onItemClick, anchor }) => {
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const xpOpen = useSelector((state) => state.xpOpen);
+  if (!anchor) {
+    return null;
+  }
   return (
     <Popper
       open={xpOpen}
@@ -123,7 +124,6 @@ const renderExperienceMenu = (
           const movingTo = evt.relatedTarget?.tagName;
           if (movingTo === 'SPAN') return;
           dispatch(setXpOpen(false));
-          setMenuAnchor(null);
         }}
       >
         <MenuList className={classes.experienceDropdown}>
@@ -142,6 +142,16 @@ const renderExperienceMenu = (
   );
 };
 
+ExperienceMenu.propTypes = {
+  tabs: PropTypes.array.isRequired,
+  onItemClick: PropTypes.func.isRequired,
+  anchor: PropTypes.object,
+};
+
+ExperienceMenu.defaultProps = {
+  anchor: null,
+};
+
 let scrollTimeout;
 let hashTimeout;
 
@@ -156,22 +166,29 @@ const scrollToSection = (sectionId) => {
 const NavBar = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const theme = useTheme();
+  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
   const [value, setValue] = useState('home');
   const [hash, setHash] = useState();
-  const [anchor, setMenuAnchor] = useState();
   const sections = useSelector((state) => state.sections);
   const xpOpen = useSelector((state) => state.xpOpen);
   const menuOpen = useSelector((state) => state.menuOpen);
+  const [xpTabNode, setXpTabNode] = useState(null);
   const onItemClick = useCallback(
     (section) => {
-      dispatch(setXpOpen(section.id === 'experience' ? !xpOpen : false));
-      if (section.id !== 'experience') {
+      if (section.id === 'experience') {
+        dispatch(setXpOpen(!xpOpen));
+        setValue(section.id);
+      } else {
+        dispatch(setXpOpen(false));
         dispatch(setMenuOpen(false));
         setHash(section.id);
       }
     },
     [dispatch, xpOpen],
   );
+
+  // console.log(isTablet);
 
   useEffect(() => {
     scrollToSection(window.location.hash?.split('#')[1]);
@@ -227,8 +244,9 @@ const NavBar = () => {
               .map((sect) => {
                 return (
                   <Tab
+                    ref={(elt) => sect.id === 'experience' && setXpTabNode(elt)}
                     key={sect.id}
-                    onClick={() => onItemClick(sect)}
+                    onClick={(evt) => onItemClick(sect)}
                     value={sect.id}
                     label={(
                       <span className={classes.tabLabel}>
@@ -244,15 +262,17 @@ const NavBar = () => {
                     className={classes.tab}
                     onMouseEnter={(evt) => {
                       setValue(sect.id);
-                      if (sect.id !== 'experience') return;
-                      dispatch(setXpOpen(true));
-                      setMenuAnchor(evt.currentTarget);
+                      if (!isTablet) {
+                        if (sect.id !== 'experience') return;
+                        dispatch(setXpOpen(true));
+                      }
                     }}
                     onMouseLeave={(evt) => {
-                      const movingTo = evt.relatedTarget?.tagName;
-                      if (movingTo === 'SPAN' || movingTo === 'UL') return;
-                      dispatch(setXpOpen(false));
-                      setMenuAnchor(null);
+                      if (!isTablet) {
+                        const movingTo = evt.relatedTarget?.tagName;
+                        if (movingTo === 'SPAN' || movingTo === 'UL') return;
+                        dispatch(setXpOpen(false));
+                      }
                     }}
                     aria-owns={xpOpen ? 'menu-list-grow' : undefined}
                     aria-haspopup="true"
@@ -260,18 +280,14 @@ const NavBar = () => {
                 );
               })}
           </Tabs>
-          {anchor &&
-            renderExperienceMenu(
-              sections.filter(
-                (item) => item.nav === 'experience' && item.id !== 'experience',
-              ),
-              onItemClick,
-              classes,
-              xpOpen,
-              anchor,
-              dispatch,
-              setMenuAnchor,
+          <ExperienceMenu
+            tabs={sections.filter(
+              (item) => item.nav === 'experience' && item.id !== 'experience',
             )}
+            onItemClick={onItemClick}
+            open={xpOpen}
+            anchor={xpTabNode}
+          />
         </Hidden>
       </AppBar>
 
