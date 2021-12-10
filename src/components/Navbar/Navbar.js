@@ -21,6 +21,7 @@ import {
 import IconButton from '@material-ui/core/IconButton';
 import { Menu as MenuBtn, Close } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
+import scrollIntoView from 'scroll-into-view';
 import { setMenuOpen, setXpOpen } from '../../model/actions';
 
 import Portrait from '../Portrait/Portrait';
@@ -157,10 +158,12 @@ let hashTimeout;
 
 const scrollToSection = (sectionId) => {
   const targetElement = document.getElementById(sectionId);
-  targetElement &&
-    targetElement.scrollIntoView({
-      behavior: 'smooth',
-    });
+  scrollIntoView(targetElement, {
+    time: 1000,
+    align: {
+      top: 0,
+    },
+  });
 };
 
 const NavBar = () => {
@@ -188,8 +191,6 @@ const NavBar = () => {
     [dispatch, xpOpen],
   );
 
-  // console.log(isTablet);
-
   useEffect(() => {
     scrollToSection(window.location.hash?.split('#')[1]);
     setHash(window.location.hash?.split('#')[1]);
@@ -210,9 +211,8 @@ const NavBar = () => {
     hashTimeout = setTimeout(() => {
       window.location.hash = hash;
     }, 100);
-
     scrollToSection(hash);
-    return () => window.removeEventListener('scroll', scrollListener);
+    // return () => window.removeEventListener('scroll', scrollListener);
   }, [hash]);
 
   return (

@@ -33,15 +33,22 @@ const useStyles = makeStyles((theme) => ({
       padding: props.fullWidthOnMobile ? '10px 0 20px' : '10px 30px 20px',
     },
   }),
+  hashAnchor: {
+    position: 'absolute',
+    top: -70,
+  },
 }));
 
 function Container(props) {
   const { children, title, id, styles, className } = props;
   const classes = useStyles(props);
   return (
-    <div className={`${classes.container} ${className}`} id={id} style={styles}>
-      <Typography variant="h2">{title}</Typography>
-      {children}
+    <div style={{ position: 'relative' }}>
+      <div className={classes.hashAnchor} id={id} />
+      <div className={`${classes.container} ${className}`} style={styles}>
+        <Typography variant="h2">{title}</Typography>
+        {children}
+      </div>
     </div>
   );
 }

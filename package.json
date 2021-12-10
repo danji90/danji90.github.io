@@ -30,7 +30,8 @@
     "react-scripts": "3.4.1",
     "react-spatial": "1.0.25",
     "react-tooltip": "^4.2.17",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "scroll-into-view": "^1.16.0"
   },
   "peerDependencies": {
     "mapbox-gl": "1.12.0",

@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Home(props) {
+function Home() {
   const classes = useStyles();
   const section = useSelector((state) => state.sections).find(
     (sect) => sect.id === 'home',
