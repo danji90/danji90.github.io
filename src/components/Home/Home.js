@@ -12,15 +12,24 @@ import {
 } from 'react-icons/fa';
 import Portrait from '../Portrait/Portrait';
 import cvPdf from '../../assets/documents/MarshHunnDaniel_EuroCV.pdf';
+import BackgroundMap from '../BackgroundMap/BackgroundMap';
 
+const HOME_HEIGHT = 400;
 const useStyles = makeStyles((theme) => ({
+  '@keyframes fadeInHome': theme.animations.fadeIn(),
+  homeWrapper: {
+    position: 'relative',
+    animation: '$fadeInHome 1000ms ease',
+  },
   homeContainer: {
     display: 'flex',
     alignItems: 'center',
     marginTop: 40,
-    minHeight: 400,
+    minHeight: HOME_HEIGHT,
     padding: '20px 150px 20px',
-    backgroundColor: 'white',
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    boxShadow:
+      'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px',
     [theme.breakpoints.down('xs')]: {
       padding: 20,
     },
@@ -82,8 +91,9 @@ function Home() {
   );
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div className={classes.homeWrapper}>
       <div className={classes.hashAnchor} id={section.id} />
+      <BackgroundMap />
       <div className={classes.homeContainer}>
         <Portrait />
         <div className={classes.generalContainer}>
