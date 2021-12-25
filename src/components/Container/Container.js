@@ -1,29 +1,8 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-
-function elementInViewport2(el) {
-  let top = el.offsetTop;
-  let left = el.offsetLeft;
-  const width = el.offsetWidth;
-  const height = el.offsetHeight;
-
-  while (el.offsetParent) {
-    el = el.offsetParent;
-    top += el.offsetTop;
-    left += el.offsetLeft;
-  }
-
-  return (
-    top < window.pageYOffset + window.innerHeight &&
-    left < window.pageXOffset + window.innerWidth &&
-    top + height > window.pageYOffset &&
-    left + width > window.pageXOffset
-  );
-}
+import { useInView } from 'react-intersection-observer';
 
 const propTypes = {
   children: PropTypes.oneOfType([
@@ -76,38 +55,24 @@ const useStyles = makeStyles((theme) => ({
 
 function Container(props) {
   const { children, title, id, styles, className } = props;
-  const [isVisible, setVisible] = useState(false);
   const classes = useStyles(props);
-  const domRef = useRef();
-  const handleScroll = useCallback(() => {
-    if (domRef.current && elementInViewport2(domRef.current)) {
-      setVisible(true);
-    }
-  }, [setVisible, domRef]);
-
-  useEffect(() => {
-    handleScroll();
-    document.addEventListener('scroll', handleScroll);
-    return () => document.removeEventListener('scroll', handleScroll);
-  }, [handleScroll]);
-
-  useEffect(() => {
-    if (isVisible) {
-      document.removeEventListener('scroll', handleScroll);
-    }
-  }, [isVisible]);
+  const { ref, inView } = useInView({
+    threshold: 0.1,
+    triggerOnce: true,
+  });
 
   return (
-    <div
-      className={`${classes.containerWrapper} ${
-        isVisible ? classes.visible : ''
-      }`}
-      ref={domRef}
-    >
-      <div className={classes.hashAnchor} id={id} />
-      <div className={`${classes.container} ${className}`} style={styles}>
-        <Typography variant="h2">{title}</Typography>
-        {children}
+    <div ref={ref}>
+      <div
+        className={`${classes.containerWrapper} ${
+          inView ? classes.visible : ''
+        }`}
+      >
+        <div className={classes.hashAnchor} id={id} />
+        <div className={`${classes.container} ${className}`} style={styles}>
+          <Typography variant="h2">{title}</Typography>
+          {children}
+        </div>
       </div>
     </div>
   );
