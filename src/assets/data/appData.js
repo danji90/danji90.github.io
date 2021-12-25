@@ -179,6 +179,11 @@ const initialState = {
           name: 'Cypress',
           webLink: 'https://www.cypress.io/',
         },
+        {
+          name: 'Web Component',
+          webLink:
+            'https://developer.mozilla.org/en-US/docs/Web/Web_Components',
+        },
       ],
       keyWords: ['SBB, Geoportal, Railway networks, Web Component'],
       webLink: 'https://maps.trafimage.ch/',
