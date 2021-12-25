@@ -153,17 +153,19 @@ ExperienceMenu.defaultProps = {
   anchor: null,
 };
 
-let scrollTimeout;
-let hashTimeout;
-
-const scrollToSection = (sectionId) => {
+const scrollToSection = (sectionId, callback) => {
   const targetElement = document.getElementById(sectionId);
-  scrollIntoView(targetElement, {
-    time: 1000,
-    align: {
-      top: 0,
+  scrollIntoView(
+    targetElement,
+    {
+      time: 1000,
+      align: {
+        top: 0,
+      },
     },
-  });
+    // eslint-disable-next-line no-return-assign
+    () => (window.location.hash = sectionId),
+  );
 };
 
 const NavBar = () => {
@@ -172,11 +174,11 @@ const NavBar = () => {
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
   const [value, setValue] = useState('home');
-  const [hash, setHash] = useState();
   const sections = useSelector((state) => state.sections);
   const xpOpen = useSelector((state) => state.xpOpen);
   const menuOpen = useSelector((state) => state.menuOpen);
   const [xpTabNode, setXpTabNode] = useState(null);
+
   const onItemClick = useCallback(
     (section) => {
       if (section.id === 'experience') {
@@ -185,36 +187,17 @@ const NavBar = () => {
       } else {
         dispatch(setXpOpen(false));
         dispatch(setMenuOpen(false));
-        setHash(section.id);
+        scrollToSection(section.id);
       }
     },
     [dispatch, xpOpen],
   );
-  const scrollListener = useCallback(() => {
-    clearTimeout(scrollTimeout);
-    clearTimeout(hashTimeout);
-    scrollTimeout = setTimeout(() => {
-      window.location.hash = hash;
-      document.removeEventListener('scroll', scrollListener);
-    }, 100);
-  }, [hash]);
 
   useEffect(() => {
-    setHash(window.location.hash?.split('#')[1] || 'home');
-    return () => document.removeEventListener('scroll', scrollListener);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (!window.location.hash) {
+      window.location.hash = 'home';
+    }
   }, []);
-
-  useEffect(() => {
-    document.addEventListener('scroll', scrollListener);
-    // In case hash should be changed but no scrolling is triggered
-    clearTimeout(hashTimeout);
-    hashTimeout = setTimeout(() => {
-      window.location.hash = hash;
-    }, 100);
-    scrollToSection(hash);
-    return () => document.removeEventListener('scroll', scrollListener);
-  }, [hash, scrollListener]);
 
   return (
     <>
