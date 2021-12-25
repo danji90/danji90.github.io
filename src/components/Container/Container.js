@@ -1,7 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import {
+  Typography,
+  makeStyles,
+  useTheme,
+  useMediaQuery,
+} from '@material-ui/core';
 import { useInView } from 'react-intersection-observer';
 
 const propTypes = {
@@ -55,9 +59,11 @@ const useStyles = makeStyles((theme) => ({
 
 function Container(props) {
   const { children, title, id, styles, className } = props;
+  const theme = useTheme();
+  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
   const classes = useStyles(props);
   const { ref, inView } = useInView({
-    threshold: 0.1,
+    threshold: isTablet ? 0 : 0.1,
     triggerOnce: true,
   });
 

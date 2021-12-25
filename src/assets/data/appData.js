@@ -101,6 +101,89 @@ const initialState = {
   ],
   projects: [
     {
+      id: 'tree-app',
+      name: 'Tree-App',
+      facility: {
+        name: 'geOps - Spatial Web',
+        url: 'https://www.geops.ch/',
+      },
+      description:
+        'Forest management is characterized by long-term decisions that usually only affect the next generations. In times of climate change, it is becoming more and more important to make the right decision for the future of forests. On this subject, geOps has developed an app for tree species recommendations for the Swiss Federal Research Institute for Forests, Snow and Landscape WSL, which is intended to be an aid in making decisions about planting and caring for trees.',
+      images: [
+        {
+          name: 'tree_app-logo.png',
+        },
+        {
+          name: 'tree_app.png',
+          latest: true,
+        },
+      ],
+      tools: [
+        {
+          name: 'ReactJs',
+          webLink: 'https://reactjs.org/',
+        },
+        {
+          name: 'React Semantic-UI',
+          webLink: 'https://react.semantic-ui.com/',
+        },
+        {
+          name: 'OpenLayers',
+          webLink: 'https://openlayers.org/',
+        },
+        {
+          name: 'Redux',
+          webLink: 'https://redux.js.org/',
+        },
+        {
+          name: 'Cypress',
+          webLink: 'https://www.cypress.io/',
+        },
+      ],
+      keyWords: ['WSL, PWA, Forestry, Climate Change'],
+      webLink: 'https://tree-app.ch/',
+      latest: true,
+    },
+    {
+      id: 'trafimage-maps',
+      name: 'Trafimage-Maps',
+      facility: {
+        name: 'geOps - Spatial Web',
+        url: 'https://www.geops.ch/',
+      },
+      description:
+        'The official Geo-Portal for the Swiss Federal Railways (SBB).',
+      images: [
+        {
+          name: 'trafimage-maps.png',
+        },
+      ],
+      tools: [
+        {
+          name: 'ReactJs',
+          webLink: 'https://reactjs.org/',
+        },
+        {
+          name: 'Material-Ui',
+          webLink: 'https://material-ui.com/',
+        },
+        {
+          name: 'OpenLayers',
+          webLink: 'https://openlayers.org/',
+        },
+        {
+          name: 'Redux',
+          webLink: 'https://redux.js.org/',
+        },
+        {
+          name: 'Cypress',
+          webLink: 'https://www.cypress.io/',
+        },
+      ],
+      keyWords: ['SBB, Geoportal, Railway networks, Web Component'],
+      webLink: 'https://maps.trafimage.ch/',
+    },
+    {
       id: 'mapset',
       name: 'Mapset - Editor',
       facility: {
@@ -112,7 +195,6 @@ const initialState = {
       images: [
         {
           name: 'plan_editor2.png',
-          latest: true,
         },
         {
           name: 'plan_editor1.png',
@@ -147,12 +229,15 @@ const initialState = {
           name: 'Cypress',
           webLink: 'https://www.cypress.io/',
         },
+        {
+          name: 'OpenLayers-Editor',
+          webLink: 'https://openlayers-editor.geops.de/',
+        },
       ],
       keyWords: [
-        'Sensors, Internet of Things, Environmental Monitoring, Smart Farming, MQTT, OGC, Interoperability, SensorThings API, SOS, Mozilla IoT, Pika',
+        'Public Transit, OpenLayers-Editor, Rail Replacement Services, Web Map Editor',
       ],
       webLink: 'https://mapset.io',
-      latest: true,
     },
     {
       id: 'mobility-toolbox-js',
@@ -600,6 +685,14 @@ const initialState = {
     {
       name: 'react-github-calendar',
       url: 'https://grubersjoe.github.io/react-github-calendar/',
+    },
+    {
+      name: 'react-intersection-observer',
+      url: 'https://github.com/thebuilder/react-intersection-observer',
+    },
+    {
+      name: 'scroll-to-top',
+      url: 'https://github.com/KoryNunn/scroll-into-view',
     },
   ],
 };
