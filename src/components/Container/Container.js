@@ -30,8 +30,10 @@ const defaultProps = {
 };
 
 const useStyles = makeStyles((theme) => ({
-  containerWrapper: {
+  wrapper: {
     position: 'relative',
+  },
+  content: {
     opacity: 0,
     transform: 'scale(0)',
     transition: 'opacity 0.3s ease-out, transform 0.3s ease-out',
@@ -68,13 +70,9 @@ function Container(props) {
   });
 
   return (
-    <div ref={ref}>
-      <div
-        className={`${classes.containerWrapper} ${
-          inView ? classes.visible : ''
-        }`}
-      >
-        <div className={classes.hashAnchor} id={id} />
+    <div ref={ref} className={classes.wrapper}>
+      <div className={classes.hashAnchor} id={id} />
+      <div className={`${classes.content} ${inView ? classes.visible : ''}`}>
         <div className={`${classes.container} ${className}`} style={styles}>
           <Typography variant="h2">{title}</Typography>
           {children}
