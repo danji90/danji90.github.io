@@ -77,7 +77,9 @@ const renderLatestProject = (projectData, projectsCount, classes) => {
         <a href={projectData.webLink} target="_blank">
           <img
             className={classes.projectImage}
-            src={images(`./${projectData.images[0].name}`)}
+            src={images(
+              `./${projectData.images.find((img) => img.latest).name}`,
+            )}
             alt="not found"
           />
         </a>
