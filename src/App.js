@@ -125,14 +125,14 @@ const theme = createMuiTheme({
     pulse: (otherTransformProps) => {
       return {
         '0%': {
-          transform: `scale(.9) ${otherTransformProps}`,
+          transform: `scale(.9) ${otherTransformProps || ''}`,
         },
         '70%': {
-          transform: `scale(1) ${otherTransformProps}`,
+          transform: `scale(1) ${otherTransformProps || ''}`,
           boxShadow: '0 0 0 50px rgba(99,160,0, 0)',
         },
         '100%': {
-          transform:`scale(.9) ${otherTransformProps}`,
+          transform:`scale(.9) ${otherTransformProps || ''}`,
           boxShadow: '0 0 0 0 rgba(99,160,0, 0)',
         }
       }

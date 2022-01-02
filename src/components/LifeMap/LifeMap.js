@@ -13,7 +13,6 @@ import VectorSource from 'ol/source/Vector';
 import AnimatedCluster from 'ol-ext/layer/AnimatedCluster';
 import Style from 'ol/style/Style';
 import CircleStyle from 'ol/style/Circle';
-import Stroke from 'ol/style/Stroke';
 import Fill from 'ol/style/Fill';
 import Icon from 'ol/style/Icon';
 import Text from 'ol/style/Text';
@@ -140,26 +139,29 @@ const getStyle = (feature, resolution) => {
     const color =
       // eslint-disable-next-line no-nested-ternary
       size > 25 ? '248, 128, 0' : size > 8 ? '248, 192, 0' : '128, 192, 64';
-    const radius = Math.max(10, Math.min(size * 0.75, 20));
+    const radius = 50
     if (size > 1) {
       style = [
         new Style({
           image: new CircleStyle({
-            radius: radius + 2,
-            stroke: new Stroke({
+            scale: 1 / 4,
+            radius: radius + 15,
+            fill: new Fill({
               color: `rgba(${color},0.3)`,
-              width: 4,
             }),
           }),
         }),
         new Style({
           image: new CircleStyle({
+            scale: 1 / 4,
             radius,
             fill: new Fill({
               color: `rgba(${color},0.6)`,
             }),
           }),
           text: new Text({
+            font: '50px sans-serif',
+            scale: 1 / 4,
             text: size.toString(),
             offsetY: 1,
             fill: new Fill({
