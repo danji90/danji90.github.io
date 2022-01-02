@@ -42,15 +42,22 @@ import topo from './topo.png';
 const styles = (theme) => {
   return {
     lifemap: {
+      height: '100vh',
       [theme.breakpoints.down('xs')]: {
         '& h2': {
           marginLeft: 30,
         },
       },
     },
+    contentWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+      height: '100%',
+    },
     mapContainer: {
       position: 'relative',
-      height: 800,
+      flexBasis: '10vh',
+      flexGrow: 8,
       overflowX: 'hidden',
       [theme.breakpoints.down('xs')]: {
         height: '90vh',
@@ -83,6 +90,8 @@ const styles = (theme) => {
       padding: 10,
     },
     timeSlider: {
+      flexBasis: '10vh',
+      flexGrow: 1,
       padding: '10px 0',
       [theme.breakpoints.down('xs')]: {
         '& h3': {
@@ -131,7 +140,7 @@ const getStyle = (feature, resolution) => {
     const color =
       // eslint-disable-next-line no-nested-ternary
       size > 25 ? '248, 128, 0' : size > 8 ? '248, 192, 0' : '128, 192, 64';
-    const radius = Math.max(8, Math.min(size * 0.75, 20));
+    const radius = Math.max(10, Math.min(size * 0.75, 20));
     if (size > 1) {
       style = [
         new Style({
@@ -152,6 +161,7 @@ const getStyle = (feature, resolution) => {
           }),
           text: new Text({
             text: size.toString(),
+            offsetY: 1,
             fill: new Fill({
               color: '#000',
             }),
@@ -305,91 +315,93 @@ class LifeMap extends Component {
         id={section.id}
         fullWidthOnMobile
       >
-        <div className={classes.mapContainer}>
-          <LayerMenu baseLayers={baseLayers} />
-          <FullExtent
-            featureSource={clusterSource}
-            onClick={() => this.setState({ selectedFeature: null })}
-          />
-          <BasicMap
-            className={`rs-map ${classes.map}`}
-            zoom={2}
-            viewOptions={{
-              minZoom: 2,
-            }}
-            layers={baseLayers}
-            map={map}
-            onFeaturesClick={this.onFeatureClick}
-            onFeaturesHover={(features) => {
-              if (features.length) {
-                document.body.style.cursor = 'pointer';
-              } else {
-                document.body.style.cursor = 'auto';
-              }
-            }}
-          />
-          {selectedFeature && (
-            <Popup
+        <div className={classes.contentWrapper}>
+          <div className={classes.mapContainer}>
+            <LayerMenu baseLayers={baseLayers} />
+            <FullExtent
+              featureSource={clusterSource}
+              onClick={() => this.setState({ selectedFeature: null })}
+            />
+            <BasicMap
+              className={`rs-map ${classes.map}`}
+              zoom={2}
+              viewOptions={{
+                minZoom: 2,
+              }}
+              layers={baseLayers}
               map={map}
-              header={selectedFeature.get('city')}
-              feature={selectedFeature}
-              onCloseClick={() => this.setState({ selectedFeature: undefined })}
-              panIntoView
-            >
-              <div className={classes.popup}>
-                {selectedFeature.get('title') && (
-                  <>
-                    <Typography variant="body1">
-                      {selectedFeature.get('title')}
-                    </Typography>
-                    <br />
-                  </>
-                )}
-                {selectedFeature.get('link') &&
-                  selectedFeature.get('facility') && (
+              onFeaturesClick={this.onFeatureClick}
+              onFeaturesHover={(features) => {
+                if (features.length) {
+                  document.body.style.cursor = 'pointer';
+                } else {
+                  document.body.style.cursor = 'auto';
+                }
+              }}
+            />
+            {selectedFeature && (
+              <Popup
+                map={map}
+                header={selectedFeature.get('city')}
+                feature={selectedFeature}
+                onCloseClick={() => this.setState({ selectedFeature: undefined })}
+                panIntoView
+              >
+                <div className={classes.popup}>
+                  {selectedFeature.get('title') && (
                     <>
-                      <Link
-                        href={`${selectedFeature.get('link')}`}
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
-                        {selectedFeature.get('facility')}
-                      </Link>
-                      <br />
+                      <Typography variant="body1">
+                        {selectedFeature.get('title')}
+                      </Typography>
                       <br />
                     </>
                   )}
-                <Typography variant="body2">
-                  {selectedFeature.get('description')}
-                </Typography>
-              </div>
-            </Popup>
-          )}
-          <Copyright map={map} />
-          <div className={classes.baselayerSwitcherWrapper}>
-            <Hidden smDown>
-              <BaseLayerSwitcher
-                map={map}
-                layers={baseLayers}
-                layerImages={layerImages}
-              />
-            </Hidden>
+                  {selectedFeature.get('link') &&
+                    selectedFeature.get('facility') && (
+                      <>
+                        <Link
+                          href={`${selectedFeature.get('link')}`}
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          {selectedFeature.get('facility')}
+                        </Link>
+                        <br />
+                        <br />
+                      </>
+                    )}
+                  <Typography variant="body2">
+                    {selectedFeature.get('description')}
+                  </Typography>
+                </div>
+              </Popup>
+            )}
+            <Copyright map={map} />
+            <div className={classes.baselayerSwitcherWrapper}>
+              <Hidden smDown>
+                <BaseLayerSwitcher
+                  map={map}
+                  layers={baseLayers}
+                  layerImages={layerImages}
+                />
+              </Hidden>
+            </div>
           </div>
-        </div>
-        <div className={classes.timeSlider}>
-          <Typography variant="h3" align="center">
-            {`${format(timeSpan[0], 'dd.MM.yyyy')} - ${format(
-              timeSpan[1],
-              'dd.MM.yyyy',
-            )}`}
-          </Typography>
-          <div className={classes.sliderWrapper}>
-            <Slider
-              min={initialTimeSpan[0]}
-              max={initialTimeSpan[1]}
-              onChange={(evt, value) => this.setState({ timeSpan: value })}
-              value={timeSpan}
-            />
+          <div className={classes.timeSlider}>
+            <Typography variant="h3" align="center">
+              {`${format(timeSpan[0], 'dd.MM.yyyy')} - ${format(
+                timeSpan[1],
+                'dd.MM.yyyy',
+              )}`}
+            </Typography>
+            <div className={classes.sliderWrapper}>
+              <Slider
+                min={initialTimeSpan[0]}
+                max={initialTimeSpan[1]}
+                onChange={(evt, value) => this.setState({ timeSpan: value })}
+                value={timeSpan}
+              />
+            </div>
           </div>
         </div>
       </Container>

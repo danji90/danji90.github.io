@@ -9386,10 +9386,10 @@ obuf@^1.0.0, obuf@^1.1.2:
   resolved "https://registry.yarnpkg.com/obuf/-/obuf-1.1.2.tgz#09bea3343d41859ebd446292d11c9d4db619084e"
   integrity sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==
 
-ol-ext@^3.1.6:
-  version "3.2.3"
-  resolved "https://registry.yarnpkg.com/ol-ext/-/ol-ext-3.2.3.tgz#6a396b5cfb48cd0b9ecebd12463898fdfa7f788f"
-  integrity sha512-VkEaKX8jtcnNJBUGYXm2tbXzFxWsdLtCIQv7iNhef7ggSoeidnQtf/dXd3Thr2hU4I2nFS0G3QKqNjbzpmgTyg==
+ol-ext@^3.2.19:
+  version "3.2.19"
+  resolved "https://registry.yarnpkg.com/ol-ext/-/ol-ext-3.2.19.tgz#7bf2d2f20b1cf04f6ffb87c45bbe0f096b1268ed"
+  integrity sha512-nxn6quiW4JfonluUm4yjQbS16ehcF0S0QXRnHlG4roVelnFS5h1nCCNV7bV/sKchJU9EtswE+HvIifeUktu3vg==
 
 ol-mapbox-style@^6.1.1:
   version "6.4.1"
