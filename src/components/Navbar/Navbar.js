@@ -172,18 +172,19 @@ ExperienceMenu.defaultProps = {
   anchor: null,
 };
 
-const scrollToSection = (sectionId, callback) => {
+const scrollToSection = (sectionId, callback ) => {
   const targetElement = document.getElementById(sectionId);
+  // eslint-disable-next-line no-return-assign
+  const callbackFunc = typeof callback === 'function' ? callback : () => window.location.hash = sectionId;
   scrollIntoView(
     targetElement,
     {
       time: 1000,
-      align: {
+      align: sectionId !== 'home' ? {
         top: 0,
-      },
+      } : undefined,
     },
-    // eslint-disable-next-line no-return-assign
-    () => (window.location.hash = sectionId),
+    callbackFunc,
   );
 };
 

@@ -19,10 +19,10 @@ import BackgroundMap from '../BackgroundMap/BackgroundMap';
 const useStyles = makeStyles((theme) => ({
   '@keyframes fadeInHome': theme.animations.fadeIn(),
   homeWrapper: {
+    position: 'relative',
     animation: '$fadeInHome 1000ms ease',
   },
   homeContainer: {
-    position: 'relative',
     display: 'flex',
     alignItems: 'center',
     marginTop: 40,
@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
   },
   exploreBtn: {
     position: 'absolute',
-    bottom: 50,
+    bottom: 70,
     left: '50%',
     animation: '$pulseExplore 2s infinite',
     boxShadow: '0 0 0 0 rgba(99, 160, 0, .5)',
@@ -107,7 +107,7 @@ function Home() {
       <div className={classes.hashAnchor} id={section.id} />
       <BackgroundMap />
       <div className={classes.homeContainer}>
-        <Portrait />
+        <Portrait size={isXsDown ? 200 : 300} />
         <div className={classes.generalContainer}>
           <Typography variant="h1">Daniel Marsh-Hunn</Typography>
           <Typography variant="h2">
