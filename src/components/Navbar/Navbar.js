@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { IoMdArrowDropdown, IoMdArrowDropup } from 'react-icons/io';
+import { FiPlus, FiMinus } from 'react-icons/fi';
 import {
   AppBar,
   Tabs,
@@ -102,8 +103,26 @@ const useStyles = makeStyles((theme) => ({
     padding: '20px 0',
   },
   portraitWrapper: {
-    margin: 'auto',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '20px 0'
   },
+  experienceButton: {
+    width: '100%',
+    height: 72,
+    fontSize: 18,
+    backgroundColor: 'white',
+    color: '#565656',
+    position: 'relative'
+  },
+  expandIcon: {
+    position: 'absolute',
+    top: '50%',
+    transform: 'translateY(-40%)',
+    right: 5,
+    padding: 20,
+  }
 }));
 
 const ExperienceMenu = ({ tabs, onItemClick, anchor }) => {
@@ -172,7 +191,8 @@ const NavBar = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const theme = useTheme();
-  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
+  const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
+  const isXsDown = useMediaQuery(theme.breakpoints.down('xs'));
   const [value, setValue] = useState('home');
   const sections = useSelector((state) => state.sections);
   const xpOpen = useSelector((state) => state.xpOpen);
@@ -246,13 +266,13 @@ const NavBar = () => {
                     className={classes.tab}
                     onMouseEnter={(evt) => {
                       setValue(sect.id);
-                      if (!isTablet) {
+                      if (!isMdDown) {
                         if (sect.id !== 'experience') return;
                         dispatch(setXpOpen(true));
                       }
                     }}
                     onMouseLeave={(evt) => {
-                      if (!isTablet) {
+                      if (!isMdDown) {
                         const movingTo = evt.relatedTarget?.tagName;
                         if (movingTo === 'SPAN' || movingTo === 'UL') return;
                         dispatch(setXpOpen(false));
@@ -297,7 +317,7 @@ const NavBar = () => {
           anchor="right"
         >
           <div className={classes.portraitWrapper}>
-            <Portrait size={150} />
+            <Portrait size={isXsDown ? 100 : 150} />
           </div>
           <List className={classes.list}>
             {sections
@@ -323,17 +343,11 @@ const NavBar = () => {
                         <Button
                           key={sect.id}
                           title={sect.name}
-                          style={{
-                            width: '100%',
-                            height: 72,
-                            fontSize: 18,
-                            backgroundColor: 'white',
-                            color: '#565656',
-                          }}
+                          className={classes.experienceButton}
                           onClick={() => onItemClick(sect)}
                         >
                           {sect.name}
-                          {xpOpen ? <IoMdArrowDropup /> : <IoMdArrowDropdown />}
+                          <div className={classes.expandIcon}>{xpOpen ? <FiMinus size={25} /> : <FiPlus size={25} />}</div>
                         </Button>
                         <DropDown
                           items={sections.filter(

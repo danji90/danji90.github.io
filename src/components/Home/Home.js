@@ -1,8 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-// import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import { Typography, IconButton } from '@material-ui/core';
+import { Typography, IconButton, useTheme, useMediaQuery } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   FaLinkedinIn,
@@ -10,33 +9,36 @@ import {
   FaFilePdf,
   FaPaperPlane,
 } from 'react-icons/fa';
+import { IoIosArrowDown } from 'react-icons/io';
+import scrollIntoView from 'scroll-into-view';
 import Portrait from '../Portrait/Portrait';
 import cvPdf from '../../assets/documents/MarshHunnDaniel_EuroCV.pdf';
 import BackgroundMap from '../BackgroundMap/BackgroundMap';
 
-const HOME_HEIGHT = 400;
+
 const useStyles = makeStyles((theme) => ({
   '@keyframes fadeInHome': theme.animations.fadeIn(),
   homeWrapper: {
-    position: 'relative',
     animation: '$fadeInHome 1000ms ease',
   },
   homeContainer: {
+    position: 'relative',
     display: 'flex',
     alignItems: 'center',
     marginTop: 40,
-    minHeight: HOME_HEIGHT,
+    height: 'calc(100vh - 70px)',
     padding: '20px 150px 20px',
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
     boxShadow:
       'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px',
-    [theme.breakpoints.down('xs')]: {
-      padding: 20,
-    },
     [theme.breakpoints.down('sm')]: {
       justifyContent: 'center',
       marginTop: 50,
       flexDirection: 'column',
+      padding: 20,
+    },
+    [theme.breakpoints.down('xs')]: {
+      justifyContent: 'flex-start',
       padding: 20,
     },
   },
@@ -70,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('md')]: {
       position: 'absolute',
       right: 'calc(50% - 350px)',
-      top: 268,
+      top: '53%',
     },
     [theme.breakpoints.up('lg')]: {
       position: 'absolute',
@@ -78,14 +80,24 @@ const useStyles = makeStyles((theme) => ({
       top: 'unset',
     },
   },
+  exploreBtn: {
+    position: 'absolute',
+    bottom: 50,
+    left: '50%',
+    animation: '$pulseExplore 2s infinite',
+    boxShadow: '0 0 0 0 rgba(99, 160, 0, .5)',
+  },
   hashAnchor: {
     position: 'absolute',
     top: -70,
   },
+  '@keyframes pulseExplore': theme.animations.pulse('translateX(-50%)'),
 }));
 
 function Home() {
   const classes = useStyles();
+  const theme = useTheme();
+  const isXsDown = useMediaQuery(theme.breakpoints.down('xs'));
   const section = useSelector((state) => state.sections).find(
     (sect) => sect.id === 'home',
   );
@@ -128,16 +140,42 @@ function Home() {
             >
               <FaFilePdf size={25} />
             </IconButton>
+            {isXsDown && (
+              <IconButton
+                title="Write e-mail"
+                href="mailto:danji_ma90@hotmail.com"
+                className={classes.iconBtn}
+              >
+                <FaPaperPlane size={25} />
+              </IconButton>
+            )}
           </div>
         </div>
-        <Button
-          title="Write e-mail"
-          href="mailto:danji_ma90@hotmail.com"
-          className={classes.contactBtn}
+        {!isXsDown && (
+          <Button
+            title="Write e-mail"
+            href="mailto:danji_ma90@hotmail.com"
+            className={classes.contactBtn}
+          >
+            <FaPaperPlane size={18} style={{ marginRight: 10 }} />
+            <strong>Contact me</strong>
+          </Button>
+        )}
+        <IconButton
+          title="Explore"
+          onClick={() =>  scrollIntoView(
+            document.getElementById('about'),
+            {
+              time: 1000,
+              align: {
+                top: 0,
+              },
+            }
+          )}
+          className={`${classes.exploreBtn} ${classes.iconBtn}`}
         >
-          <FaPaperPlane size={18} style={{ marginRight: 10 }} />
-          <strong>Contact me</strong>
-        </Button>
+          <IoIosArrowDown size={50} />
+        </IconButton>
       </div>
     </div>
   );
