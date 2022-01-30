@@ -1,3 +1,4 @@
+/* eslint-disable no-return-assign */
 import React, { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
@@ -62,6 +63,7 @@ const useStyles = makeStyles((theme) => ({
   },
   list: {
     width: '80vw',
+    maxWidth: 400,
     padding: 0,
     '& .active': {
       fontWeight: 'bold',
@@ -106,7 +108,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '20px 0'
+    padding: '20px 0',
   },
   experienceButton: {
     width: '100%',
@@ -114,7 +116,11 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 18,
     backgroundColor: 'white',
     color: '#565656',
-    position: 'relative'
+    position: 'relative',
+    '&:hover': {
+      backgroundColor: 'rgba(0, 0, 0, 0.04)',
+      borderRadius: 0,
+    },
   },
   expandIcon: {
     position: 'absolute',
@@ -122,7 +128,7 @@ const useStyles = makeStyles((theme) => ({
     transform: 'translateY(-40%)',
     right: 5,
     padding: 20,
-  }
+  },
 }));
 
 const ExperienceMenu = ({ tabs, onItemClick, anchor }) => {
@@ -172,17 +178,22 @@ ExperienceMenu.defaultProps = {
   anchor: null,
 };
 
-const scrollToSection = (sectionId, callback ) => {
+const scrollToSection = (sectionId, callback) => {
   const targetElement = document.getElementById(sectionId);
-  // eslint-disable-next-line no-return-assign
-  const callbackFunc = typeof callback === 'function' ? callback : () => window.location.hash = sectionId;
+  const callbackFunc =
+    typeof callback === 'function'
+      ? callback
+      : () => (window.location.hash = sectionId);
   scrollIntoView(
     targetElement,
     {
       time: 1000,
-      align: sectionId !== 'home' ? {
-        top: 0,
-      } : undefined,
+      align:
+        sectionId !== 'home'
+          ? {
+              top: 0,
+            }
+          : undefined,
     },
     callbackFunc,
   );
@@ -348,7 +359,13 @@ const NavBar = () => {
                           onClick={() => onItemClick(sect)}
                         >
                           {sect.name}
-                          <div className={classes.expandIcon}>{xpOpen ? <FiMinus size={25} /> : <FiPlus size={25} />}</div>
+                          <div className={classes.expandIcon}>
+                            {xpOpen ? (
+                              <FiMinus size={25} />
+                            ) : (
+                              <FiPlus size={25} />
+                            )}
+                          </div>
                         </Button>
                         <DropDown
                           items={sections.filter(

@@ -57,7 +57,7 @@ const styles = (theme) => {
       position: 'relative',
       flexBasis: '10vh',
       flexGrow: 8,
-      overflowX: 'hidden',
+      overflow: 'hidden',
       [theme.breakpoints.down('xs')]: {
         height: '90vh',
       },
@@ -68,10 +68,13 @@ const styles = (theme) => {
         fontSize: 14,
         '& a': theme.styles.link,
       },
+      '& .rs-popup-body': {
+        padding: '10px 10px 0 !important',
+      },
     },
     map: {
       position: 'absolute',
-      top: 10,
+      top: 0,
       bottom: 0,
       right: 0,
       left: 0,
@@ -87,6 +90,17 @@ const styles = (theme) => {
       overflowY: 'auto',
       margin: '-10px -10px 0 -10px',
       padding: 10,
+      scrollbarWidth: 'thin',
+      scrollbarColor: 'rgba(40, 44, 52, 0.5) #f5f5f5',
+      '&::-webkit-scrollbar': {
+        width: '0.4em',
+      },
+      '&::-webkit-scrollbar-track': {
+        backgroundColor: '#f5f5f5',
+      },
+      '&::-webkit-scrollbar-thumb': {
+        backgroundColor: 'rgba(40, 44, 52, 0.5)',
+      },
     },
     timeSlider: {
       flexBasis: '10vh',
@@ -139,7 +153,7 @@ const getStyle = (feature, resolution) => {
     const color =
       // eslint-disable-next-line no-nested-ternary
       size > 25 ? '248, 128, 0' : size > 8 ? '248, 192, 0' : '128, 192, 64';
-    const radius = 50
+    const radius = 50;
     if (size > 1) {
       style = [
         new Style({
@@ -346,7 +360,8 @@ class LifeMap extends Component {
                 map={map}
                 header={selectedFeature.get('city')}
                 feature={selectedFeature}
-                onCloseClick={() => this.setState({ selectedFeature: undefined })}
+                onCloseClick={() =>
+                  this.setState({ selectedFeature: undefined })}
                 panIntoView
               >
                 <div className={classes.popup}>
