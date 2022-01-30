@@ -57,7 +57,7 @@ const styles = (theme) => {
       position: 'relative',
       flexBasis: '10vh',
       flexGrow: 8,
-      overflowX: 'hidden',
+      overflow: 'hidden',
       [theme.breakpoints.down('xs')]: {
         height: '90vh',
       },
@@ -71,7 +71,7 @@ const styles = (theme) => {
     },
     map: {
       position: 'absolute',
-      top: 10,
+      top: 0,
       bottom: 0,
       right: 0,
       left: 0,
