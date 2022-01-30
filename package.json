@@ -6,6 +6,7 @@
   "dependencies": {
     "@babel/core": "^7.9.0",
     "@babel/plugin-proposal-object-rest-spread": "^7.9.5",
+    "@babel/helper-explode-assignable-expression": "^7.16.7",
     "@babel/preset-react": "^7.9.4",
     "@material-ui/core": "4.11.0",
     "@material-ui/icons": "^4.11.2",
