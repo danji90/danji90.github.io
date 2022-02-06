@@ -1,20 +1,20 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import Button from '@material-ui/core/Button';
-import { Typography, IconButton, useTheme, useMediaQuery } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import {
-  FaLinkedinIn,
-  FaGithubAlt,
-  FaFilePdf,
-} from 'react-icons/fa';
+  Typography,
+  IconButton,
+  useTheme,
+  useMediaQuery,
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { FaLinkedinIn, FaGithubAlt, FaFilePdf } from 'react-icons/fa';
 import { IoIosArrowDown } from 'react-icons/io';
 import { MdEmail } from 'react-icons/md';
 import scrollIntoView from 'scroll-into-view';
 import Portrait from '../Portrait/Portrait';
 import cvPdf from '../../assets/documents/MarshHunnDaniel_EuroCV.pdf';
 import BackgroundMap from '../BackgroundMap/BackgroundMap';
-
 
 const useStyles = makeStyles((theme) => ({
   '@keyframes fadeInHome': theme.animations.fadeIn(),
@@ -120,7 +120,7 @@ function Home() {
   );
 
   return (
-    <div className={classes.homeWrapper}>
+    <div className={classes.homeWrapper} id={`${section.id}-container`}>
       <div className={classes.hashAnchor} id={section.id} />
       <BackgroundMap />
       <div className={classes.outerContainer}>
@@ -183,15 +183,13 @@ function Home() {
         <div className={classes.exploreWrapper}>
           <IconButton
             title="Explore"
-            onClick={() =>  scrollIntoView(
-              document.getElementById('about'),
-              {
+            onClick={() =>
+              scrollIntoView(document.getElementById('about'), {
                 time: 1000,
                 align: {
                   top: 0,
                 },
-              }
-            )}
+              })}
             className={classes.exploreBtn}
           >
             <IoIosArrowDown size={50} color={theme.palette.primary.main} />

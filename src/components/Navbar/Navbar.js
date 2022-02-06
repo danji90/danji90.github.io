@@ -18,7 +18,9 @@ import {
   MenuList,
   MenuItem,
   useTheme,
+  Slide,
   useMediaQuery,
+  useScrollTrigger,
 } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import { Menu as MenuBtn, Close } from '@material-ui/icons';
@@ -30,6 +32,11 @@ import Portrait from '../Portrait/Portrait';
 import DropDown from '../DropDown/DropDown';
 
 const useStyles = makeStyles((theme) => ({
+  navWrapper: {
+    position: 'sticky',
+    top: 0,
+    zIndex: 999,
+  },
   appBar: {
     backgroundColor: '#282c34',
     height: 70,
@@ -130,6 +137,45 @@ const useStyles = makeStyles((theme) => ({
     padding: 20,
   },
 }));
+
+const HideOnScroll = (props) => {
+  const { children } = props;
+  const [homeVisible, setHomeVisible] = useState(false);
+  const theme = useTheme();
+  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
+  const trigger = useScrollTrigger({
+    target: window,
+  });
+  const homeContainer = document.getElementById('home-container');
+  const observer = new IntersectionObserver(
+    (entries) => {
+      if (entries[0]) {
+        setHomeVisible(entries[0].isIntersecting);
+      }
+    },
+    {
+      rootMargin: '70px',
+    },
+  );
+
+  useEffect(() => {
+    if (homeContainer) {
+      observer.observe(homeContainer);
+    }
+  }, [homeContainer, observer]);
+
+  return homeVisible || !isTablet ? (
+    <>{children}</>
+  ) : (
+    <Slide appear={false} direction="down" in={!trigger}>
+      {children}
+    </Slide>
+  );
+};
+
+HideOnScroll.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 const ExperienceMenu = ({ tabs, onItemClick, anchor }) => {
   const classes = useStyles();
@@ -232,156 +278,163 @@ const NavBar = () => {
   }, []);
 
   return (
-    <>
-      <AppBar className={classes.appBar} color="transparent">
-        <Hidden mdUp>
-          {!menuOpen && (
-            <IconButton
-              onClick={() => dispatch(setMenuOpen(!menuOpen))}
-              className={classes.openMenuBtn}
+    <HideOnScroll>
+      <div className={classes.navWrapper}>
+        <AppBar
+          className={classes.appBar}
+          color="transparent"
+          position="static"
+        >
+          <Hidden mdUp>
+            {!menuOpen && (
+              <IconButton
+                onClick={() => dispatch(setMenuOpen(!menuOpen))}
+                className={classes.openMenuBtn}
+              >
+                <MenuBtn />
+              </IconButton>
+            )}
+          </Hidden>
+          <Hidden smDown>
+            <Tabs
+              TabIndicatorProps={{ style: { backgroundColor: '#63a000' } }}
+              className={classes.tabs}
+              classes={{ fixed: classes.tabsFixed }}
+              value={value}
+              onChange={(event, newValue) => {
+                setValue(newValue);
+              }}
+              variant="fullWidth"
             >
-              <MenuBtn />
+              {sections
+                .filter((sect) => sect.tab)
+                .map((sect) => {
+                  return (
+                    <Tab
+                      ref={(elt) =>
+                        sect.id === 'experience' && setXpTabNode(elt)}
+                      key={sect.id}
+                      onClick={(evt) => onItemClick(sect)}
+                      value={sect.id}
+                      label={(
+                        <span className={classes.tabLabel}>
+                          {sect.name}
+                          {sect.id === 'experience' &&
+                            (xpOpen ? (
+                              <IoMdArrowDropup style={{ padding: 5 }} />
+                            ) : (
+                              <IoMdArrowDropdown style={{ padding: 5 }} />
+                            ))}
+                        </span>
+                      )}
+                      className={classes.tab}
+                      onMouseEnter={(evt) => {
+                        setValue(sect.id);
+                        if (!isMdDown) {
+                          if (sect.id !== 'experience') return;
+                          dispatch(setXpOpen(true));
+                        }
+                      }}
+                      onMouseLeave={(evt) => {
+                        if (!isMdDown) {
+                          const movingTo = evt.relatedTarget?.tagName;
+                          if (movingTo === 'SPAN' || movingTo === 'UL') return;
+                          dispatch(setXpOpen(false));
+                        }
+                      }}
+                      aria-owns={xpOpen ? 'menu-list-grow' : undefined}
+                      aria-haspopup="true"
+                    />
+                  );
+                })}
+            </Tabs>
+            <ExperienceMenu
+              tabs={sections.filter(
+                (item) => item.nav === 'experience' && item.id !== 'experience',
+              )}
+              onItemClick={onItemClick}
+              open={xpOpen}
+              anchor={xpTabNode}
+            />
+          </Hidden>
+        </AppBar>
+
+        <Hidden mdUp>
+          {menuOpen && (
+            <IconButton
+              className={classes.closeMenuBtn}
+              onClick={() => {
+                dispatch(setXpOpen(false));
+                dispatch(setMenuOpen(false));
+              }}
+            >
+              <Close />
             </IconButton>
           )}
-        </Hidden>
-        <Hidden smDown>
-          <Tabs
-            TabIndicatorProps={{ style: { backgroundColor: '#63a000' } }}
-            className={classes.tabs}
-            classes={{ fixed: classes.tabsFixed }}
-            value={value}
-            onChange={(event, newValue) => {
-              setValue(newValue);
-            }}
-            variant="fullWidth"
-          >
-            {sections
-              .filter((sect) => sect.tab)
-              .map((sect) => {
-                return (
-                  <Tab
-                    ref={(elt) => sect.id === 'experience' && setXpTabNode(elt)}
-                    key={sect.id}
-                    onClick={(evt) => onItemClick(sect)}
-                    value={sect.id}
-                    label={(
-                      <span className={classes.tabLabel}>
-                        {sect.name}
-                        {sect.id === 'experience' &&
-                          (xpOpen ? (
-                            <IoMdArrowDropup style={{ padding: 5 }} />
-                          ) : (
-                            <IoMdArrowDropdown style={{ padding: 5 }} />
-                          ))}
-                      </span>
-                    )}
-                    className={classes.tab}
-                    onMouseEnter={(evt) => {
-                      setValue(sect.id);
-                      if (!isMdDown) {
-                        if (sect.id !== 'experience') return;
-                        dispatch(setXpOpen(true));
-                      }
-                    }}
-                    onMouseLeave={(evt) => {
-                      if (!isMdDown) {
-                        const movingTo = evt.relatedTarget?.tagName;
-                        if (movingTo === 'SPAN' || movingTo === 'UL') return;
-                        dispatch(setXpOpen(false));
-                      }
-                    }}
-                    aria-owns={xpOpen ? 'menu-list-grow' : undefined}
-                    aria-haspopup="true"
-                  />
-                );
-              })}
-          </Tabs>
-          <ExperienceMenu
-            tabs={sections.filter(
-              (item) => item.nav === 'experience' && item.id !== 'experience',
-            )}
-            onItemClick={onItemClick}
-            open={xpOpen}
-            anchor={xpTabNode}
-          />
-        </Hidden>
-      </AppBar>
-
-      <Hidden mdUp>
-        {menuOpen && (
-          <IconButton
-            className={classes.closeMenuBtn}
-            onClick={() => {
+          <SwipeableDrawer
+            open={menuOpen}
+            onClose={() => {
               dispatch(setXpOpen(false));
               dispatch(setMenuOpen(false));
             }}
+            onOpen={() => dispatch(setMenuOpen(true))}
+            anchor="right"
           >
-            <Close />
-          </IconButton>
-        )}
-        <SwipeableDrawer
-          open={menuOpen}
-          onClose={() => {
-            dispatch(setXpOpen(false));
-            dispatch(setMenuOpen(false));
-          }}
-          onOpen={() => dispatch(setMenuOpen(true))}
-          anchor="right"
-        >
-          <div className={classes.portraitWrapper}>
-            <Portrait size={isXsDown ? 100 : 150} />
-          </div>
-          <List className={classes.list}>
-            {sections
-              .filter((sect) => sect.tab)
-              .map((sect, idx, arr) => {
-                return (
-                  <ListItem
-                    key={sect.id}
-                    href={`#${sect.id}`}
-                    value={sect.id}
-                    title={sect.name}
-                    active={(value === sect.id).toString()}
-                    button={sect.id !== 'experience'}
-                    divider={idx + 1 !== arr.length}
-                    onClick={() => onItemClick(sect)}
-                    style={{ padding: sect.id !== 'experience' ? 25 : 0 }}
-                    className={classes.listItem}
-                  >
-                    {sect.id !== 'experience' ? (
-                      sect.name
-                    ) : (
-                      <div key={sect.id} className={classes.dropdownListItem}>
-                        <Button
-                          key={sect.id}
-                          title={sect.name}
-                          className={classes.experienceButton}
-                          onClick={() => onItemClick(sect)}
-                        >
-                          {sect.name}
-                          <div className={classes.expandIcon}>
-                            {xpOpen ? (
-                              <FiMinus size={25} />
-                            ) : (
-                              <FiPlus size={25} />
+            <div className={classes.portraitWrapper}>
+              <Portrait size={isXsDown ? 100 : 150} />
+            </div>
+            <List className={classes.list}>
+              {sections
+                .filter((sect) => sect.tab)
+                .map((sect, idx, arr) => {
+                  return (
+                    <ListItem
+                      key={sect.id}
+                      href={`#${sect.id}`}
+                      value={sect.id}
+                      title={sect.name}
+                      active={(value === sect.id).toString()}
+                      button={sect.id !== 'experience'}
+                      divider={idx + 1 !== arr.length}
+                      onClick={() => onItemClick(sect)}
+                      style={{ padding: sect.id !== 'experience' ? 25 : 0 }}
+                      className={classes.listItem}
+                    >
+                      {sect.id !== 'experience' ? (
+                        sect.name
+                      ) : (
+                        <div key={sect.id} className={classes.dropdownListItem}>
+                          <Button
+                            key={sect.id}
+                            title={sect.name}
+                            className={classes.experienceButton}
+                            onClick={() => onItemClick(sect)}
+                          >
+                            {sect.name}
+                            <div className={classes.expandIcon}>
+                              {xpOpen ? (
+                                <FiMinus size={25} />
+                              ) : (
+                                <FiPlus size={25} />
+                              )}
+                            </div>
+                          </Button>
+                          <DropDown
+                            items={sections.filter(
+                              (sec) => sec.nav === 'experience' && !sec.tab,
                             )}
-                          </div>
-                        </Button>
-                        <DropDown
-                          items={sections.filter(
-                            (sec) => sec.nav === 'experience' && !sec.tab,
-                          )}
-                          onItemClick={onItemClick}
-                        />
-                      </div>
-                    )}
-                  </ListItem>
-                );
-              })}
-          </List>
-        </SwipeableDrawer>
-      </Hidden>
-    </>
+                            onItemClick={onItemClick}
+                          />
+                        </div>
+                      )}
+                    </ListItem>
+                  );
+                })}
+            </List>
+          </SwipeableDrawer>
+        </Hidden>
+      </div>
+    </HideOnScroll>
   );
 };
 
