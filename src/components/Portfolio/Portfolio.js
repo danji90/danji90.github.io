@@ -19,6 +19,9 @@ import Credits from '../Credits/Credits';
 
 const useStyles = makeStyles((theme) => {
   return {
+    appWrapper: {
+      position: 'relative',
+    },
     app: {
       backgroundColor: '#e7e5da',
       display: 'flex',
@@ -68,11 +71,12 @@ const useStyles = makeStyles((theme) => {
 const Portfolio = () => {
   const classes = useStyles();
   const { sections } = useSelector((state) => state);
+
   return (
     <>
-      <Navbar />
-      <div>
-        <Home section={sections.find((section) => section.id === 'home')} />
+      <Home section={sections.find((section) => section.id === 'home')} />
+      <div className={classes.appWrapper}>
+        <Navbar />
         <div className={classes.app}>
           <div className={classes.appContent}>
             <div className={classes.columns}>
