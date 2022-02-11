@@ -82,14 +82,10 @@ const useStyles = makeStyles((theme) => ({
   },
   closeMenuBtn: {
     position: 'fixed',
-    left: 10,
+    left: 6,
     top: 10,
     color: 'white',
     zIndex: 1400,
-    [theme.breakpoints.up('sm')]: {
-      position: 'fixed',
-      left: 10,
-    },
   },
   openMenuBtn: {
     padding: 20,
