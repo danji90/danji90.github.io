@@ -5,13 +5,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
 const useStyles = makeStyles(() => ({
-  list: {
-    padding: 0,
-  },
-  listItem: {
+  dropdownListItem: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    height: 40,
   },
 }));
 
@@ -36,7 +34,7 @@ function DropDown({ items, onItemClick }) {
 
   return (
     <Collapse in={xpOpen} timeout="auto" unmountOnExit>
-      <List className={classes.list}>
+      <List>
         {items.map((item) => {
           return (
             <ListItem
@@ -49,7 +47,7 @@ function DropDown({ items, onItemClick }) {
                 evt.stopPropagation();
                 return onItemClick(item);
               }}
-              className={classes.listItem}
+              className={classes.dropdownListItem}
             >
               {item.name}
             </ListItem>
