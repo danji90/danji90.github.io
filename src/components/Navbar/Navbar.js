@@ -17,8 +17,8 @@ import {
   Paper,
   MenuList,
   MenuItem,
-  useTheme,
   Slide,
+  useTheme,
   useMediaQuery,
   useScrollTrigger,
 } from '@material-ui/core';
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   navWrapper: {
     position: 'sticky',
     top: 0,
-    zIndex: 999,
+    zIndex: 900,
   },
   appBar: {
     backgroundColor: '#282c34',
@@ -71,7 +71,6 @@ const useStyles = makeStyles((theme) => ({
   list: {
     width: '80vw',
     maxWidth: 400,
-    padding: 0,
     '& .active': {
       fontWeight: 'bold',
     },
@@ -82,12 +81,15 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 18,
   },
   closeMenuBtn: {
-    position: 'fixed',
-    height: 20,
-    left: 6,
-    top: 25,
+    position: 'absolute',
+    left: -68,
+    top: 10,
     color: 'white',
     zIndex: 1400,
+    [theme.breakpoints.up('sm')]: {
+      position: 'fixed',
+      left: 10,
+    },
   },
   openMenuBtn: {
     padding: 20,
@@ -142,7 +144,7 @@ const HideOnScroll = (props) => {
   const { children } = props;
   const [homeVisible, setHomeVisible] = useState(false);
   const theme = useTheme();
-  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
+  const isTabletDown = useMediaQuery(theme.breakpoints.down('md'));
   const trigger = useScrollTrigger({
     target: window,
   });
@@ -164,10 +166,10 @@ const HideOnScroll = (props) => {
     }
   }, [homeContainer, observer]);
 
-  return homeVisible || !isTablet ? (
+  return !isTabletDown ? (
     <>{children}</>
   ) : (
-    <Slide appear={false} direction="down" in={!trigger}>
+    <Slide appear={false} direction="down" in={homeVisible || !trigger}>
       {children}
     </Slide>
   );
@@ -360,7 +362,16 @@ const NavBar = () => {
         </AppBar>
 
         <Hidden mdUp>
-          {menuOpen && (
+          <SwipeableDrawer
+            open={menuOpen}
+            onClose={() => {
+              dispatch(setXpOpen(false));
+              dispatch(setMenuOpen(false));
+            }}
+            PaperProps={{ style: { overflowY: 'visible' } }}
+            onOpen={() => dispatch(setMenuOpen(true))}
+            anchor="right"
+          >
             <IconButton
               className={classes.closeMenuBtn}
               onClick={() => {
@@ -370,16 +381,6 @@ const NavBar = () => {
             >
               <Close />
             </IconButton>
-          )}
-          <SwipeableDrawer
-            open={menuOpen}
-            onClose={() => {
-              dispatch(setXpOpen(false));
-              dispatch(setMenuOpen(false));
-            }}
-            onOpen={() => dispatch(setMenuOpen(true))}
-            anchor="right"
-          >
             <div className={classes.portraitWrapper}>
               <Portrait size={isXsDown ? 100 : 150} />
             </div>

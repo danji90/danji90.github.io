@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'start',
     padding: '5px 0 5px 20px',
-    '& a': theme.styles.link,
+    '& a': theme.styles?.link,
   },
   icon: {
     color: theme.palette.text.primary,

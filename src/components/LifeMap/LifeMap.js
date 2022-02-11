@@ -66,7 +66,11 @@ const styles = (theme) => {
         right: 5,
         bottom: 5,
         fontSize: 14,
-        '& a': theme.styles.link,
+        '& a': theme.styles?.link,
+      },
+      '& .rs-popup-header': {
+        backgroundColor: '#282c34 !important',
+        color: theme.palette.text.light,
       },
       '& .rs-popup-body': {
         padding: '10px 10px 0 !important',
