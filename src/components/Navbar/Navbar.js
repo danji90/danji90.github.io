@@ -81,8 +81,8 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 18,
   },
   closeMenuBtn: {
-    position: 'absolute',
-    left: -68,
+    position: 'fixed',
+    left: 10,
     top: 10,
     color: 'white',
     zIndex: 1400,
@@ -362,16 +362,7 @@ const NavBar = () => {
         </AppBar>
 
         <Hidden mdUp>
-          <SwipeableDrawer
-            open={menuOpen}
-            onClose={() => {
-              dispatch(setXpOpen(false));
-              dispatch(setMenuOpen(false));
-            }}
-            PaperProps={{ style: { overflowY: 'visible' } }}
-            onOpen={() => dispatch(setMenuOpen(true))}
-            anchor="right"
-          >
+          {menuOpen && (
             <IconButton
               className={classes.closeMenuBtn}
               onClick={() => {
@@ -381,6 +372,16 @@ const NavBar = () => {
             >
               <Close />
             </IconButton>
+          )}
+          <SwipeableDrawer
+            open={menuOpen}
+            onClose={() => {
+              dispatch(setXpOpen(false));
+              dispatch(setMenuOpen(false));
+            }}
+            onOpen={() => dispatch(setMenuOpen(true))}
+            anchor="right"
+          >
             <div className={classes.portraitWrapper}>
               <Portrait size={isXsDown ? 100 : 150} />
             </div>
