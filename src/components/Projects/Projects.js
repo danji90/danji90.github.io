@@ -63,12 +63,21 @@ const renderLatestProject = (projectData, projectsCount, classes) => {
   return (
     <>
       <div key="latest" className={classes.latestProject}>
-        <Link underline="none" href={projectData.weblink}>
+        <Link
+          underline="none"
+          href={projectData.webLink}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <Typography color="textPrimary" variant="h3" align="center">
             {projectData.name}
           </Typography>
         </Link>
-        <Link href={projectData.facility.url}>
+        <Link
+          href={projectData.facility.url}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <Typography variant="h4" align="center">
             {projectData.facility.name}
           </Typography>
@@ -103,6 +112,7 @@ const renderProject = (projectData, index, projectsCount, classes) => {
                   key={image.name.split('.')}
                   href={projectData.webLink}
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <img
                     src={imageLink}
@@ -116,12 +126,21 @@ const renderProject = (projectData, index, projectsCount, classes) => {
         <div className={classes.projectColumnInfo}>
           {projectData.latest ? null : (
             <>
-              <Link underline="none" href={projectData.weblink}>
+              <Link
+                underline="none"
+                href={projectData.webLink}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Typography color="textPrimary" variant="h3">
                   {projectData.name}
                 </Typography>
               </Link>
-              <Link href={projectData.facility.url}>
+              <Link
+                href={projectData.facility.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Typography variant="h4">
                   {projectData.facility.name}
                 </Typography>

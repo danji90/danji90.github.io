@@ -26,6 +26,12 @@ const theme = createMuiTheme({
   typography: {
     fontSize: 16,
   },
+  props: {
+    Link: {
+      target: '_blank',
+      rel: 'noopener noreferrer',
+    },
+  },
   overrides: {
     MuiTypography: {
       h1: {

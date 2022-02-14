@@ -46,7 +46,7 @@ const Work = ({ section }) => {
                   {`${item.position} - `}
                 </Typography>
                 <Link
-                  href={item.facility.link}
+                  href={item.facility.url}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
