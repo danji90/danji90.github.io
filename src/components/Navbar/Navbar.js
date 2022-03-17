@@ -113,7 +113,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '20px 0',
+    padding: '20px 0 0',
   },
   experienceButton: {
     width: '100%',
