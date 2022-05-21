@@ -63,6 +63,7 @@ const useStyles = makeStyles((theme) => {
 const bgMap = new Map({
   layers: [
     new TileLayer({
+      preload: Infinity,
       source: new OSM(),
     }),
   ],
