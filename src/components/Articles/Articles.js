@@ -8,7 +8,7 @@ import Container from '../Container/Container';
 const useStyles = makeStyles((theme) => ({
   article: {
     display: 'grid',
-    gridTemplateColumns: 'auto auto',
+    gridTemplateColumns: '15% 85%',
     marginBottom: 10,
   },
   icon: {
@@ -21,7 +21,7 @@ const Articles = () => {
   const articles = useSelector((state) => state.articles);
   return (
     <Container title="Articles">
-      {articles.map((item) => {
+      {articles.reverse().map((item) => {
         return (
           <div className={classes.article} key={item.id}>
             <DescriptionIcon className={classes.icon} />
