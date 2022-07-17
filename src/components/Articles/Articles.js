@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import DescriptionIcon from '@material-ui/icons/Description';
 import { Link, Typography, makeStyles } from '@material-ui/core';
@@ -19,9 +19,10 @@ const useStyles = makeStyles((theme) => ({
 const Articles = () => {
   const classes = useStyles();
   const articles = useSelector((state) => state.articles);
+  const sorted = useMemo(() => articles.reverse(), [articles])
   return (
     <Container title="Articles">
-      {articles.reverse().map((item) => {
+      {sorted.map((item) => {
         return (
           <div className={classes.article} key={item.id}>
             <DescriptionIcon className={classes.icon} />
