@@ -372,7 +372,10 @@ class LifeMap extends Component {
   }
 
   toggleBlockMap(evt) {
-    if (evt.type === ('touchstart' || 'movestart') && evt.touches.length > 1) {
+    if (isMobile) {
+      console.log(isMobile);
+    };
+    if ((evt.type === ('touchstart') && evt.touches.length > 1)) {
       evt.preventDefault();
       evt.stopPropagation();
       this.setState({ mapBlocked: false })
