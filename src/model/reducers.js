@@ -15,7 +15,7 @@ import {
   SET_LAYERS_OPEN,
 } from './actions';
 
-import initialAppState from '../assets/data/appData';
+import initialAppState from '../data/appData';
 
 const interactions = defaultInteractions({
   altShiftDragRotate: false,

@@ -10,6 +10,7 @@ import Copyright from 'react-spatial/components/Copyright';
 import Popup from 'react-spatial/components/Popup';
 import MultiPoint from 'ol/geom/MultiPoint';
 import VectorSource from 'ol/source/Vector';
+import { platformModifierKeyOnly } from 'ol/events/condition';
 import AnimatedCluster from 'ol-ext/layer/AnimatedCluster';
 import Style from 'ol/style/Style';
 import CircleStyle from 'ol/style/Circle';
@@ -21,7 +22,9 @@ import Cluster from 'ol/source/Cluster';
 import GeoJSON from 'ol/format/GeoJSON';
 import 'react-spatial/themes/default/index.scss';
 import { format } from 'date-fns';
+import { isMobile } from 'react-device-detect';
 
+import { unByKey } from 'ol/Observable';
 import Container from '../Container/Container';
 import LayerMenu from '../LayerMenu/LayerMenu';
 import FullExtent from '../FullExtent/FullExtent';
@@ -119,8 +122,25 @@ const styles = (theme) => {
     sliderWrapper: {
       padding: '0 20px',
     },
+    scrollOverlay: {
+      position: 'absolute',
+      height: '100%',
+      width: '100%',
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      zIndex: 9999,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: 20,
+      color: 'black',
+    },
+    hideOverlay: {
+      display: 'none',
+    }
   };
 };
+
+const SCROLL_LISTENER_TYPES = ['scroll', 'mousescroll', 'wheel', 'touchstart']
 
 const propTypes = {
   section: PropTypes.shape({
@@ -146,7 +166,7 @@ const defaultProps = {
   layerService: new LayerService(),
 };
 
-const mapData = require('../../assets/data/mapFeatures.json');
+const mapData = require('../../data/mapFeatures.json');
 
 const styleCache = {};
 
@@ -222,6 +242,8 @@ class LifeMap extends Component {
     this.state = {
       selectedFeature: undefined,
       timeSpan: initialTimeSpan,
+      mapBlocked: false,
+      listenersAdded: false,
     };
     this.education = new GeoJSON({
       featureProjection: 'EPSG:3857',
@@ -236,6 +258,9 @@ class LifeMap extends Component {
     }).readFeatures(mapData.residence);
 
     this.onFeatureClick = this.onFeatureClick.bind(this);
+    this.toggleBlockMap = this.toggleBlockMap.bind(this);
+    this.scrollRef = React.createRef();
+    this.mapRef = React.createRef();
   }
 
   componentDidMount() {
@@ -258,8 +283,12 @@ class LifeMap extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { timeSpan } = this.state;
-    const { showWork, showEducation, showResidence } = this.props;
+    const { timeSpan, listenersAdded } = this.state;
+    const { showWork, showEducation, showResidence, map } = this.props;
+
+    if (!listenersAdded && map.getTarget() && this.scrollRef.current) {
+      this.addScrollListeners()
+    }
     if (
       prevProps.showEducation !== showEducation ||
       prevProps.showWork !== showWork ||
@@ -268,6 +297,11 @@ class LifeMap extends Component {
     ) {
       this.updateFeatures();
     }
+    console.log(isMobile);
+  }
+
+  componentWillUnmount() {
+    this.removeScrollListeners();
   }
 
   onFeatureClick(features) {
@@ -290,6 +324,19 @@ class LifeMap extends Component {
       return;
     }
     this.setState({ selectedFeature: features[0].get('features')[0] });
+  }
+
+  addScrollListeners() {
+    const { map } = this.props;
+    SCROLL_LISTENER_TYPES.forEach((type) => this.scrollRef.current.addEventListener(type, this.toggleBlockMap))
+    this.onMapListener = map.on('movestart', (evt) => console.log(evt))
+    this.setState({ listenersAdded: true })
+  }
+
+  removeScrollListeners() {
+    SCROLL_LISTENER_TYPES.forEach((type) => this.scrollRef.current.removeEventListener(type, this.toggleBlockMap));
+    unByKey(this.onMapListener)
+    this.setState({ listenersAdded: false })
   }
 
   updateFeatures() {
@@ -324,8 +371,24 @@ class LifeMap extends Component {
     this.clusterSource.getSource().addFeatures(testFiltered);
   }
 
+  toggleBlockMap(evt) {
+    if (evt.type === ('touchstart' || 'movestart') && evt.touches.length > 1) {
+      evt.preventDefault();
+      evt.stopPropagation();
+      this.setState({ mapBlocked: false })
+      return;
+    }
+    if (platformModifierKeyOnly({ originalEvent: evt })) {
+      evt.preventDefault();
+      evt.stopPropagation();
+      this.setState({ mapBlocked: false })
+      return;
+    }
+    this.setState({ mapBlocked: true })
+  }
+
   render() {
-    const { selectedFeature, timeSpan, clusterSource } = this.state;
+    const { selectedFeature, timeSpan, clusterSource, mapBlocked } = this.state;
     const { map, section, layerService, classes } = this.props;
     const baseLayers = layerService.getBaseLayers();
     return (
@@ -358,6 +421,7 @@ class LifeMap extends Component {
                   document.body.style.cursor = 'auto';
                 }
               }}
+              ref={this.mapRef}
             />
             {selectedFeature && (
               <Popup
@@ -406,6 +470,12 @@ class LifeMap extends Component {
                   layerImages={layerImages}
                 />
               </Hidden>
+            </div>
+            <div
+              ref={this.scrollRef}
+              className={`${classes.scrollOverlay}${mapBlocked ? '' : ` ${classes.hideOverlay}`}`}
+            >
+              {isMobile ? 'Use two fingers to navigate map' : 'Use Ctrl + scroll to zoom'}
             </div>
           </div>
           <div className={classes.timeSlider}>
