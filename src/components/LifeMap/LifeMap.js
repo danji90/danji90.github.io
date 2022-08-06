@@ -24,7 +24,6 @@ import 'react-spatial/themes/default/index.scss';
 import { format } from 'date-fns';
 import { isMobile } from 'react-device-detect';
 
-import { unByKey } from 'ol/Observable';
 import Container from '../Container/Container';
 import LayerMenu from '../LayerMenu/LayerMenu';
 import FullExtent from '../FullExtent/FullExtent';
@@ -133,14 +132,17 @@ const styles = (theme) => {
       justifyContent: 'center',
       fontSize: 20,
       color: 'black',
+      opacity: 0,
+      pointerEvents: 'none',
     },
-    hideOverlay: {
-      display: 'none',
+    showOverlay: {
+      opacity: 1,
+      pointerEvents: 'auto',
     }
   };
 };
 
-const SCROLL_LISTENER_TYPES = ['scroll', 'mousescroll', 'wheel', 'touchstart']
+const SCROLL_LISTENER_TYPES = ['scroll', 'mousescroll', 'wheel', 'touchmove']
 
 const propTypes = {
   section: PropTypes.shape({
@@ -297,7 +299,6 @@ class LifeMap extends Component {
     ) {
       this.updateFeatures();
     }
-    console.log(isMobile);
   }
 
   componentWillUnmount() {
@@ -328,14 +329,19 @@ class LifeMap extends Component {
 
   addScrollListeners() {
     const { map } = this.props;
-    SCROLL_LISTENER_TYPES.forEach((type) => this.scrollRef.current.addEventListener(type, this.toggleBlockMap))
-    this.onMapListener = map.on('movestart', (evt) => console.log(evt))
+    SCROLL_LISTENER_TYPES.forEach((type) => {
+      this.scrollRef.current.addEventListener(type, this.toggleBlockMap);
+      map.getTarget().addEventListener(type, this.toggleBlockMap);
+    });
     this.setState({ listenersAdded: true })
   }
 
   removeScrollListeners() {
-    SCROLL_LISTENER_TYPES.forEach((type) => this.scrollRef.current.removeEventListener(type, this.toggleBlockMap));
-    unByKey(this.onMapListener)
+    const { map } = this.props;
+    SCROLL_LISTENER_TYPES.forEach((type) => {
+      this.scrollRef.current.removeEventListener(type, this.toggleBlockMap);
+      map.getTarget().removeEventListener(type, this.toggleBlockMap);
+    });
     this.setState({ listenersAdded: false })
   }
 
@@ -353,7 +359,7 @@ class LifeMap extends Component {
     if (showResidence) {
       newFeatures = [...newFeatures, ...this.residence];
     }
-    const testFiltered = newFeatures.filter((feature) => {
+    const timeFiltered = newFeatures.filter((feature) => {
       let display = false;
       const timeStamps = feature.get('timestamp');
       timeStamps.forEach((timestamp) => {
@@ -368,19 +374,20 @@ class LifeMap extends Component {
       return display;
     });
     this.setState({ selectedFeature: undefined });
-    this.clusterSource.getSource().addFeatures(testFiltered);
+    this.clusterSource.getSource().addFeatures(timeFiltered);
   }
 
   toggleBlockMap(evt) {
+    console.log('evt: ', evt.type);
     if (isMobile) {
-      console.log(isMobile);
-    };
-    if ((evt.type === ('touchstart') && evt.touches.length > 1)) {
-      evt.preventDefault();
-      evt.stopPropagation();
-      this.setState({ mapBlocked: false })
-      return;
+      if ((evt.type === ('touchmove') && evt.touches.length > 1)) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        this.setState({ mapBlocked: false });
+        return;
+      }
     }
+
     if (platformModifierKeyOnly({ originalEvent: evt })) {
       evt.preventDefault();
       evt.stopPropagation();
@@ -476,7 +483,7 @@ class LifeMap extends Component {
             </div>
             <div
               ref={this.scrollRef}
-              className={`${classes.scrollOverlay}${mapBlocked ? '' : ` ${classes.hideOverlay}`}`}
+              className={`${classes.scrollOverlay}${mapBlocked ? ` ${classes.showOverlay}` : ''}`}
             >
               {isMobile ? 'Use two fingers to navigate map' : 'Use Ctrl + scroll to zoom'}
             </div>
