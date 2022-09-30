@@ -25,6 +25,7 @@ import { format } from 'date-fns';
 import Container from '../Container/Container';
 import LayerMenu from '../LayerMenu/LayerMenu';
 import FullExtent from '../FullExtent/FullExtent';
+import MapButtons from '../MapButtons/MapButtons';
 import {
   setShowEducation,
   setShowWork,
@@ -342,6 +343,7 @@ class LifeMap extends Component {
               featureSource={clusterSource}
               onClick={() => this.setState({ selectedFeature: null })}
             />
+            <MapButtons />
             <BasicMap
               className={`rs-map ${classes.map}`}
               zoom={2}
