@@ -9,11 +9,13 @@ const useStyles = makeStyles((theme) => ({
   overflowWrapper: {
     width: 'inherit',
     overflowX: 'auto',
+    margin: '10px 0',
     [theme.breakpoints.down('xs')]: {
       overflowX: 'scroll',
     },
   },
   calendarWrapper: {
+    paddingTop: 15,
     [theme.breakpoints.down('xs')]: {
       width: 800,
     },
