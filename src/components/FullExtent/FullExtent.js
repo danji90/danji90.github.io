@@ -15,6 +15,9 @@ const useStyles = makeStyles((theme) => {
       zIndex: 1,
       backgroundColor: 'white',
       boxShadow: ' 0 1px 4px rgb(0 0 0 / 30%)',
+      '&:hover': {
+        backgroundColor: 'white'
+      }
     },
   };
 });
@@ -25,7 +28,7 @@ function FullExtent({ featureSource, onClick }) {
 
   return (
     <IconButton
-      style={{ backgroundColor: 'white' }}
+      title="Full extent"
       onClick={(evt) => {
         if (featureSource && featureSource.getFeatures().length) {
           onClick(evt);
