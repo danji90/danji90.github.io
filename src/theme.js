@@ -103,6 +103,14 @@ const theme = createMuiTheme({
         },
       },
     },
+    MuiIconButton: {
+      root: {
+        '&$disabled': {
+          backgroundColor: 'white',
+          opacity: 0.6,
+        },
+      },
+    },
   },
   styles: {
     link: {

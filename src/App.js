@@ -1,7 +1,7 @@
 import 'react-app-polyfill/stable';
 import React from 'react';
 import { ThemeProvider } from '@material-ui/core/styles';
-import theme from './theme'
+import theme from './theme';
 import './App.css';
 
 import Portfolio from './components/Portfolio/Portfolio';

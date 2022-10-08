@@ -16,8 +16,8 @@ const useStyles = makeStyles((theme) => {
       backgroundColor: 'white',
       boxShadow: ' 0 1px 4px rgb(0 0 0 / 30%)',
       '&:hover': {
-        backgroundColor: 'white'
-      }
+        backgroundColor: 'white',
+      },
     },
   };
 });

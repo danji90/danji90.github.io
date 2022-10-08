@@ -12,9 +12,9 @@ function AboutMe() {
     <Container title="About me" id={section.id}>
       <Typography>
         Hi, I&apos;m Daniel! I am from Bolzano, a small town in the Italian
-        Alps. Bolzano province is a bilingual melting pot between Italian
-        and Austrian culture due to its history. My father is British, so one
-        could say I am a half-British, German-speaking Italian, moulded by a
+        Alps. Bolzano province is a bilingual melting pot between Italian and
+        Austrian culture due to its history. My father is British, so one could
+        say I am a half-British, German-speaking Italian, moulded by a
         multicultural and multilingual environment.
       </Typography>
       <br />

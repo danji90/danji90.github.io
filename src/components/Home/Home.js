@@ -187,7 +187,8 @@ function Home() {
                 align: {
                   top: 0,
                 },
-              })}
+              })
+            }
             className={classes.exploreBtn}
           >
             <IoIosArrowDown size={50} color={theme.palette.primary.main} />

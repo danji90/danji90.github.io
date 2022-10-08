@@ -321,11 +321,12 @@ const NavBar = () => {
                     return (
                       <Tab
                         ref={(elt) =>
-                          sect.id === 'experience' && setXpTabNode(elt)}
+                          sect.id === 'experience' && setXpTabNode(elt)
+                        }
                         key={sect.id}
                         onClick={(evt) => onItemClick(sect)}
                         value={sect.id}
-                        label={(
+                        label={
                           <span className={classes.tabLabel}>
                             {sect.name}
                             {sect.id === 'experience' &&
@@ -335,7 +336,7 @@ const NavBar = () => {
                                 <IoMdArrowDropdown style={{ padding: 5 }} />
                               ))}
                           </span>
-                        )}
+                        }
                         className={classes.tab}
                         onMouseEnter={(evt) => {
                           setValue(sect.id);

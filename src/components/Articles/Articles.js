@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 const Articles = () => {
   const classes = useStyles();
   const articles = useSelector((state) => state.articles);
-  const sorted = useMemo(() => articles.reverse(), [articles])
+  const sorted = useMemo(() => articles.reverse(), [articles]);
   return (
     <Container title="Articles">
       {sorted.map((item) => {

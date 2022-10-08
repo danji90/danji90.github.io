@@ -349,6 +349,7 @@ class LifeMap extends Component {
               zoom={2}
               viewOptions={{
                 minZoom: 2,
+                maxZoom: 21,
               }}
               layers={baseLayers}
               map={map}
@@ -367,7 +368,8 @@ class LifeMap extends Component {
                 header={selectedFeature.get('city')}
                 feature={selectedFeature}
                 onCloseClick={() =>
-                  this.setState({ selectedFeature: undefined })}
+                  this.setState({ selectedFeature: undefined })
+                }
                 panIntoView
               >
                 <div className={classes.popup}>

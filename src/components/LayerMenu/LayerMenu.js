@@ -141,33 +141,33 @@ const LayerMenu = () => {
               <Divider />
             </Hidden>
             <FormControlLabel
-              control={(
+              control={
                 <Checkbox
                   color="primary"
                   checked={showEducation}
                   onChange={() => dispatch(setShowEducation(!showEducation))}
                 />
-              )}
+              }
               label="Education"
             />
             <FormControlLabel
-              control={(
+              control={
                 <Checkbox
                   color="primary"
                   checked={showWork}
                   onChange={() => dispatch(setShowWork(!showWork))}
                 />
-              )}
+              }
               label="Work"
             />
             <FormControlLabel
-              control={(
+              control={
                 <Checkbox
                   color="primary"
                   checked={showResidence}
                   onChange={() => dispatch(setShowResidence(!showResidence))}
                 />
-              )}
+              }
               label="Residence"
             />
           </div>
