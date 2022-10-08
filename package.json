@@ -77,7 +77,8 @@
     "extends": [
       "airbnb",
       "react-app",
-      "plugin:prettier"
+      "prettier",
+      "prettier/react"
     ],
     "plugins": [
       "prettier"
@@ -92,15 +93,13 @@
           ]
         }
       ],
-      "react/forbid-prop-types": "Off"
+      "react/forbid-prop-types": "Off",
+      "prettier/prettier": "error"
     }
   },
   "prettier": {
     "trailingComma": "all",
-    "singleQuote": true,
-    "semi": true,
-    "tabWidth": 2,
-    "useTabs": false
+    "singleQuote": true
   },
   "babel": {
     "presets": [

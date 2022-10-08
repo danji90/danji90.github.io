@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaBirthdayCake, FaPhone } from 'react-icons/fa';
+import { FaPhone } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import { Typography, List, ListItem, Link } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
