@@ -44,7 +44,7 @@ function MapButtons() {
         easing: easeOut,
       },
     );
-  }, []);
+  }, [map]);
 
   const zoomOut = useCallback(() => {
     const currentZoom = map.getView().getZoom();
@@ -61,7 +61,7 @@ function MapButtons() {
         easing: easeOut,
       },
     );
-  }, []);
+  }, [map]);
 
   useEffect(() => {
     const onZoomChange = () => setZoom(map.getView().getZoom());
