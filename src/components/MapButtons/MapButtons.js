@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { IconButton, makeStyles } from '@material-ui/core';
 import { easeOut, easeIn } from 'ol/easing';
@@ -29,6 +29,40 @@ function MapButtons() {
   const map = useSelector((state) => state.map);
   const [zoom, setZoom] = useState(map.getView().getZoom());
 
+  const zoomIn = useCallback(() => {
+    const currentZoom = map.getView().getZoom();
+    const zoomStep = currentZoom + 1 > 21 ? Math.abs(currentZoom - 21) : 1;
+    map.getView().animate(
+      {
+        zoom: currentZoom + zoomStep / 2,
+        duration: 300,
+        easing: easeIn,
+      },
+      {
+        zoom: currentZoom + zoomStep,
+        duration: 300,
+        easing: easeOut,
+      },
+    );
+  }, []);
+
+  const zoomOut = useCallback(() => {
+    const currentZoom = map.getView().getZoom();
+    const zoomStep = currentZoom - 1 < 2 ? currentZoom - 2 : 1;
+    map.getView().animate(
+      {
+        zoom: currentZoom - zoomStep / 2,
+        duration: 300,
+        easing: easeIn,
+      },
+      {
+        zoom: currentZoom - zoomStep,
+        duration: 300,
+        easing: easeOut,
+      },
+    );
+  }, []);
+
   useEffect(() => {
     const onZoomChange = () => setZoom(map.getView().getZoom());
     map.getView().on('change:resolution', onZoomChange);
@@ -48,23 +82,7 @@ function MapButtons() {
         classes={{ root: classes.mapBtn }}
         title="Zoom in"
         disabled={zoom >= 21}
-        onClick={() => {
-          const currentZoom = map.getView().getZoom();
-          console.log(currentZoom - 21);
-          const zoomStep = currentZoom + 1 > 21 ? Math.abs(currentZoom - 21) : 1;
-          map.getView().animate(
-            {
-              zoom: currentZoom + zoomStep / 2,
-              duration: 300,
-              easing: easeIn,
-            },
-            {
-              zoom: currentZoom + zoomStep,
-              duration: 300,
-              easing: easeOut,
-            },
-          );
-        }}
+        onClick={zoomIn}
       >
         <Add />
       </IconButton>
@@ -72,22 +90,7 @@ function MapButtons() {
         classes={{ root: classes.mapBtn }}
         title="Zoom out"
         disabled={map.getView().getZoom() <= 2}
-        onClick={() => {
-          const currentZoom = map.getView().getZoom();
-          const zoomStep = currentZoom - 1 < 2 ? currentZoom - 2 : 1;
-          map.getView().animate(
-            {
-              zoom: currentZoom - zoomStep / 2,
-              duration: 300,
-              easing: easeIn,
-            },
-            {
-              zoom: currentZoom - zoomStep,
-              duration: 300,
-              easing: easeOut,
-            },
-          );
-        }}
+        onClick={zoomOut}
       >
         <Remove />
       </IconButton>

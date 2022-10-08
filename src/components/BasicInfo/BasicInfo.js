@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaBirthdayCake, FaPhone } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
-import { Typography, List, ListItem } from '@material-ui/core';
+import { Typography, List, ListItem, Link } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Container from '../Container/Container';
@@ -27,17 +27,17 @@ const useStyles = makeStyles((theme) => ({
 function BasicInfo() {
   const classes = useStyles();
   return (
-    <Container title="Basic Info">
+    <Container title="Contact">
       <div className="basic-info-content">
         <List>
-          <ListItem
+          {/* <ListItem
             key="date.of.birth"
             title="Date of birth"
             className={classes.listItem}
           >
             <FaBirthdayCake className={classes.icon} />
             <Typography variant="body2">13.09.1990</Typography>
-          </ListItem>
+          </ListItem> */}
           {/* <ListItem
             key="address"
             title="Address"
@@ -63,7 +63,9 @@ function BasicInfo() {
           </ListItem>
           <ListItem key="mail" title="e-mail" className={classes.listItem}>
             <MdEmail className={classes.icon} />
-            <Typography variant="body2">danji_ma90@hotmail.com</Typography>
+            <Link href="mailto:danji_ma90@hotmail.com">
+              danji_ma90@hotmail.com
+            </Link>
           </ListItem>
         </List>
       </div>
