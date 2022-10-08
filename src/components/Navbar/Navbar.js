@@ -21,6 +21,7 @@ import {
   useTheme,
   useMediaQuery,
   useScrollTrigger,
+  Fade,
 } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import { Menu as MenuBtn, Close } from '@material-ui/icons';
@@ -187,26 +188,34 @@ const ExperienceMenu = ({ tabs, onItemClick, anchor }) => {
       anchorEl={anchor}
       id="menu-list-grow"
       style={{ zIndex: 9999, width: anchor.offsetWidth }}
+      transition
     >
-      <Paper
-        onMouseLeave={(evt) => {
-          const movingTo = evt.relatedTarget?.tagName;
-          if (movingTo === 'SPAN') return;
-          dispatch(setXpOpen(false));
-        }}
-      >
-        <MenuList className={classes.experienceDropdown}>
-          {tabs.map((tab) => (
-            <MenuItem
-              className={classes.experienceItem}
-              key={tab.id}
-              onClick={() => onItemClick(tab)}
+      {({ TransitionProps }) => {
+        return (
+          // eslint-disable-next-line react/jsx-props-no-spreading
+          <Fade {...TransitionProps}>
+            <Paper
+              onMouseLeave={(evt) => {
+                const movingTo = evt.relatedTarget?.tagName;
+                if (movingTo === 'SPAN') return;
+                dispatch(setXpOpen(false));
+              }}
             >
-              {tab.name}
-            </MenuItem>
-          ))}
-        </MenuList>
-      </Paper>
+              <MenuList className={classes.experienceDropdown}>
+                {tabs.map((tab) => (
+                  <MenuItem
+                    className={classes.experienceItem}
+                    key={tab.id}
+                    onClick={() => onItemClick(tab)}
+                  >
+                    {tab.name}
+                  </MenuItem>
+                ))}
+              </MenuList>
+            </Paper>
+          </Fade>
+        );
+      }}
     </Popper>
   );
 };
