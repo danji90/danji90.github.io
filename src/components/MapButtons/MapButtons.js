@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { IconButton, makeStyles } from '@material-ui/core';
 import { easeOut, easeIn } from 'ol/easing';
-import { Add, Remove, ViewArraySharp } from '@material-ui/icons';
+import { Add, Remove } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   mapBtnWrapper: {
