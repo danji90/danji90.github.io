@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { IconButton, makeStyles } from '@material-ui/core';
 import { easeOut, easeIn } from 'ol/easing';
-import { Add, Remove } from '@material-ui/icons';
+import { Add, Remove, ViewArraySharp } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   mapBtnWrapper: {
@@ -27,12 +27,14 @@ const useStyles = makeStyles((theme) => ({
 function MapButtons() {
   const classes = useStyles();
   const map = useSelector((state) => state.map);
-  const [zoom, setZoom] = useState(map.getView().getZoom());
+  const getView = useCallback(() => map.getView(), [map]);
+  const [zoom, setZoom] = useState(getView().getZoom());
 
   const zoomIn = useCallback(() => {
-    const currentZoom = map.getView().getZoom();
+    const view = getView();
+    const currentZoom = getView().getZoom();
     const zoomStep = currentZoom + 1 > 21 ? Math.abs(currentZoom - 21) : 1;
-    map.getView().animate(
+    view.animate(
       {
         zoom: currentZoom + zoomStep / 2,
         duration: 300,
@@ -44,12 +46,12 @@ function MapButtons() {
         easing: easeOut,
       },
     );
-  }, [map]);
+  }, [getView]);
 
   const zoomOut = useCallback(() => {
-    const currentZoom = map.getView().getZoom();
+    const currentZoom = getView().getZoom();
     const zoomStep = currentZoom - 1 < 2 ? currentZoom - 2 : 1;
-    map.getView().animate(
+    getView().animate(
       {
         zoom: currentZoom - zoomStep / 2,
         duration: 300,
@@ -61,27 +63,27 @@ function MapButtons() {
         easing: easeOut,
       },
     );
-  }, [map]);
+  }, [getView]);
 
   useEffect(() => {
-    const onZoomChange = () => setZoom(map.getView().getZoom());
-    map.getView().on('change:resolution', onZoomChange);
-    return () => map.getView().un('change:resolution', onZoomChange);
+    const onZoomChange = () => setZoom(getView().getZoom());
+    getView().on('change:resolution', onZoomChange);
+    return () => getView().un('change:resolution', onZoomChange);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (zoom !== map.getView().getZoom()) {
-      setZoom(map.getView().getZoom());
+    if (zoom !== getView().getZoom()) {
+      setZoom(getView().getZoom());
     }
-  }, [map, zoom]);
+  }, [getView, zoom]);
 
   return (
     <div className={classes.mapBtnWrapper}>
       <IconButton
         classes={{ root: classes.mapBtn }}
         title="Zoom in"
-        disabled={zoom >= 21}
+        disabled={zoom >= getView().getMaxZoom()}
         onClick={zoomIn}
       >
         <Add />
@@ -89,7 +91,7 @@ function MapButtons() {
       <IconButton
         classes={{ root: classes.mapBtn }}
         title="Zoom out"
-        disabled={map.getView().getZoom() <= 2}
+        disabled={zoom <= getView().getMinZoom()}
         onClick={zoomOut}
       >
         <Remove />

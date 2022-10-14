@@ -348,7 +348,7 @@ class LifeMap extends Component {
               className={`rs-map ${classes.map}`}
               zoom={2}
               viewOptions={{
-                minZoom: 2,
+                minZoom: 2.3,
                 maxZoom: 21,
               }}
               layers={baseLayers}
