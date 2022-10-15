@@ -32,7 +32,7 @@ import { setMenuOpen, setXpOpen } from '../../../model/portfolio/actions';
 import Portrait from '../Portrait/Portrait';
 import DropDown from '../DropDown/DropDown';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   navWrapper: {
     position: 'sticky',
     top: 0,
@@ -162,12 +162,12 @@ const HideOnScroll = ({ children }) => {
     }
   }, [homeContainer, observer]);
 
-  return !isTabletDown ? (
-    <>{children}</>
-  ) : (
+  return isTabletDown ? (
     <Slide appear={false} direction="down" in={homeVisible || !trigger}>
       {children}
     </Slide>
+  ) : (
+    children
   );
 };
 
@@ -278,9 +278,12 @@ const NavBar = () => {
   );
 
   useEffect(() => {
-    if (window.location.hash === '#/') {
+    if (!window.location.hash || /^#\/$/.test(window.location.hash)) {
       window.location.hash = `#/#home`;
+      return;
     }
+    const hash = window.location.hash.split('#/#')[1];
+    scrollToSection(hash);
   }, []);
 
   return (

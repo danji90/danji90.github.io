@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { GiExpand } from 'react-icons/gi';
 import Cluster from 'ol/source/Cluster';
+import { unByKey } from 'ol/Observable';
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -24,20 +25,30 @@ const useStyles = makeStyles((theme) => {
 
 function FullExtent({ featureSource, onClick }) {
   const map = useSelector((state) => state.portfolio.map);
+  const [disabled, setDisabled] = useState(false);
   const classes = useStyles();
+
+  useEffect(() => {
+    const onSourceChange = () =>
+      setDisabled(featureSource?.getFeatures().length === 0);
+    unByKey(onSourceChange);
+    if (featureSource) {
+      featureSource.on('change', onSourceChange);
+    }
+    return () => unByKey(onSourceChange);
+  }, [featureSource]);
 
   return (
     <IconButton
       title="Full extent"
       onClick={(evt) => {
-        if (featureSource && featureSource.getFeatures().length) {
-          onClick(evt);
-          map.getView().fit(featureSource.getExtent(), {
-            padding: [50, 50, 50, 50],
-            duration: 300,
-          });
-        }
+        onClick(evt);
+        map.getView().fit(featureSource.getExtent(), {
+          padding: [50, 50, 50, 50],
+          duration: 300,
+        });
       }}
+      disabled={disabled}
       classes={{ root: classes.fullExtenBtn }}
     >
       <GiExpand />
