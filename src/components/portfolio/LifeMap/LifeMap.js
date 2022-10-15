@@ -158,13 +158,13 @@ const getStyle = (feature, resolution) => {
     const color =
       // eslint-disable-next-line no-nested-ternary
       size > 25 ? '248, 128, 0' : size > 8 ? '248, 192, 0' : '128, 192, 64';
-    const radius = 50;
+    const radius = 12;
     if (size > 1) {
       style = [
         new Style({
           image: new CircleStyle({
             scale: 1 / 4,
-            radius: radius + 15,
+            radius: radius + 4,
             fill: new Fill({
               color: `rgba(${color},0.3)`,
             }),
