@@ -1,8 +1,6 @@
 {
-  "homepage": "http://danji90.github.io",
-  "name": "portfolio",
+  "name": "danji90.github.io",
   "version": "1.0.0",
-  "private": true,
   "dependencies": {
     "@babel/core": "^7.9.0",
     "@babel/helper-explode-assignable-expression": "^7.16.7",
@@ -15,23 +13,27 @@
     "date-fns": "^2.22.1",
     "gh-pages": "^2.2.0",
     "html-react-parser": "1.2.6",
-    "mapbox-gl": "^2.3.1",
+    "husky": "^8.0.1",
+    "mapbox-gl": "1.12.0",
     "mobility-toolbox-js": "^1.7.6",
-    "ol": "6.5.0",
+    "ol": "6.4.3",
     "ol-ext": "3.2.1",
     "prop-types": "15.7.2",
-    "react": "^16.8.6",
+    "react": "16.13.1",
     "react-app-polyfill": "^1.0.6",
-    "react-dom": "^16.8.6",
+    "react-dom": "16.13.1",
     "react-github-calendar": "3.3.4",
     "react-icons": "^4.3.1",
     "react-image-gallery": "^1.2.7",
     "react-intersection-observer": "^8.33.1",
     "react-redux": "^7.2.0",
+    "react-router-dom": "^6.4.2",
     "react-scripts": "3.4.1",
     "react-spatial": "1.0.25",
     "react-tooltip": "^4.2.17",
     "redux": "^4.0.5",
+    "redux-debounced": "^0.5.0",
+    "redux-thunk": "^2.4.1",
     "sass": "^1.49.9",
     "scroll-into-view": "^1.16.0"
   },
@@ -42,6 +44,8 @@
     "react-dom": "16.13.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "17.0.2",
+    "@commitlint/config-conventional": "17.0.2",
     "eslint": "6.8.0",
     "eslint-config-airbnb": "18.1.0",
     "eslint-config-prettier": "6.10.1",
@@ -50,6 +54,8 @@
     "eslint-plugin-prettier": "3.1.4",
     "eslint-plugin-react": "7.19.0",
     "eslint-plugin-react-hooks": "3.0.0",
+    "fixpack": "3.0.6",
+    "lint-staged": "12.3.3",
     "prettier": "^2.2.1",
     "stylelint": "13.3.0",
     "stylelint-config-recommended-scss": "4.2.0",
@@ -57,14 +63,39 @@
     "stylelint-scss": "3.16.0"
   },
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "deploy": "gh-pages -d build",
     "eject": "react-scripts eject",
+    "format": "prettier --write \"src/**/*.js\" && eslint \"src/**/*.js\" --fix && stylelint \"src/**/*.css\" \"src/**/*.scss\" --fix",
     "lint": "eslint \"src/**/*.js\" && stylelint \"src/**/*.css\" \"src/**/*.scss\"",
-    "format": "prettier --write \"src/**/*.js\" && eslint \"src/**/*.js\" --fix && stylelint \"src/**/*.css\" \"src/**/*.scss\" --fix"
+    "predeploy": "npm run build",
+    "prepare": "husky install",
+    "start": "react-scripts start",
+    "test": "react-scripts test"
+  },
+  "babel": {
+    "presets": [
+      "react-app",
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ],
+    "plugins": [
+      "@babel/plugin-proposal-object-rest-spread"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not ie < 11",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version",
+      "last 1 ie version"
+    ]
   },
   "eslintConfig": {
     "env": {
@@ -97,34 +128,27 @@
       "prettier/prettier": "error"
     }
   },
+  "homepage": "http://danji90.github.io",
+  "lint-staged": {
+    "(src|__mocks__)/**/*.js": [
+      "eslint --fix",
+      "prettier --write",
+      "git add",
+      "yarn test --bail --findRelatedTests"
+    ],
+    "package.json": [
+      "fixpack --sortToTop name --sortToTop license --sortToTop description --sortToTop version --sortToTop author --sortToTop main --sortToTop module --sortToTop files --sortToTop exports --sortToTop proxy --sortToTop dependencies --sortToTop peerDependencies --sortToTop devDependencies --sortToTop resolutions --sortToTop scripts"
+    ],
+    "src/**/*.{css,scss}": [
+      "stylelint --fix --allow-empty-input"
+    ]
+  },
   "prettier": {
     "trailingComma": "all",
-    "singleQuote": true
+    "singleQuote": true,
+    "endOfLine": "auto"
   },
-  "babel": {
-    "presets": [
-      "react-app",
-      "@babel/preset-env",
-      "@babel/preset-react"
-    ],
-    "plugins": [
-      "@babel/plugin-proposal-object-rest-spread"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not ie < 11",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version",
-      "last 1 ie version"
-    ]
-  },
+  "private": true,
   "rules": [
     {
       "loader": "babel-loader"
