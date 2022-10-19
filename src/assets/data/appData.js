@@ -720,7 +720,7 @@ const initialState = {
       url: 'https://github.com/thebuilder/react-intersection-observer',
     },
     {
-      name: 'scroll-to-top',
+      name: 'scroll-into-view',
       url: 'https://github.com/KoryNunn/scroll-into-view',
     },
   ],
