@@ -120,6 +120,20 @@ const theme = createMuiTheme({
         textDecoration: 'underline',
       },
     },
+    scrollBarThin: {
+      scrollbarWidth: 'thin',
+      scrollbarColor: 'rgba(40, 44, 52, 0.5) #f5f5f5',
+      '&::-webkit-scrollbar': {
+        width: '0.4em',
+        height: '0.4em',
+      },
+      '&::-webkit-scrollbar-track': {
+        backgroundColor: '#f5f5f5',
+      },
+      '&::-webkit-scrollbar-thumb': {
+        backgroundColor: 'rgba(40, 44, 52, 0.5)',
+      },
+    },
   },
   animations: {
     fadeIn: () => {

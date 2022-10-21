@@ -6,18 +6,37 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '../Container/Container';
 
 const useStyles = makeStyles((theme) => ({
+  container: {
+    position: 'relative',
+    height: 250,
+  },
   overflowWrapper: {
     width: 'inherit',
     overflowX: 'auto',
     margin: '10px 0',
-    [theme.breakpoints.down('xs')]: {
-      overflowX: 'scroll',
+    [theme.breakpoints.down('md')]: {
+      display: 'flex',
+      flexDirection: 'row-reverse',
+      overflowX: 'auto',
+      overflowY: 'hidden',
+      height: 150,
     },
+    ...theme.styles.scrollBarThin,
   },
   calendarWrapper: {
     paddingTop: 15,
-    [theme.breakpoints.down('xs')]: {
-      width: 800,
+    [theme.breakpoints.down('md')]: {
+      minWidth: 800,
+    },
+    '& .react-activity-calendar': {
+      '& footer': {
+        position: 'absolute',
+        left: 30,
+        top: 205,
+        width: 'calc(100% - 60px)',
+        display: 'flex',
+        justifyContent: 'space-between',
+      },
     },
   },
 }));
@@ -25,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 function GHCalendar() {
   const classes = useStyles();
   return (
-    <Container title="My Github" id="github">
+    <Container title="My Github" id="github" className={classes.container}>
       <div className={classes.overflowWrapper}>
         <div className={classes.calendarWrapper}>
           <ReactGitHubCalendar username="danji90" color="hsl(94, 90%, 35%)">
