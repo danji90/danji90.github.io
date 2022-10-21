@@ -95,17 +95,7 @@ const styles = (theme) => {
       overflowY: 'auto',
       margin: '-10px -10px 0 -10px',
       padding: 10,
-      scrollbarWidth: 'thin',
-      scrollbarColor: 'rgba(40, 44, 52, 0.5) #f5f5f5',
-      '&::-webkit-scrollbar': {
-        width: '0.4em',
-      },
-      '&::-webkit-scrollbar-track': {
-        backgroundColor: '#f5f5f5',
-      },
-      '&::-webkit-scrollbar-thumb': {
-        backgroundColor: 'rgba(40, 44, 52, 0.5)',
-      },
+      ...theme.styles.scrollBarThin,
     },
     timeSlider: {
       flexBasis: '10vh',
