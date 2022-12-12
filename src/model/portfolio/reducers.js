@@ -4,7 +4,6 @@ import TileLayer from 'ol/layer/Tile';
 import XYZ from 'ol/source/XYZ';
 import OSM from 'ol/source/OSM';
 import { Layer } from 'mobility-toolbox-js/ol';
-import { defaults as defaultInteractions } from 'ol/interaction';
 import {
   SET_MENU_OPEN,
   SET_ACTIVE_SECTION,
@@ -16,11 +15,6 @@ import {
 } from './actions';
 
 import initialAppState from '../../assets/data/appData';
-
-const interactions = defaultInteractions({
-  altShiftDragRotate: false,
-  pinchRotate: false,
-});
 
 const mapBoxKey =
   'pk.eyJ1IjoiZGFuamk5MCIsImEiOiJjazA2azNrbzMwMjM3M2VsdmQxaXYyMG9sIn0.bFXyO9IWGsCT2j2o0yXoOw';
@@ -75,7 +69,7 @@ const initialState = {
     nav: 'home',
     tab: true,
   },
-  map: new Map({ interactions, controls: [] }),
+  map: new Map({ controls: [], interactions: [] }),
   showWork: true,
   showEducation: true,
   showResidence: false,
