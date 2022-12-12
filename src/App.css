@@ -12,6 +12,11 @@ h5,
 h6 {
   font-family: 'Montserrat', sans-serif;
 }
+
 html {
   position: relative;
+}
+
+.ol-viewport {
+  touch-action: auto !important;
 }

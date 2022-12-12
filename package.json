@@ -153,5 +153,10 @@
     {
       "loader": "babel-loader"
     }
-  ]
+  ],
+  "stylelint": {
+    "extends": [
+      "stylelint-config-standard"
+    ]
+  }
 }

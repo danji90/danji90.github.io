@@ -19,6 +19,8 @@ import Text from 'ol/style/Text';
 import Map from 'ol/Map';
 import Cluster from 'ol/source/Cluster';
 import GeoJSON from 'ol/format/GeoJSON';
+import { platformModifierKeyOnly } from 'ol/events/condition';
+import { DragPan, MouseWheelZoom, defaults } from 'ol/interaction';
 import 'react-spatial/themes/default/index.scss';
 import { format } from 'date-fns';
 
@@ -110,6 +112,27 @@ const styles = (theme) => {
     sliderWrapper: {
       padding: '0 20px',
     },
+    scrollOverlay: {
+      position: 'absolute',
+      height: '100%',
+      width: '100%',
+      padding: 10,
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      zIndex: 9999,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      textAlign: 'center',
+      boxSizing: 'border-box',
+      fontSize: 200,
+      color: 'black',
+      opacity: 0,
+      pointerEvents: 'none',
+      transition: 'opacity 200ms ease-out',
+    },
+    showOverlay: {
+      opacity: 1,
+    },
   };
 };
 
@@ -139,8 +162,9 @@ const defaultProps = {
 
 const mapData = require('../../../assets/data/mapFeatures.json');
 
-const styleCache = {};
+const MOUSE_SCROLL_EVENTS = ['scroll', 'mousescroll', 'wheel'];
 
+const styleCache = {};
 const getStyle = (feature, resolution) => {
   const size = feature.get('features').length;
   let style = styleCache[size];
@@ -227,6 +251,7 @@ class LifeMap extends Component {
     }).readFeatures(mapData.residence);
 
     this.onFeatureClick = this.onFeatureClick.bind(this);
+    this.handleScrollOverlay = this.handleScrollOverlay.bind(this);
   }
 
   componentDidMount() {
@@ -246,6 +271,39 @@ class LifeMap extends Component {
     this.updateFeatures();
     this.setState({ clusterSource: this.clusterSource });
     map.addLayer(this.clusterLayer);
+
+    const dragPanInteraction = new DragPan({
+      condition: (evt) => {
+        const hasMultiPointer = dragPanInteraction.getPointerCount() === 2;
+        this.isMobile && this.handleScrollOverlay(evt, !hasMultiPointer);
+        return this.isMobile ? hasMultiPointer : true;
+      },
+      onFocusOnly: true,
+    });
+
+    const interactions = defaults({
+      altShiftDragRotate: false,
+      pinchRotate: false,
+      dragPan: false,
+      mouseWheelZoom: false,
+    }).extend([
+      dragPanInteraction,
+      new MouseWheelZoom({
+        condition: (evt) => {
+          const isScrollEvt = MOUSE_SCROLL_EVENTS.includes(evt.type);
+          this.handleScrollOverlay(
+            evt,
+            isScrollEvt && !platformModifierKeyOnly(evt),
+          );
+          return platformModifierKeyOnly(evt);
+        },
+      }),
+    ]);
+    interactions.forEach((int) => map.addInteraction(int));
+    this.isMobile = window.matchMedia(
+      'only screen and (max-width: 768px)',
+    ).matches;
+    map.on('movestart', () => this.setState({ showScrollOverlay: false }));
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -283,6 +341,16 @@ class LifeMap extends Component {
     this.setState({ selectedFeature: features[0].get('features')[0] });
   }
 
+  handleScrollOverlay(evt, showOverlay) {
+    if (showOverlay) {
+      clearTimeout(this.scrollOverlayTimeout);
+      this.setState({ showScrollOverlay: true });
+      this.scrollOverlayTimeout = setTimeout(() => {
+        this.setState({ showScrollOverlay: false });
+      }, 1200);
+    }
+  }
+
   updateFeatures() {
     const { timeSpan } = this.state;
     const { showWork, showEducation, showResidence } = this.props;
@@ -316,7 +384,8 @@ class LifeMap extends Component {
   }
 
   render() {
-    const { selectedFeature, timeSpan, clusterSource } = this.state;
+    const { selectedFeature, timeSpan, clusterSource, showScrollOverlay } =
+      this.state;
     const { map, section, layerService, classes } = this.props;
     const baseLayers = layerService.getBaseLayers();
     return (
@@ -328,6 +397,17 @@ class LifeMap extends Component {
       >
         <div className={classes.contentWrapper}>
           <div className={classes.mapContainer}>
+            <div
+              className={`${classes.scrollOverlay}${
+                showScrollOverlay ? ` ${classes.showOverlay}` : ''
+              }`}
+            >
+              <Typography variant="h6" style={{ color: 'white' }}>
+                {this.isMobile
+                  ? 'Use two fingers to navigate the map'
+                  : 'Use CTRL + scroll to zoom'}
+              </Typography>
+            </div>
             <LayerMenu baseLayers={baseLayers} />
             <FullExtent
               featureSource={clusterSource}
