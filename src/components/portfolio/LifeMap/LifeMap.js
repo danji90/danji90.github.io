@@ -21,6 +21,7 @@ import Cluster from 'ol/source/Cluster';
 import GeoJSON from 'ol/format/GeoJSON';
 import { platformModifierKeyOnly } from 'ol/events/condition';
 import { DragPan, MouseWheelZoom, defaults } from 'ol/interaction';
+import { unByKey } from 'ol/Observable';
 import 'react-spatial/themes/default/index.scss';
 import { format } from 'date-fns';
 
@@ -124,8 +125,6 @@ const styles = (theme) => {
       justifyContent: 'center',
       textAlign: 'center',
       boxSizing: 'border-box',
-      fontSize: 200,
-      color: 'black',
       opacity: 0,
       pointerEvents: 'none',
       transition: 'opacity 200ms ease-out',
@@ -252,6 +251,7 @@ class LifeMap extends Component {
 
     this.onFeatureClick = this.onFeatureClick.bind(this);
     this.handleScrollOverlay = this.handleScrollOverlay.bind(this);
+    this.onTouchMove = this.onTouchMove.bind(this);
   }
 
   componentDidMount() {
@@ -273,10 +273,10 @@ class LifeMap extends Component {
     map.addLayer(this.clusterLayer);
 
     const dragPanInteraction = new DragPan({
-      condition: (evt) => {
-        const hasMultiPointer = dragPanInteraction.getPointerCount() === 2;
-        this.isMobile && this.handleScrollOverlay(evt, !hasMultiPointer);
-        return this.isMobile ? hasMultiPointer : true;
+      condition: () => {
+        return this.isMobile
+          ? dragPanInteraction.getPointerCount() === 2
+          : true;
       },
       onFocusOnly: true,
     });
@@ -303,7 +303,12 @@ class LifeMap extends Component {
     this.isMobile = window.matchMedia(
       'only screen and (max-width: 768px)',
     ).matches;
-    map.on('movestart', () => this.setState({ showScrollOverlay: false }));
+    this.onMoveStartKey = map.on('movestart', () =>
+      this.setState({ showScrollOverlay: false }),
+    );
+    this.onPostRenderKey = map.on('postrender', () => {
+      map.getTarget().addEventListener('touchmove', this.onTouchMove);
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -317,6 +322,13 @@ class LifeMap extends Component {
     ) {
       this.updateFeatures();
     }
+  }
+
+  componentWillUnmount() {
+    const { map } = this.props;
+    unByKey(this.onMoveStartKey);
+    unByKey(this.onPostRenderKey);
+    map.getTarget().removeEventListener('touchmove', this.onTouchMove);
   }
 
   onFeatureClick(features) {
@@ -339,6 +351,12 @@ class LifeMap extends Component {
       return;
     }
     this.setState({ selectedFeature: features[0].get('features')[0] });
+  }
+
+  onTouchMove(evt) {
+    evt.touches.length < 2 &&
+      this.isMobile &&
+      this.handleScrollOverlay(evt, true);
   }
 
   handleScrollOverlay(evt, showOverlay) {
