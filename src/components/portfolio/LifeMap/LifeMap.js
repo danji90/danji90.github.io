@@ -300,13 +300,23 @@ class LifeMap extends Component {
     const testFiltered = newFeatures.filter((feature) => {
       let display = false;
       const timeStamps = feature.get('timestamp');
+      const isCurrent = feature.get('current');
       timeStamps.forEach((timestamp) => {
+        const startOfDay = new Date();
+        startOfDay.setUTCHours(0, 0, 0, 0);
+        const featureDates = {
+          start: Date.parse(timestamp[0]),
+          end: isCurrent ? startOfDay.getTime() : Date.parse(timestamp[1]),
+        };
+        const inputDates = {
+          start: timeSpan[0],
+          end: timeSpan[1],
+        };
+
         if (!display) {
           display =
-            (Date.parse(timestamp[0]) >= timeSpan[0] &&
-              Date.parse(timestamp[1]) <= timeSpan[1]) ||
-            (Date.parse(timestamp[0]) <= timeSpan[0] &&
-              Date.parse(timestamp[1]) >= timeSpan[1]);
+            featureDates.start <= inputDates.end &&
+            inputDates.start <= featureDates.end;
         }
       });
       return display;

@@ -61,30 +61,33 @@ export default function MapScrollOverlay() {
   );
 
   useEffect(() => {
-    const dragPanInteraction = new DragPan({
-      condition: () => {
-        return isMobile ? dragPanInteraction.getPointerCount() === 2 : true;
-      },
-      onFocusOnly: true,
-    });
-    const scrollInts = [
-      dragPanInteraction,
-      new MouseWheelZoom({
-        condition: (evt) => {
-          const isScrollEvt = MOUSE_SCROLL_EVENTS.includes(evt.type);
-          handleScrollOverlay(isScrollEvt && !platformModifierKeyOnly(evt));
-          return platformModifierKeyOnly(evt);
+    const onLoadTargetKey = map.once('change:target', () => {
+      const dragPanInteraction = new DragPan({
+        condition: () => {
+          return isMobile ? dragPanInteraction.getPointerCount() === 2 : true;
         },
-      }),
-    ];
-    scrollInts.forEach((int) => map.addInteraction(int));
-    onMoveStartKey = map.on('movestart', () => setShowOverlay(false));
-    onPostRenderKey = map.on('postrender', () => {
-      map.getTarget().addEventListener('touchmove', onTouchMove);
+        onFocusOnly: true,
+      });
+      const scrollInts = [
+        dragPanInteraction,
+        new MouseWheelZoom({
+          condition: (evt) => {
+            const isScrollEvt = MOUSE_SCROLL_EVENTS.includes(evt.type);
+            handleScrollOverlay(isScrollEvt && !platformModifierKeyOnly(evt));
+            return platformModifierKeyOnly(evt);
+          },
+        }),
+      ];
+      scrollInts.forEach((int) => map.addInteraction(int));
+      onMoveStartKey = map.on('movestart', () => setShowOverlay(false));
+      onPostRenderKey = map.on('postrender', () => {
+        map.getTarget().addEventListener('touchmove', onTouchMove);
+      });
     });
     return () => {
       unByKey(onMoveStartKey);
       unByKey(onPostRenderKey);
+      unByKey(onLoadTargetKey);
       map.getTarget().removeEventListener('touchmove', onTouchMove);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
