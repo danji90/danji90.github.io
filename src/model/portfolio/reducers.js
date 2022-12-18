@@ -3,6 +3,7 @@ import LayerService from 'react-spatial/LayerService';
 import TileLayer from 'ol/layer/Tile';
 import XYZ from 'ol/source/XYZ';
 import OSM from 'ol/source/OSM';
+import { defaults } from 'ol/interaction';
 import { Layer } from 'mobility-toolbox-js/ol';
 import {
   SET_MENU_OPEN,
@@ -69,7 +70,15 @@ const initialState = {
     nav: 'home',
     tab: true,
   },
-  map: new Map({ controls: [], interactions: [] }),
+  map: new Map({
+    controls: [],
+    interactions: defaults({
+      altShiftDragRotate: false,
+      pinchRotate: false,
+      dragPan: false,
+      mouseWheelZoom: false,
+    }),
+  }),
   showWork: true,
   showEducation: true,
   showResidence: false,
