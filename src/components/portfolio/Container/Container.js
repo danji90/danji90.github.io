@@ -31,7 +31,7 @@ const defaultProps = {
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
-    position: 'relative',
+    position: (props) => (props.id ? 'relative' : 'static'),
   },
   content: {
     opacity: 0,
@@ -71,7 +71,7 @@ function Container(props) {
 
   return (
     <div ref={ref} className={classes.wrapper}>
-      <div className={classes.hashAnchor} id={id} />
+      {id ? <div className={classes.hashAnchor} id={id} /> : null}
       <div className={`${classes.content} ${inView ? classes.visible : ''}`}>
         <div className={`${classes.container} ${className}`} style={styles}>
           <Typography variant="h2">{title}</Typography>

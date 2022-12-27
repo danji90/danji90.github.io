@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => {
         display: 'flex',
         justifyContent: 'center',
         columnCount: 3,
-        columnGap: '3%',
+        columnGap: 20,
         width: '100%',
         zIndex: 0,
       },

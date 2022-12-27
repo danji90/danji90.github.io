@@ -1,11 +1,24 @@
-import React, { useMemo } from 'react';
+import React from 'react';
+import { makeStyles } from '@material-ui/core';
 import ImageGallery from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
-import Container from '../Container/Container';
 
 import bolzano from '../../../assets/images/bolzano.jpg';
 import desierto from '../../../assets/images/desierto.jpg';
 import freiburg1 from '../../../assets/images/freiburg1.jpeg';
+
+const useStyles = makeStyles((theme) => ({
+  container: {
+    backgroundColor: 'white',
+    margin: '20px 0',
+    padding: '10px 30px 20px',
+    boxShadow:
+      'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px',
+    [theme.breakpoints.down('xs')]: {
+      padding: '10px 30px 20px',
+    },
+  },
+}));
 
 const images = [
   {
@@ -26,14 +39,12 @@ const images = [
 ];
 
 function PhotoGallery() {
-  const isMobile = useMemo(
-    () => window.matchMedia('only screen and (max-width: 768px)').matches,
-    [],
-  );
+  const classes = useStyles();
+
   return (
-    <Container title="Photos">
+    // Using <Container /> component will break image gallery fullScreen mode
+    <div className={classes.container}>
       <ImageGallery
-        showFullscreenButton={!isMobile}
         items={images}
         defaultImage={desierto}
         showBullets
@@ -41,7 +52,7 @@ function PhotoGallery() {
         lazyLoad
         showPlayButton={false}
       />
-    </Container>
+    </div>
   );
 }
 
