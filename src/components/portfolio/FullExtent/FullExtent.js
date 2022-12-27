@@ -23,11 +23,8 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-function FullExtent({ featureSource, onClick }) {
-  const map = useSelector((state) => state.portfolio.map);
+const useSetDisabled = (featureSource) => {
   const [disabled, setDisabled] = useState(false);
-  const classes = useStyles();
-
   useEffect(() => {
     const onSourceChange = () =>
       setDisabled(featureSource?.getFeatures().length === 0);
@@ -37,6 +34,13 @@ function FullExtent({ featureSource, onClick }) {
     }
     return () => unByKey(onSourceChange);
   }, [featureSource]);
+  return [disabled, setDisabled];
+};
+
+function FullExtent({ featureSource, onClick }) {
+  const map = useSelector((state) => state.portfolio.map);
+  const classes = useStyles();
+  const [disabled] = useSetDisabled(featureSource);
 
   return (
     <IconButton
