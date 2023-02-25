@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     padding: '10px 30px 20px',
     boxShadow:
       'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px',
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       padding: props.fullWidthOnMobile ? '10px 0 20px' : '10px 30px 20px',
     },
   }),

@@ -53,11 +53,10 @@ const styles = (theme) => {
     contentWrapper: {
       display: 'flex',
       flexDirection: 'column',
-      height: '100%',
+      height: '95%',
     },
     mapContainer: {
       position: 'relative',
-      flexBasis: '10vh',
       flexGrow: 8,
       overflow: 'hidden',
       [theme.breakpoints.down('xs')]: {
@@ -99,8 +98,6 @@ const styles = (theme) => {
       ...theme.styles.scrollBarThin,
     },
     timeSlider: {
-      flexBasis: '10vh',
-      flexGrow: 1,
       padding: '10px 0',
       [theme.breakpoints.down('xs')]: {
         '& h3': {
