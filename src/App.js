@@ -6,7 +6,7 @@ import theme from './theme';
 import './App.css';
 
 import Portfolio from './Pages/Portfolio';
-import PedalTripper from './Pages/PedalTripper';
+import PedalTrips from './Pages/PedalTrips';
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
         <HashRouter>
           <Routes>
             <Route exact path="/" element={<Portfolio />} />
-            <Route path="/pedaltripper" element={<PedalTripper />} />
+            <Route path="/pedaltrips" element={<PedalTrips />} />
           </Routes>
         </HashRouter>
       </ThemeProvider>

@@ -27,7 +27,7 @@ const useStyles = makeStyles(() => {
 
 export default function BikeMap() {
   const classes = useStyles();
-  const { map, baseLayers } = useSelector((state) => state.pedaltripper);
+  const { map, baseLayers } = useSelector((state) => state.pedaltrips);
   return (
     <>
       <BasicMap
