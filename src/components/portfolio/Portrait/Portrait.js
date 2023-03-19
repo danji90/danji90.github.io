@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
-import portrait from '../../../assets/images/daniel1.jpg';
+// import portrait from '../../../assets/images/daniel1.jpg';
+import portrait2 from '../../../assets/images/daniel3.jpeg';
 
 const useStyles = makeStyles((theme) => ({
   portraitContainer: {
@@ -32,7 +33,7 @@ function Portrait({ size }) {
   const classes = useStyles({ size });
   return (
     <div className={classes.portraitContainer}>
-      <img src={portrait} alt="error" className={classes.portraitImg} />
+      <img src={portrait2} alt="error" className={classes.portraitImg} />
     </div>
   );
 }
