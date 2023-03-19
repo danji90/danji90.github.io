@@ -1,18 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
 import ImageGallery from 'react-image-gallery';
+import { useSelector } from 'react-redux';
 import 'react-image-gallery/styles/css/image-gallery.css';
-
-import bolzano from '../../../assets/images/bolzano.jpg';
-import desierto from '../../../assets/images/desierto.jpg';
-import freiburg1 from '../../../assets/images/freiburg1.jpeg';
-import egyptDusk from '../../../assets/images/egypt_dusk.jpg';
-import sarntal from '../../../assets/images/sarntal_winter.jpg';
-import schlern from '../../../assets/images/schlern.jpg';
-import vosges from '../../../assets/images/vosges.JPEG';
-import vosgesBike from '../../../assets/images/vosges_bike.JPG';
-import sloveniaChapel from '../../../assets/images/slovenia_chapel.jpg';
-import vrsic from '../../../assets/images/vrsic.jpg';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -27,68 +17,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const images = [
-  {
-    original: bolzano,
-    thumbnail: bolzano,
-    description: 'Bolzano - Bozen, Italy',
-  },
-  {
-    original: desierto,
-    thumbnail: desierto,
-    description: 'Desierto de las Palmas, Castellón, Spain',
-  },
-  {
-    original: freiburg1,
-    thumbnail: freiburg1,
-    description: 'Freiburg im Breisgau, Germany',
-  },
-  {
-    original: egyptDusk,
-    thumbnail: egyptDusk,
-    description: 'Sunset over the Red Sea, Egypt',
-  },
-  {
-    original: sarntal,
-    thumbnail: sarntal,
-    description: 'Reinswald - Val Sarentino, Alto Adige',
-  },
-  {
-    original: schlern,
-    thumbnail: schlern,
-    description: 'Dolomites',
-  },
-  {
-    original: vrsic,
-    thumbnail: vrsic,
-    description: 'Vršič pass, Slovenia',
-  },
-  {
-    original: sloveniaChapel,
-    thumbnail: sloveniaChapel,
-    description: 'Chapel near Bled, Slovenia',
-  },
-  {
-    original: vosges,
-    thumbnail: vosges,
-    description: 'The Vosges, France',
-  },
-  {
-    original: vosgesBike,
-    thumbnail: vosgesBike,
-    description: 'Biking through the Vosges, France',
-  },
-];
-
 function PhotoGallery() {
   const classes = useStyles();
+  const photos = useSelector((state) => state.portfolio.photos);
 
   return (
-    // Using <Container /> component will break image gallery fullScreen mode
+    // Using <Container /> component will break image gallery full screen mode
     <div className={classes.container}>
       <ImageGallery
-        items={images}
-        defaultImage={desierto}
+        items={photos}
+        defaultImage={photos[0].original}
         showBullets
         showIndex
         lazyLoad

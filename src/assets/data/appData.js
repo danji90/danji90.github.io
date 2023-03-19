@@ -1,4 +1,14 @@
 import lbsnForMobilityAnalysis from '../documents/MarshHunnD_SocialMediaMobility.pdf';
+import bolzano from '../images/bolzano.jpg';
+import desierto from '../images/desierto.jpg';
+import freiburg1 from '../images/freiburg1.jpeg';
+import egyptDusk from '../images/egypt_dusk.jpg';
+import sarntal from '../images/sarntal_winter.jpg';
+import schlern from '../images/schlern.jpg';
+import vosges from '../images/vosges.JPEG';
+import vosgesBike from '../images/vosges_bike.JPG';
+import sloveniaChapel from '../images/slovenia_chapel.jpg';
+import vrsic from '../images/vrsic.jpg';
 
 const initialState = {
   sections: [
@@ -97,6 +107,58 @@ const initialState = {
       id: 'patentino',
       title: 'Certificate of Bilingualism (Italian-German): Patentino A',
       details: {},
+    },
+  ],
+  photos: [
+    {
+      original: bolzano,
+      thumbnail: bolzano,
+      description: 'Bolzano - Bozen, Italy',
+    },
+    {
+      original: desierto,
+      thumbnail: desierto,
+      description: 'Desierto de las Palmas, Castellón, Spain',
+    },
+    {
+      original: freiburg1,
+      thumbnail: freiburg1,
+      description: 'Freiburg im Breisgau, Germany',
+    },
+    {
+      original: egyptDusk,
+      thumbnail: egyptDusk,
+      description: 'Sunset over the Red Sea, Egypt',
+    },
+    {
+      original: sarntal,
+      thumbnail: sarntal,
+      description: 'Reinswald - Val Sarentino, Alto Adige',
+    },
+    {
+      original: schlern,
+      thumbnail: schlern,
+      description: 'Dolomites',
+    },
+    {
+      original: vrsic,
+      thumbnail: vrsic,
+      description: 'Vršič pass, Slovenia',
+    },
+    {
+      original: sloveniaChapel,
+      thumbnail: sloveniaChapel,
+      description: 'Chapel near Bled, Slovenia',
+    },
+    {
+      original: vosges,
+      thumbnail: vosges,
+      description: 'The Vosges, France',
+    },
+    {
+      original: vosgesBike,
+      thumbnail: vosgesBike,
+      description: 'Biking through the Vosges, France',
     },
   ],
   projects: [
@@ -641,15 +703,15 @@ const initialState = {
       list: {
         header: 'Core tasks:',
         items: [
-          'UI component engineering with <a href="https://reactjs.org/" target="_blank rel="noopener noreferrer">ReactJs</a>',
-          'Continuous frontend development in <a href="https://geops.ch/solution" target="_blank rel="noopener noreferrer">geOps client applications</a>',
-          'Expansion and maintenance of <a href="https://github.com/geops" target="_blank rel="noopener noreferrer">geOps frontend libraries and packages</a>',
+          'UI component engineering with <a href="https://reactjs.org/" target="_blank" rel="noopener noreferrer">ReactJs</a>',
+          'Continuous frontend development in <a href="https://geops.ch/solution" target="_blank" rel="noopener noreferrer">geOps client applications</a>',
+          'Expansion and maintenance of <a href="https://github.com/geops" target="_blank" rel="noopener noreferrer">geOps frontend libraries and packages</a>',
           'Application quality assessment through E2E and unit tests',
-          'Main responsible for Continuous Integration in several geOps client applications (<a href="https://editor.mapset.io/" target="_blank rel="noopener noreferrer">mapset</a>, <a href="https://mobility.portal.geops.io/" target="_blank rel="noopener noreferrer">mobility portal</a>, <a href="https://routing-demo.geops.io/" target="_blank rel="noopener noreferrer">geOps routing</a> to name a few)',
-          'Extension of Django applications using <a href="https://www.django-rest-framework.org/" target="_blank rel="noopener noreferrer">Django Rest Framework</a>',
-          'Development of web maps using <a href="https://docs.mapbox.com/api/maps/styles/" target="_blank rel="noopener noreferrer">mapbox styles</a> and mapboxgl-js',
+          'Main responsible for Continuous Integration in several geOps client applications (<a href="https://editor.mapset.io/" target="_blank" rel="noopener noreferrer">mapset</a>, <a href="https://mobility.portal.geops.io/" target="_blank"  rel="noopener noreferrer">mobility portal</a>, <a href="https://routing-demo.geops.io/" target="_blank" rel="noopener noreferrer">geOps routing</a> to name a few)',
+          'Extension of Django applications using <a href="https://www.django-rest-framework.org/" target="_blank" rel="noopener noreferrer">Django Rest Framework</a>',
+          'Development of web maps using <a href="https://docs.mapbox.com/api/maps/styles/" target="_blank" rel="noopener noreferrer">mapbox styles</a> and mapboxgl-js',
           'Regular frontend code reviewing',
-          'Writing Blog articles for the <a href="https://geops.ch/en/blog" target="_blank rel="noopener noreferrer">geOps blog</a>',
+          'Writing Blog articles for the <a href="https://geops.ch/en/blog" target="_blank" rel="noopener noreferrer">geOps blog</a>',
         ],
       },
     },
@@ -669,10 +731,10 @@ const initialState = {
           'Management of heterogeneous environmental data from in-situ monitoring stations',
           'Database management for Sensor Observation Service (SOS) in Environmental/Agricultural applications with PostgreSQL/PostGIS',
           'SOS database design and implementation',
-          'Establishment and maintenance of the <a href="http://monalisasos.eurac.edu/sos/index" target="_blank rel="noopener noreferrer">MONALISA data explorer</a> web platform and database via XML documents and python scripts',
+          'Establishment and maintenance of the <a href="http://monalisasos.eurac.edu/sos/index" target="_blank" rel="noopener noreferrer">MONALISA data explorer</a> web platform and database via XML documents and python scripts',
           'Automated file processing via python scripts',
           'Assistance in accessing SOS databases via R-plugins',
-          'Development and maintenance of <a href="http://webgis.eurac.edu/" target="_blank rel="noopener noreferrer">EURAC Web-GIS applications</a> using open source WMS/WFS tools (GeoServer) and web development technologies (javaScript, HTML, CSS)',
+          'Development and maintenance of <a href="http://webgis.eurac.edu/" target="_blank" rel="noopener noreferrer">EURAC Web-GIS applications</a> using open source WMS/WFS tools (GeoServer) and web development technologies (javaScript, HTML, CSS)',
           'Maintenance of environmental monitoring sensors on ground stations',
         ],
       },
