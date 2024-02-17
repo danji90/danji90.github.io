@@ -147,38 +147,36 @@ const renderProject = (projectData, index, projectsCount, classes) => {
 
 const renderLatestProject = (projectData, projectsCount, classes) => {
   return (
-    <>
-      <div key="latest" className={classes.latestProject}>
-        <Link
-          underline="none"
-          href={projectData.webLink}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Typography color="textPrimary" variant="h3" align="center">
-            {projectData.name}
-          </Typography>
-        </Link>
-        <Link
-          href={projectData.facility.url}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Typography variant="h4" align="center">
-            {projectData.facility.name}
-          </Typography>
-        </Link>
-        <br />
-        <a href={projectData.webLink} target="_blank">
-          <img
-            className={classes.projectImage}
-            src={projectData.images.find((img) => img.latest).path}
-            alt="not found"
-          />
-        </a>
-        {renderProject(projectData, null, projectsCount, classes)}
-      </div>
-    </>
+    <div key="latest" className={classes.latestProject}>
+      <Link
+        underline="none"
+        href={projectData.webLink}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Typography color="textPrimary" variant="h3" align="center">
+          {projectData.name}
+        </Typography>
+      </Link>
+      <Link
+        href={projectData.facility.url}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Typography variant="h4" align="center">
+          {projectData.facility.name}
+        </Typography>
+      </Link>
+      <br />
+      <a href={projectData.webLink} target="_blank">
+        <img
+          className={classes.projectImage}
+          src={projectData.images.find((img) => img.latest).path}
+          alt="not found"
+        />
+      </a>
+      {renderProject(projectData, null, projectsCount, classes)}
+    </div>
   );
 };
 

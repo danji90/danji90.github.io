@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Articles = () => {
+function Articles() {
   const classes = useStyles();
   const articles = useSelector((state) => state.portfolio.articles);
   const sorted = useMemo(() => articles.reverse(), [articles]);
@@ -45,6 +45,6 @@ const Articles = () => {
       })}
     </Container>
   );
-};
+}
 
 export default Articles;

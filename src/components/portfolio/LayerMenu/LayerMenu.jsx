@@ -54,7 +54,7 @@ const FormControlLabel = withStyles({
 
 let layerMenuTimout;
 
-const LayerMenu = () => {
+function LayerMenu() {
   const dispatch = useDispatch();
   const classes = useStyles();
   const showResidence = useSelector((state) => state.portfolio.showResidence);
@@ -173,6 +173,6 @@ const LayerMenu = () => {
       </Fade>
     </div>
   );
-};
+}
 
 export default LayerMenu;

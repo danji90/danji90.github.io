@@ -21,7 +21,7 @@ const getLangLevel = (stars) => {
   }
 };
 
-const Languages = () => {
+function Languages() {
   const section = useSelector((state) => state.portfolio.sections).find(
     (sect) => sect.id === 'languages',
   );
@@ -45,6 +45,6 @@ const Languages = () => {
       })}
     </Container>
   );
-};
+}
 
 export default Languages;

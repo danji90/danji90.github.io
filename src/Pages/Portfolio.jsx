@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-const Portfolio = () => {
+function Portfolio() {
   const classes = useStyles();
   const { sections } = useSelector((state) => state.portfolio);
 
@@ -125,6 +125,6 @@ const Portfolio = () => {
       </div>
     </>
   );
-};
+}
 
 export default Portfolio;

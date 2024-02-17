@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Work = ({ section }) => {
+function Work({ section }) {
   const work = useSelector((state) => state.portfolio.workItems);
   const classes = useStyles();
 
@@ -81,7 +81,7 @@ const Work = ({ section }) => {
       })}
     </Container>
   );
-};
+}
 
 Work.propTypes = {
   section: PropTypes.shape({

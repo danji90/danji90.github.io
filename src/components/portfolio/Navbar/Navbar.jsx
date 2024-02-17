@@ -136,7 +136,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const HideOnScroll = ({ children }) => {
+function HideOnScroll({ children }) {
   const [homeVisible, setHomeVisible] = useState(false);
   const theme = useTheme();
   const isTabletDown = useMediaQuery(theme.breakpoints.down('lg'));
@@ -168,13 +168,13 @@ const HideOnScroll = ({ children }) => {
   ) : (
     children
   );
-};
+}
 
 HideOnScroll.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-const ExperienceMenu = ({ tabs, onItemClick, anchor }) => {
+function ExperienceMenu({ tabs, onItemClick, anchor }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const xpOpen = useSelector((state) => state.portfolio.xpOpen);
@@ -217,7 +217,7 @@ const ExperienceMenu = ({ tabs, onItemClick, anchor }) => {
       }}
     </Popper>
   );
-};
+}
 
 ExperienceMenu.propTypes = {
   tabs: PropTypes.array.isRequired,
@@ -250,7 +250,7 @@ const scrollToSection = (sectionId, callback) => {
   );
 };
 
-const NavBar = () => {
+function NavBar() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const theme = useTheme();
@@ -454,6 +454,6 @@ const NavBar = () => {
       </HideOnScroll>
     </>
   );
-};
+}
 
 export default NavBar;

@@ -18,13 +18,13 @@ const useStyles = makeStyles(() => {
   };
 });
 
-const PedalTrips = () => {
+function PedalTrips() {
   const classes = useStyles();
   return (
     <div className={classes.mapContainer}>
       <BikeMap className />
     </div>
   );
-};
+}
 
 export default PedalTrips;
