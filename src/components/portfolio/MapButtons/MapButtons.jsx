@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { IconButton, makeStyles } from '@material-ui/core';
+import { IconButton } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { easeOut, easeIn } from 'ol/easing';
-import { Add, Remove } from '@material-ui/icons';
+import { Add, Remove } from '@mui/icons-material';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   mapBtnWrapper: {
     position: 'absolute',
     zIndex: 999,
@@ -69,7 +70,6 @@ function MapButtons() {
     const onZoomChange = () => setZoom(getView().getZoom());
     getView().on('change:resolution', onZoomChange);
     return () => getView().un('change:resolution', onZoomChange);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -85,6 +85,7 @@ function MapButtons() {
         title="Zoom in"
         disabled={zoom >= getView().getMaxZoom()}
         onClick={zoomIn}
+        size="large"
       >
         <Add />
       </IconButton>
@@ -93,6 +94,7 @@ function MapButtons() {
         title="Zoom out"
         disabled={zoom <= getView().getMinZoom()}
         onClick={zoomOut}
+        size="large"
       >
         <Remove />
       </IconButton>

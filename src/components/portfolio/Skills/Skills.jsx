@@ -3,17 +3,17 @@ import { useSelector } from 'react-redux';
 import {
   Typography,
   LinearProgress,
-  makeStyles,
   Accordion,
   AccordionDetails,
   AccordionSummary,
-} from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Container from '../Container/Container';
 
 const useStyles = makeStyles(() => ({
   accordion: {
-    position: 'relative',
+    position: 'relative !important',
     border: 0,
     boxShadow: 'none',
     '&::before': {
@@ -24,7 +24,7 @@ const useStyles = makeStyles(() => ({
     padding: 0,
   },
   expandIcon: {
-    position: 'absolute',
+    position: 'absolute !important',
     right: 0,
     top: 6,
   },

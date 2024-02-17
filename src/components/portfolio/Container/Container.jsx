@@ -1,11 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  Typography,
-  makeStyles,
-  useTheme,
-  useMediaQuery,
-} from '@material-ui/core';
+import { Typography, useTheme, useMediaQuery } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { useInView } from 'react-intersection-observer';
 
 const propTypes = {
@@ -45,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     padding: '10px 30px 20px',
     boxShadow:
       'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       padding: props.fullWidthOnMobile ? '10px 0 20px' : '10px 30px 20px',
     },
   }),
@@ -62,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
 function Container(props) {
   const { children, title, id, styles, className } = props;
   const theme = useTheme();
-  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
+  const isTablet = useMediaQuery(theme.breakpoints.down('lg'));
   const classes = useStyles(props);
   const { ref, inView } = useInView({
     threshold: isTablet ? 0 : 0.1,

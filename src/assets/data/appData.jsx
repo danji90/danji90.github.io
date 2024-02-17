@@ -9,6 +9,18 @@ import vosges from '../images/vosges.JPEG';
 import vosgesBike from '../images/vosges_bike.JPG';
 import sloveniaChapel from '../images/slovenia_chapel.jpg';
 import vrsic from '../images/vrsic.jpg';
+import treeAppLogo from '../images/tree_app-logo.png';
+import treeApp from '../images/tree_app.png';
+import trafimageMaps from '../images/trafimage-maps.png';
+import planEditor2 from '../images/plan_editor2.png';
+import planEditor1 from '../images/plan_editor1.png';
+import mobilityToolboxJs from '../images/mobilitytoolboxjs2.png';
+import senviro from '../images/senviro3.jpg';
+import senviroConnect from '../images/senviroConnect.jpg';
+import geomundus from '../images/geomundus.jpg';
+import geomundus1 from '../images/geomundus1.jpg';
+import elippss from '../images/elippss.jpg';
+import elippss1 from '../images/elippss1.jpg';
 
 const initialState = {
   sections: [
@@ -174,9 +186,11 @@ const initialState = {
       images: [
         {
           name: 'tree_app-logo.png',
+          path: treeAppLogo,
         },
         {
           name: 'tree_app.png',
+          path: treeApp,
           latest: true,
         },
       ],
@@ -218,6 +232,7 @@ const initialState = {
       images: [
         {
           name: 'trafimage-maps.png',
+          path: trafimageMaps,
         },
       ],
       tools: [
@@ -262,9 +277,11 @@ const initialState = {
       images: [
         {
           name: 'plan_editor2.png',
+          path: planEditor2,
         },
         {
           name: 'plan_editor1.png',
+          path: planEditor1,
         },
       ],
       tools: [
@@ -318,6 +335,7 @@ const initialState = {
       images: [
         {
           name: 'mobilitytoolboxjs2.png',
+          path: mobilityToolboxJs,
         },
       ],
       tools: [
@@ -349,9 +367,11 @@ const initialState = {
       images: [
         {
           name: 'senviro3.jpg',
+          path: senviro,
         },
         {
           name: 'senviroConnect.jpg',
+          path: senviroConnect,
         },
       ],
       tools: [
@@ -409,9 +429,11 @@ const initialState = {
       images: [
         {
           name: 'geomundus.jpg',
+          path: geomundus,
         },
         {
           name: 'geomundus1.jpg',
+          path: geomundus1,
         },
       ],
       tools: [
@@ -451,9 +473,11 @@ const initialState = {
       images: [
         {
           name: 'elippss.jpg',
+          path: elippss,
         },
         {
           name: 'elippss1.jpg',
+          path: elippss1,
         },
       ],
       tools: [

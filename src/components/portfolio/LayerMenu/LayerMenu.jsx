@@ -10,9 +10,10 @@ import {
   IconButton,
   Paper,
   Fade,
-} from '@material-ui/core';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { Layers } from '@material-ui/icons';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import withStyles from '@mui/styles/withStyles';
+import { Layers } from '@mui/icons-material';
 
 import {
   setShowEducation,
@@ -21,7 +22,7 @@ import {
   setLayersOpen,
 } from '../../../model/portfolio/actions';
 
-const useStyles = makeStyles((theme) => {
+const useStyles = makeStyles(() => {
   return {
     layerMenuWrapper: {
       position: 'absolute',
@@ -48,9 +49,7 @@ const useStyles = makeStyles((theme) => {
 });
 
 const FormControlLabel = withStyles({
-  root: {
-    display: 'block',
-  },
+  root: { display: 'block' },
 })(MuiFormControlLabel);
 
 let layerMenuTimout;
@@ -62,16 +61,14 @@ const LayerMenu = () => {
   const showEducation = useSelector((state) => state.portfolio.showEducation);
   const showWork = useSelector((state) => state.portfolio.showWork);
   const layersOpen = useSelector((state) => state.portfolio.layersOpen);
-  const layerService = useSelector((state) => state.portfolio.layerService);
+  const baselayers = useSelector((state) => state.portfolio.baselayers);
   const [disabled, setDisabled] = useState(true);
   const ref = useRef();
-  const currentBaseLayer = layerService
-    .getBaseLayers()
-    .find((baselayer) => baselayer.visible);
+  const currentBaseLayer = baselayers.find((baselayer) => baselayer.visible);
   const [value, setValue] = useState(currentBaseLayer?.name);
 
   const handleChange = (event) => {
-    const layer = layerService.getLayer(event.target.value);
+    const layer = baselayers.find((l) => l.key === event.target.value);
     layer.setVisible(true);
     setValue(event.target.value);
   };
@@ -114,6 +111,7 @@ const LayerMenu = () => {
         onMouseEnter={handleMenuOpen}
         classes={{ root: classes.layersButton }}
         style={{ backgroundColor: 'white' }}
+        size="large"
       >
         <Layers />
       </IconButton>
@@ -127,7 +125,7 @@ const LayerMenu = () => {
           >
             <Hidden mdUp>
               <RadioGroup value={value} onChange={handleChange}>
-                {layerService.getBaseLayers().map((baselayer) => {
+                {baselayers.map((baselayer) => {
                   return (
                     <MuiFormControlLabel
                       value={baselayer.name}

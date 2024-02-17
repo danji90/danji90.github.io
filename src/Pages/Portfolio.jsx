@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import Navbar from '../components/portfolio/Navbar/Navbar';
 import Home from '../components/portfolio/Home/Home';
 import AboutMe from '../components/portfolio/AboutMe/AboutMe';
@@ -34,10 +34,10 @@ const useStyles = makeStyles((theme) => {
       [theme.breakpoints.up('lg')]: {
         maxWidth: 1360,
       },
-      [theme.breakpoints.down('lg')]: {
+      [theme.breakpoints.down('xl')]: {
         width: '75vw',
       },
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.down('md')]: {
         width: '90vw',
       },
     },

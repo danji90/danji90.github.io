@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Link, List, ListItem, makeStyles } from '@material-ui/core';
+import { Link, List, ListItem } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 import Container from '../Container/Container';
 

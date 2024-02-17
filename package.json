@@ -2,40 +2,45 @@
   "name": "danji90.github.io",
   "version": "1.0.0",
   "dependencies": {
-    "@babel/core": "^7.9.0",
-    "@babel/helper-explode-assignable-expression": "^7.16.7",
-    "@babel/plugin-proposal-object-rest-spread": "^7.9.5",
-    "@babel/preset-react": "^7.9.4",
-    "@material-ui/core": "4.11.0",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.11.2",
-    "babel-preset-react-app": "^9.1.2",
+    "@mui/icons-material": "^5.15.10",
+    "@mui/lab": "^5.0.0-alpha.165",
+    "@mui/material": "^5.15.10",
+    "@mui/styles": "^5.15.10",
+    "@vitejs/plugin-react": "^4.2.1",
     "core-js": "^3.6.5",
     "date-fns": "^2.22.1",
     "gh-pages": "^2.2.0",
     "html-react-parser": "1.2.6",
     "husky": "^8.0.1",
     "mapbox-gl": "1.12.0",
-    "mobility-toolbox-js": "^1.7.6",
+    "maplibre-gl": "^4.0.1",
+    "mobility-toolbox-js": "2.3.8",
     "ol": "6.4.3",
     "ol-ext": "3.2.1",
     "prop-types": "15.7.2",
-    "react": "16.13.1",
+    "react": "^18.2.0",
     "react-app-polyfill": "^1.0.6",
-    "react-dom": "16.13.1",
+    "react-dom": "^18.2.0",
     "react-github-calendar": "3.3.4",
     "react-icons": "^4.3.1",
     "react-image-gallery": "1.2.7",
     "react-intersection-observer": "^8.33.1",
     "react-redux": "7.2.0",
     "react-router-dom": "6.4.2",
-    "react-scripts": "3.4.1",
-    "react-spatial": "1.0.25",
+    "react-spatial": "1.9.1",
     "react-tooltip": "4.2.17",
     "redux": "4.0.5",
     "redux-debounced": "^0.5.0",
     "redux-thunk": "^2.4.1",
     "sass": "^1.49.9",
-    "scroll-into-view": "^1.16.0"
+    "scroll-into-view": "^1.16.0",
+    "vite": "^5.1.3",
+    "vite-plugin-eslint": "^1.8.1",
+    "vitest": "^1.3.0"
   },
   "peerDependencies": {
     "mapbox-gl": "1.12.0",
@@ -63,25 +68,14 @@
     "stylelint-scss": "3.16.0"
   },
   "scripts": {
-    "build": "react-scripts build",
+    "build": "vite build",
     "deploy": "gh-pages -d build",
-    "eject": "react-scripts eject",
-    "format": "prettier --write \"src/**/*.js\" && eslint \"src/**/*.js\" --fix && stylelint \"src/**/*.css\" \"src/**/*.scss\" --fix",
+    "format": "prettier --write \"src/**/*.js\" && eslint \"src/**/*.jsx\" --fix && stylelint \"src/**/*.css\" \"src/**/*.scss\" --fix",
     "lint": "eslint \"src/**/*.js\" && stylelint \"src/**/*.css\" \"src/**/*.scss\"",
     "predeploy": "npm run build",
     "prepare": "husky install",
-    "start": "react-scripts start",
-    "test": "react-scripts test"
-  },
-  "babel": {
-    "presets": [
-      "react-app",
-      "@babel/preset-env",
-      "@babel/preset-react"
-    ],
-    "plugins": [
-      "@babel/plugin-proposal-object-rest-spread"
-    ]
+    "start": "vite",
+    "test": "vitest"
   },
   "browserslist": {
     "production": [
@@ -104,10 +98,13 @@
       "es6": true,
       "jest": true
     },
-    "parser": "babel-eslint",
+    "parserOptions": {
+      "ecmaVersion": 2020,
+      "jsx": true,
+      "impliedStrict": true
+    },
     "extends": [
       "airbnb",
-      "react-app",
       "prettier",
       "prettier/react"
     ],
@@ -115,6 +112,10 @@
       "prettier"
     ],
     "rules": {
+      "linebreak-style": 0,
+      "arrow-body-style": 0,
+      "default-param-last": 0,
+      "no-restricted-exports": 0,
       "react/jsx-filename-extension": [
         1,
         {
@@ -126,15 +127,19 @@
       ],
       "react/forbid-prop-types": "Off",
       "prettier/prettier": "error"
+    },
+    "settings": {
+      "react": {
+        "version": "detect"
+      }
     }
   },
   "homepage": "http://danji90.github.io",
   "lint-staged": {
-    "(src|__mocks__)/**/*.js": [
+    "(src|__mocks__)/**/*.jsx": [
       "eslint --fix",
       "prettier --write",
-      "git add",
-      "yarn test --bail --findRelatedTests"
+      "git add"
     ],
     "package.json": [
       "fixpack --sortToTop name --sortToTop license --sortToTop description --sortToTop version --sortToTop author --sortToTop main --sortToTop module --sortToTop files --sortToTop exports --sortToTop proxy --sortToTop dependencies --sortToTop peerDependencies --sortToTop devDependencies --sortToTop resolutions --sortToTop scripts"
@@ -149,11 +154,6 @@
     "endOfLine": "auto"
   },
   "private": true,
-  "rules": [
-    {
-      "loader": "babel-loader"
-    }
-  ],
   "stylelint": {
     "extends": [
       "stylelint-config-standard"

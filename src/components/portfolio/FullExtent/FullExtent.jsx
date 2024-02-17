@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { IconButton } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { IconButton } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { GiExpand } from 'react-icons/gi';
 import Cluster from 'ol/source/Cluster';
 import { unByKey } from 'ol/Observable';
 
-const useStyles = makeStyles((theme) => {
+const useStyles = makeStyles(() => {
   return {
     fullExtenBtn: {
       position: 'absolute',
@@ -54,6 +54,7 @@ function FullExtent({ featureSource, onClick }) {
       }}
       disabled={disabled}
       classes={{ root: classes.fullExtenBtn }}
+      size="large"
     >
       <GiExpand />
     </IconButton>

@@ -1,8 +1,8 @@
 import React from 'react';
 import { FaPhone } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
-import { Typography, List, ListItem, Link } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Typography, List, ListItem, Link } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 
 import Container from '../Container/Container';
 
