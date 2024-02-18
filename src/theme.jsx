@@ -95,6 +95,9 @@ const theme = createTheme({
           textTransform: 'unset',
           color: '#fff',
           minWidth: '0 !important',
+          '&.Mui-selected': {
+            color: '#fff',
+          },
         },
       },
     },

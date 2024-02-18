@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { FaGraduationCap } from 'react-icons/fa';
 import makeStyles from '@mui/styles/makeStyles';
 
-import Container from '../Container/Container';
+import Container from '../Container';
 
 const useStyles = makeStyles(() => ({
   eduItem: {

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Link, List, ListItem } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { FaExternalLinkAlt } from 'react-icons/fa';
-import Container from '../Container/Container';
+import Container from '../Container';
 
 const useStyles = makeStyles(() => {
   return {

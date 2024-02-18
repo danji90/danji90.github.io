@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { Typography, Icon } from '@mui/material';
 import GradeIcon from '@mui/icons-material/Grade';
 
-import Container from '../Container/Container';
+import Container from '../Container';
 
 const getLangLevel = (stars) => {
   switch (stars) {

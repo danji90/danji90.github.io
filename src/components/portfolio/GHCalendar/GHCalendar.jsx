@@ -3,7 +3,7 @@ import ReactGitHubCalendar from 'react-github-calendar';
 import ReactTooltip from 'react-tooltip';
 import makeStyles from '@mui/styles/makeStyles';
 
-import Container from '../Container/Container';
+import Container from '../Container';
 
 const useStyles = makeStyles((theme) => ({
   container: {

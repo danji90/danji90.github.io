@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Container from '../Container/Container';
+import Container from '../Container';
 
 const useStyles = makeStyles(() => ({
   accordion: {
@@ -26,7 +26,8 @@ const useStyles = makeStyles(() => ({
   expandIcon: {
     position: 'absolute !important',
     right: 0,
-    top: 22,
+    top: 18,
+    '&.Mui-expanded': { top: 24 },
   },
   skillWrapper: {
     width: '100%',

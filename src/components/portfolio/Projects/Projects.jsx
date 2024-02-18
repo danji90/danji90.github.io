@@ -7,7 +7,7 @@ import parseHtml from 'html-react-parser';
 import makeStyles from '@mui/styles/makeStyles';
 import { Typography, Link, Divider } from '@mui/material';
 
-import Container from '../Container/Container';
+import Container from '../Container';
 
 const useStyles = makeStyles((theme) => ({
   projectImage: {

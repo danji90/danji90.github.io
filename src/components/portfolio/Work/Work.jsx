@@ -7,7 +7,7 @@ import { MdTaskAlt } from 'react-icons/md';
 import parseHtml from 'html-react-parser';
 import makeStyles from '@mui/styles/makeStyles';
 
-import Container from '../Container/Container';
+import Container from '../Container';
 
 const useStyles = makeStyles((theme) => ({
   entry: {

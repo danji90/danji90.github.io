@@ -21,7 +21,7 @@ import GeoJSON from 'ol/format/GeoJSON';
 import 'react-spatial/themes/default/index.scss';
 import { format } from 'date-fns';
 
-import Container from '../Container/Container';
+import Container from '../Container';
 import LayerMenu from '../LayerMenu/LayerMenu';
 import FullExtent from '../FullExtent/FullExtent';
 import MapButtons from '../MapButtons/MapButtons';
