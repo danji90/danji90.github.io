@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core';
+import makeStyles from '@mui/styles/makeStyles';
 // import portrait from '../../../assets/images/daniel1.jpg';
 import portrait2 from '../../../assets/images/daniel3.jpeg';
 

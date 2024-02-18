@@ -4,12 +4,10 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 import parseHtml from 'html-react-parser';
-import { makeStyles } from '@material-ui/core/styles';
-import { Typography, Link, Divider } from '@material-ui/core';
+import makeStyles from '@mui/styles/makeStyles';
+import { Typography, Link, Divider } from '@mui/material';
 
 import Container from '../Container/Container';
-
-const images = require.context('../../../assets/images/', true);
 
 const useStyles = makeStyles((theme) => ({
   projectImage: {
@@ -21,20 +19,20 @@ const useStyles = makeStyles((theme) => ({
   project: {
     margin: '25px 0',
     display: 'flex',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       flexDirection: 'column',
     },
   },
   projectColumnImage: {
     padding: '10px 20px 0 0',
     width: '30%',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       width: '100%',
     },
   },
   projectColumnInfo: {
     width: '70%',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       margin: '10px 0',
       width: '100%',
     },
@@ -46,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     margin: '10px 0',
+  },
+  projectTitle: {
+    '&:hover': { textDecoration: 'none' },
   },
 }));
 
@@ -59,45 +60,6 @@ const defaultProps = {
   section: {},
 };
 
-const renderLatestProject = (projectData, projectsCount, classes) => {
-  return (
-    <>
-      <div key="latest" className={classes.latestProject}>
-        <Link
-          underline="none"
-          href={projectData.webLink}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Typography color="textPrimary" variant="h3" align="center">
-            {projectData.name}
-          </Typography>
-        </Link>
-        <Link
-          href={projectData.facility.url}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Typography variant="h4" align="center">
-            {projectData.facility.name}
-          </Typography>
-        </Link>
-        <br />
-        <a href={projectData.webLink} target="_blank">
-          <img
-            className={classes.projectImage}
-            src={images(
-              `./${projectData.images.find((img) => img.latest).name}`,
-            )}
-            alt="not found"
-          />
-        </a>
-        {renderProject(projectData, null, projectsCount, classes)}
-      </div>
-    </>
-  );
-};
-
 const renderProject = (projectData, index, projectsCount, classes) => {
   return (
     <div key={projectData.id}>
@@ -106,7 +68,7 @@ const renderProject = (projectData, index, projectsCount, classes) => {
           {projectData.images
             .filter((image) => !image.latest)
             .map((image) => {
-              const imageLink = images(`./${image.name}`);
+              const imagePath = image.path;
               return (
                 <a
                   key={image.name.split('.')}
@@ -115,7 +77,7 @@ const renderProject = (projectData, index, projectsCount, classes) => {
                   rel="noopener noreferrer"
                 >
                   <img
-                    src={imageLink}
+                    src={imagePath}
                     alt="not found"
                     className={classes.projectImage}
                   />
@@ -127,10 +89,10 @@ const renderProject = (projectData, index, projectsCount, classes) => {
           {projectData.latest ? null : (
             <>
               <Link
-                underline="none"
                 href={projectData.webLink}
                 target="_blank"
                 rel="noopener noreferrer"
+                className={classes.projectTitle}
               >
                 <Typography color="textPrimary" variant="h3">
                   {projectData.name}
@@ -182,6 +144,41 @@ const renderProject = (projectData, index, projectsCount, classes) => {
         </div>
       </div>
       {index + 1 !== projectsCount && <Divider />}
+    </div>
+  );
+};
+
+const renderLatestProject = (projectData, projectsCount, classes) => {
+  return (
+    <div key="latest" className={classes.latestProject}>
+      <Link
+        href={projectData.webLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={classes.projectTitle}
+      >
+        <Typography color="textPrimary" variant="h3" align="center">
+          {projectData.name}
+        </Typography>
+      </Link>
+      <Link
+        href={projectData.facility.url}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Typography variant="h4" align="center">
+          {projectData.facility.name}
+        </Typography>
+      </Link>
+      <br />
+      <a href={projectData.webLink} target="_blank">
+        <img
+          className={classes.projectImage}
+          src={projectData.images.find((img) => img.latest).path}
+          alt="not found"
+        />
+      </a>
+      {renderProject(projectData, null, projectsCount, classes)}
     </div>
   );
 };

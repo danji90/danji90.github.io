@@ -1,13 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import Button from '@material-ui/core/Button';
-import {
-  Typography,
-  IconButton,
-  useTheme,
-  useMediaQuery,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import Button from '@mui/material/Button';
+import { Typography, IconButton, useTheme, useMediaQuery } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { FaLinkedinIn, FaGithubAlt, FaFilePdf } from 'react-icons/fa';
 import { IoIosArrowDown } from 'react-icons/io';
 import { MdEmail } from 'react-icons/md';
@@ -38,22 +33,22 @@ const useStyles = makeStyles((theme) => ({
     flexBasis: '10%',
     flexGrow: 9,
     padding: '20px 150px 20px',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       flexDirection: 'column',
       padding: 20,
     },
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       justifyContent: 'flex-start',
       padding: 20,
     },
   },
   generalContainer: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       textAlign: 'center',
     },
   },
   linksContainer: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       justifyContent: 'center',
     },
   },
@@ -66,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: '#63a000',
       opacity: 0.8,
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       margin: 8,
     },
   },
@@ -111,8 +106,8 @@ const useStyles = makeStyles((theme) => ({
 function Home() {
   const classes = useStyles();
   const theme = useTheme();
-  const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
-  const isXsDown = useMediaQuery(theme.breakpoints.down('xs'));
+  const isMdDown = useMediaQuery(theme.breakpoints.down('lg'));
+  const isXsDown = useMediaQuery(theme.breakpoints.down('sm'));
   const section = useSelector((state) => state.portfolio.sections).find(
     (sect) => sect.id === 'home',
   );
@@ -136,6 +131,7 @@ function Home() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={classes.iconBtn}
+                size="large"
               >
                 <FaLinkedinIn size={25} />
               </IconButton>
@@ -145,6 +141,7 @@ function Home() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={classes.iconBtn}
+                size="large"
               >
                 <FaGithubAlt size={25} />
               </IconButton>
@@ -153,6 +150,7 @@ function Home() {
                 download
                 title="Download CV"
                 className={classes.iconBtn}
+                size="large"
               >
                 <FaFilePdf size={25} />
               </IconButton>
@@ -161,6 +159,7 @@ function Home() {
                   title="Write e-mail"
                   href="mailto:danji_ma90@hotmail.com"
                   className={classes.iconBtn}
+                  size="large"
                 >
                   <MdEmail size={25} />
                 </IconButton>
@@ -190,6 +189,7 @@ function Home() {
               })
             }
             className={classes.exploreBtn}
+            size="large"
           >
             <IoIosArrowDown size={50} color={theme.palette.primary.main} />
           </IconButton>

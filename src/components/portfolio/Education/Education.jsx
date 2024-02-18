@@ -1,11 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { FaGraduationCap } from 'react-icons/fa';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 
 import Container from '../Container/Container';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   eduItem: {
     marginBottom: 10,
   },
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Education(props) {
+function Education() {
   const classes = useStyles();
   const educationItems = useSelector((state) => state.portfolio.educationItems);
   const section = useSelector((state) => state.portfolio.sections).find(

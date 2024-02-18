@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core';
+import makeStyles from '@mui/styles/makeStyles';
 import BikeMap from '../components/pedaltrips/BikeMap';
 
 const useStyles = makeStyles(() => {
@@ -18,13 +18,13 @@ const useStyles = makeStyles(() => {
   };
 });
 
-const PedalTrips = () => {
+function PedalTrips() {
   const classes = useStyles();
   return (
     <div className={classes.mapContainer}>
       <BikeMap className />
     </div>
   );
-};
+}
 
 export default PedalTrips;

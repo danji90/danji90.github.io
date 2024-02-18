@@ -1,11 +1,13 @@
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import DescriptionIcon from '@material-ui/icons/Description';
-import { Link, Typography, makeStyles } from '@material-ui/core';
+import DescriptionIcon from '@mui/icons-material/Description';
+import { Link, Typography } from '@mui/material';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 import Container from '../Container/Container';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   article: {
     display: 'grid',
     gridTemplateColumns: '15% 85%',
@@ -16,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Articles = () => {
+function Articles() {
   const classes = useStyles();
   const articles = useSelector((state) => state.portfolio.articles);
   const sorted = useMemo(() => articles.reverse(), [articles]);
@@ -43,6 +45,6 @@ const Articles = () => {
       })}
     </Container>
   );
-};
+}
 
 export default Articles;

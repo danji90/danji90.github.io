@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
-import { makeStyles, Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { DragPan, MouseWheelZoom } from 'ol/interaction';
 import { platformModifierKeyOnly } from 'ol/events/condition';
 import { useSelector } from 'react-redux';
@@ -54,9 +55,7 @@ export default function MapScrollOverlay() {
   }, []);
 
   const onTouchMove = useCallback(
-    (evt) => {
-      evt.touches.length < 2 && isMobile && handleScrollOverlay(true);
-    },
+    (evt) => evt.touches.length < 2 && isMobile && handleScrollOverlay(true),
     [handleScrollOverlay, isMobile],
   );
 
@@ -90,7 +89,6 @@ export default function MapScrollOverlay() {
       unByKey(onLoadTargetKey);
       map.getTarget().removeEventListener('touchmove', onTouchMove);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

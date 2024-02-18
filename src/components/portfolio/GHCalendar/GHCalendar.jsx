@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactGitHubCalendar from 'react-github-calendar';
 import ReactTooltip from 'react-tooltip';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 
 import Container from '../Container/Container';
 
@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     width: 'inherit',
     overflowX: 'auto',
     margin: '10px 0',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       display: 'flex',
       flexDirection: 'row-reverse',
       overflowX: 'auto',
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
   calendarWrapper: {
     paddingTop: 15,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       minWidth: 800,
     },
     '& .react-activity-calendar': {

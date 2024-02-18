@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import { Hidden, Link, Typography, Slider } from '@material-ui/core';
+import withStyles from '@mui/styles/withStyles';
+import { Hidden, Link, Typography, Slider } from '@mui/material';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import LayerService from 'react-spatial/LayerService';
 import BasicMap from 'react-spatial/components/BasicMap';
 import BaseLayerSwitcher from 'react-spatial/components/BaseLayerSwitcher';
 import Copyright from 'react-spatial/components/Copyright';
@@ -39,12 +38,13 @@ import residenceIcon from '../../../assets/images/residence.png';
 import aerial from './aerial.png';
 import osm from './osm.png';
 import topo from './topo.png';
+import mapData from '../../../assets/data/mapFeatures.json';
 
 const styles = (theme) => {
   return {
     lifemap: {
       height: '100vh',
-      [theme.breakpoints.down('xs')]: {
+      [theme.breakpoints.down('sm')]: {
         '& h2': {
           marginLeft: 30,
         },
@@ -59,7 +59,7 @@ const styles = (theme) => {
       position: 'relative',
       flexGrow: 8,
       overflow: 'hidden',
-      [theme.breakpoints.down('xs')]: {
+      [theme.breakpoints.down('sm')]: {
         height: '90vh',
       },
       '& .rs-copyright': {
@@ -67,7 +67,7 @@ const styles = (theme) => {
         right: 5,
         bottom: 5,
         fontSize: 14,
-        '& a': theme.styles?.link,
+        '& a': theme.styles.link,
       },
       '& .rs-popup-header': {
         backgroundColor: '#282c34 !important',
@@ -99,7 +99,7 @@ const styles = (theme) => {
     },
     timeSlider: {
       padding: '10px 0',
-      [theme.breakpoints.down('xs')]: {
+      [theme.breakpoints.down('sm')]: {
         '& h3': {
           marginLeft: 30,
         },
@@ -122,7 +122,7 @@ const propTypes = {
   showResidence: PropTypes.bool,
   showWork: PropTypes.bool,
   showEducation: PropTypes.bool,
-  layerService: PropTypes.instanceOf(LayerService),
+  baselayers: PropTypes.arrayOf(PropTypes.object),
 };
 
 const defaultProps = {
@@ -132,13 +132,11 @@ const defaultProps = {
   showResidence: false,
   showWork: false,
   showEducation: false,
-  layerService: new LayerService(),
+  baselayers: [],
 };
 
-const mapData = require('../../../assets/data/mapFeatures.json');
-
 const styleCache = {};
-const getStyle = (feature, resolution) => {
+const getStyle = (feature) => {
   const size = feature.get('features').length;
   let style = styleCache[size];
   if (!style) {
@@ -324,8 +322,7 @@ class LifeMap extends Component {
 
   render() {
     const { selectedFeature, timeSpan, clusterSource } = this.state;
-    const { map, section, layerService, classes } = this.props;
-    const baseLayers = layerService.getBaseLayers();
+    const { map, section, baselayers, classes } = this.props;
     return (
       <Container
         title="Life map"
@@ -336,7 +333,7 @@ class LifeMap extends Component {
         <div className={classes.contentWrapper}>
           <div className={classes.mapContainer}>
             <MapScrollOverlay />
-            <LayerMenu baseLayers={baseLayers} />
+            <LayerMenu baseLayers={baselayers} />
             <FullExtent
               featureSource={clusterSource}
               onClick={() => this.setState({ selectedFeature: null })}
@@ -349,7 +346,7 @@ class LifeMap extends Component {
                 minZoom: 2.3,
                 maxZoom: 21,
               }}
-              layers={baseLayers}
+              layers={baselayers}
               map={map}
               onFeaturesClick={this.onFeatureClick}
               onFeaturesHover={(features) => {
@@ -401,10 +398,10 @@ class LifeMap extends Component {
             )}
             <Copyright map={map} />
             <div className={classes.baselayerSwitcherWrapper}>
-              <Hidden smDown>
+              <Hidden mdDown>
                 <BaseLayerSwitcher
                   map={map}
-                  layers={baseLayers}
+                  layers={baselayers}
                   layerImages={layerImages}
                 />
               </Hidden>
@@ -440,7 +437,7 @@ const mapStateToProps = (state) => ({
   showResidence: state.portfolio.showResidence,
   showWork: state.portfolio.showWork,
   showEducation: state.portfolio.showEducation,
-  layerService: state.portfolio.layerService,
+  baselayers: state.portfolio.baselayers,
 });
 
 const mapDispatchToProps = {

@@ -1,8 +1,8 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Typography, Icon } from '@material-ui/core';
-import GradeIcon from '@material-ui/icons/Grade';
+import { Typography, Icon } from '@mui/material';
+import GradeIcon from '@mui/icons-material/Grade';
 
 import Container from '../Container/Container';
 
@@ -21,7 +21,7 @@ const getLangLevel = (stars) => {
   }
 };
 
-const Languages = () => {
+function Languages() {
   const section = useSelector((state) => state.portfolio.sections).find(
     (sect) => sect.id === 'languages',
   );
@@ -45,6 +45,6 @@ const Languages = () => {
       })}
     </Container>
   );
-};
+}
 
 export default Languages;

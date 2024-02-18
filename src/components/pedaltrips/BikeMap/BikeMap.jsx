@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { makeStyles, Hidden } from '@material-ui/core';
+import { Hidden } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import BaseLayerSwitcher from 'react-spatial/components/BaseLayerSwitcher';
 import BasicMap from 'react-spatial/components/BasicMap';
 
@@ -50,7 +51,7 @@ export default function BikeMap() {
         }}
       />
       <div className={classes.baselayerSwitcherWrapper}>
-        <Hidden smDown>
+        <Hidden mdDown>
           <BaseLayerSwitcher
             map={map}
             layers={baseLayers}

@@ -1,4 +1,3 @@
-/* eslint-disable no-return-assign */
 import React, { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,10 +21,10 @@ import {
   useMediaQuery,
   useScrollTrigger,
   Fade,
-} from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
-import { Menu as MenuBtn, Close } from '@material-ui/icons';
-import { makeStyles } from '@material-ui/core/styles';
+} from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import { Menu as MenuBtn, Close } from '@mui/icons-material';
+import makeStyles from '@mui/styles/makeStyles';
 import scrollIntoView from 'scroll-into-view';
 import { setMenuOpen, setXpOpen } from '../../../model/portfolio/actions';
 
@@ -137,10 +136,10 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const HideOnScroll = ({ children }) => {
+function HideOnScroll({ children }) {
   const [homeVisible, setHomeVisible] = useState(false);
   const theme = useTheme();
-  const isTabletDown = useMediaQuery(theme.breakpoints.down('md'));
+  const isTabletDown = useMediaQuery(theme.breakpoints.down('lg'));
   const trigger = useScrollTrigger({
     target: window,
   });
@@ -169,13 +168,13 @@ const HideOnScroll = ({ children }) => {
   ) : (
     children
   );
-};
+}
 
 HideOnScroll.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-const ExperienceMenu = ({ tabs, onItemClick, anchor }) => {
+function ExperienceMenu({ tabs, onItemClick, anchor }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const xpOpen = useSelector((state) => state.portfolio.xpOpen);
@@ -218,7 +217,7 @@ const ExperienceMenu = ({ tabs, onItemClick, anchor }) => {
       }}
     </Popper>
   );
-};
+}
 
 ExperienceMenu.propTypes = {
   tabs: PropTypes.array.isRequired,
@@ -232,10 +231,10 @@ ExperienceMenu.defaultProps = {
 
 const scrollToSection = (sectionId, callback) => {
   const targetElement = document.getElementById(sectionId);
+  // eslint-disable-next-line no-return-assign
+  const defaultCallback = () => (window.location.hash = `#/#${sectionId}`);
   const callbackFunc =
-    typeof callback === 'function'
-      ? callback
-      : () => (window.location.hash = `#/#${sectionId}`);
+    typeof callback === 'function' ? callback : defaultCallback;
   scrollIntoView(
     targetElement,
     {
@@ -251,12 +250,12 @@ const scrollToSection = (sectionId, callback) => {
   );
 };
 
-const NavBar = () => {
+function NavBar() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const theme = useTheme();
-  const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
-  const isXsDown = useMediaQuery(theme.breakpoints.down('xs'));
+  const isMdDown = useMediaQuery(theme.breakpoints.down('lg'));
+  const isXsDown = useMediaQuery(theme.breakpoints.down('sm'));
   const [value, setValue] = useState('home');
   const sections = useSelector((state) => state.portfolio.sections);
   const xpOpen = useSelector((state) => state.portfolio.xpOpen);
@@ -295,6 +294,7 @@ const NavBar = () => {
             dispatch(setXpOpen(false));
             dispatch(setMenuOpen(false));
           }}
+          size="large"
         >
           <Close />
         </IconButton>
@@ -311,12 +311,13 @@ const NavBar = () => {
                 <IconButton
                   onClick={() => dispatch(setMenuOpen(!menuOpen))}
                   className={classes.openMenuBtn}
+                  size="large"
                 >
                   <MenuBtn />
                 </IconButton>
               )}
             </Hidden>
-            <Hidden smDown>
+            <Hidden mdDown>
               <Tabs
                 TabIndicatorProps={{ style: { backgroundColor: '#63a000' } }}
                 className={classes.tabs}
@@ -336,7 +337,7 @@ const NavBar = () => {
                           sect.id === 'experience' && setXpTabNode(elt)
                         }
                         key={sect.id}
-                        onClick={(evt) => onItemClick(sect)}
+                        onClick={() => onItemClick(sect)}
                         value={sect.id}
                         label={
                           <span className={classes.tabLabel}>
@@ -350,7 +351,7 @@ const NavBar = () => {
                           </span>
                         }
                         className={classes.tab}
-                        onMouseEnter={(evt) => {
+                        onMouseEnter={() => {
                           setValue(sect.id);
                           if (!isMdDown) {
                             if (sect.id !== 'experience') return;
@@ -453,6 +454,6 @@ const NavBar = () => {
       </HideOnScroll>
     </>
   );
-};
+}
 
 export default NavBar;

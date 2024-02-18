@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core';
+import makeStyles from '@mui/styles/makeStyles';
 import 'ol/ol.css';
 import Map from 'ol/Map';
 import OSM from 'ol/source/OSM';
@@ -49,7 +49,7 @@ const sites = [
   },
 ];
 
-const useStyles = makeStyles((theme) => {
+const useStyles = makeStyles(() => {
   return {
     bgMap: {
       position: 'absolute',

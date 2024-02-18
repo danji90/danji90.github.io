@@ -1,5 +1,4 @@
 import Map from 'ol/Map';
-import LayerService from 'react-spatial/LayerService';
 import TileLayer from 'ol/layer/Tile';
 import XYZ from 'ol/source/XYZ';
 import OSM from 'ol/source/OSM';
@@ -20,7 +19,7 @@ import initialAppState from '../../assets/data/appData';
 const mapBoxKey =
   'pk.eyJ1IjoiZGFuamk5MCIsImEiOiJjazA2azNrbzMwMjM3M2VsdmQxaXYyMG9sIn0.bFXyO9IWGsCT2j2o0yXoOw';
 
-const baseLayers = [
+const baselayers = [
   new Layer({
     olLayer: new TileLayer({
       source: new OSM(),
@@ -28,9 +27,9 @@ const baseLayers = [
     name: 'Streets',
     key: 'streets',
     visible: true,
-    isBaseLayer: true,
     properties: {
       radioGroup: 'baseLayer',
+      isBaseLayer: true,
     },
   }),
   new Layer({
@@ -45,6 +44,7 @@ const baseLayers = [
     isBaseLayer: true,
     properties: {
       radioGroup: 'baseLayer',
+      isBaseLayer: true,
     },
   }),
   new Layer({
@@ -59,6 +59,7 @@ const baseLayers = [
     isBaseLayer: true,
     properties: {
       radioGroup: 'baseLayer',
+      isBaseLayer: true,
     },
   }),
 ];
@@ -85,7 +86,7 @@ const initialState = {
   menuOpen: false,
   xpOpen: false,
   layersOpen: false,
-  layerService: new LayerService(baseLayers),
+  baselayers,
   ...initialAppState,
 };
 

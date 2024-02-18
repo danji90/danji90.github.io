@@ -2,10 +2,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { Typography, Link, List, ListItem, Divider } from '@material-ui/core';
+import { Typography, Link, List, ListItem, Divider } from '@mui/material';
 import { MdTaskAlt } from 'react-icons/md';
 import parseHtml from 'html-react-parser';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 
 import Container from '../Container/Container';
 
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Work = ({ section }) => {
+function Work({ section }) {
   const work = useSelector((state) => state.portfolio.workItems);
   const classes = useStyles();
 
@@ -81,7 +81,7 @@ const Work = ({ section }) => {
       })}
     </Container>
   );
-};
+}
 
 Work.propTypes = {
   section: PropTypes.shape({

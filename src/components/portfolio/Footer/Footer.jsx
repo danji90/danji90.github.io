@@ -1,5 +1,6 @@
 import React from 'react';
-import { Typography, Icon, Link, makeStyles } from '@material-ui/core';
+import { Typography, Icon, Link } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { FaGithubAlt } from 'react-icons/fa';
 
 const useStyles = makeStyles(() => ({

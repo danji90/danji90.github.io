@@ -3,17 +3,17 @@ import { useSelector } from 'react-redux';
 import {
   Typography,
   LinearProgress,
-  makeStyles,
   Accordion,
   AccordionDetails,
   AccordionSummary,
-} from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Container from '../Container/Container';
 
 const useStyles = makeStyles(() => ({
   accordion: {
-    position: 'relative',
+    position: 'relative !important',
     border: 0,
     boxShadow: 'none',
     '&::before': {
@@ -24,9 +24,9 @@ const useStyles = makeStyles(() => ({
     padding: 0,
   },
   expandIcon: {
-    position: 'absolute',
+    position: 'absolute !important',
     right: 0,
-    top: 6,
+    top: 22,
   },
   skillWrapper: {
     width: '100%',
@@ -67,16 +67,14 @@ function Skills() {
             key={item.id}
             expanded={expanded === item.id}
             onChange={handleChange(item.id)}
-            classes={{
-              root: classes.accordion,
-            }}
+            classes={{ root: classes.accordion }}
           >
             <AccordionSummary
               aria-controls={`${item.id}-content`}
               id={`${item.id}-header`}
               classes={{
                 root: classes.accordionSummary,
-                expandIcon: classes.expandIcon,
+                expandIconWrapper: classes.expandIcon,
               }}
               expandIcon={<ExpandMoreIcon />}
             >
@@ -87,9 +85,7 @@ function Skills() {
                 <LinearProgress
                   variant="determinate"
                   value={item.progress}
-                  classes={{
-                    root: classes.skillbar,
-                  }}
+                  classes={{ root: classes.skillbar }}
                 />
               </div>
             </AccordionSummary>

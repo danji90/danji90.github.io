@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { IconButton } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { GiExpand } from 'react-icons/gi';
+import { IconButton } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import ZoomInMapIcon from '@mui/icons-material/ZoomInMap';
 import Cluster from 'ol/source/Cluster';
 import { unByKey } from 'ol/Observable';
 
-const useStyles = makeStyles((theme) => {
+const useStyles = makeStyles(() => {
   return {
     fullExtenBtn: {
       position: 'absolute',
@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => {
       right: 5,
       zIndex: 1,
       backgroundColor: 'white',
+      padding: 10,
       boxShadow: ' 0 1px 4px rgb(0 0 0 / 30%)',
       '&:hover': {
         backgroundColor: 'white',
@@ -44,7 +45,7 @@ function FullExtent({ featureSource, onClick }) {
 
   return (
     <IconButton
-      title="Full extent"
+      title="Zoom on features"
       onClick={(evt) => {
         onClick(evt);
         map.getView().fit(featureSource.getExtent(), {
@@ -54,8 +55,9 @@ function FullExtent({ featureSource, onClick }) {
       }}
       disabled={disabled}
       classes={{ root: classes.fullExtenBtn }}
+      size="large"
     >
-      <GiExpand />
+      <ZoomInMapIcon />
     </IconButton>
   );
 }
