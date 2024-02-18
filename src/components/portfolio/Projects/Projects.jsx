@@ -45,6 +45,9 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     margin: '10px 0',
   },
+  projectTitle: {
+    '&:hover': { textDecoration: 'none' },
+  },
 }));
 
 const propTypes = {
@@ -86,10 +89,10 @@ const renderProject = (projectData, index, projectsCount, classes) => {
           {projectData.latest ? null : (
             <>
               <Link
-                underline="none"
                 href={projectData.webLink}
                 target="_blank"
                 rel="noopener noreferrer"
+                className={classes.projectTitle}
               >
                 <Typography color="textPrimary" variant="h3">
                   {projectData.name}
@@ -149,10 +152,10 @@ const renderLatestProject = (projectData, projectsCount, classes) => {
   return (
     <div key="latest" className={classes.latestProject}>
       <Link
-        underline="none"
         href={projectData.webLink}
         target="_blank"
         rel="noopener noreferrer"
+        className={classes.projectTitle}
       >
         <Typography color="textPrimary" variant="h3" align="center">
           {projectData.name}

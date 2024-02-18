@@ -38,6 +38,7 @@ const useStyles = makeStyles(() => {
     layersButton: {
       backgroundColor: 'white',
       boxShadow: ' 0 1px 4px rgb(0 0 0 / 30%)',
+      padding: 12,
     },
     disabled: { pointerEvents: 'none', opacity: '0.4' },
     paper: {

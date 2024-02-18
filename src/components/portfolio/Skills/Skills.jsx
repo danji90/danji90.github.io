@@ -26,7 +26,7 @@ const useStyles = makeStyles(() => ({
   expandIcon: {
     position: 'absolute !important',
     right: 0,
-    top: 6,
+    top: 22,
   },
   skillWrapper: {
     width: '100%',
@@ -67,16 +67,14 @@ function Skills() {
             key={item.id}
             expanded={expanded === item.id}
             onChange={handleChange(item.id)}
-            classes={{
-              root: classes.accordion,
-            }}
+            classes={{ root: classes.accordion }}
           >
             <AccordionSummary
               aria-controls={`${item.id}-content`}
               id={`${item.id}-header`}
               classes={{
                 root: classes.accordionSummary,
-                expandIcon: classes.expandIcon,
+                expandIconWrapper: classes.expandIcon,
               }}
               expandIcon={<ExpandMoreIcon />}
             >
@@ -87,9 +85,7 @@ function Skills() {
                 <LinearProgress
                   variant="determinate"
                   value={item.progress}
-                  classes={{
-                    root: classes.skillbar,
-                  }}
+                  classes={{ root: classes.skillbar }}
                 />
               </div>
             </AccordionSummary>

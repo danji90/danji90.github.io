@@ -7,10 +7,10 @@ import { Add, Remove } from '@mui/icons-material';
 
 const useStyles = makeStyles(() => ({
   mapBtnWrapper: {
-    position: 'absolute',
-    zIndex: 999,
     display: 'flex',
+    position: 'absolute',
     flexDirection: 'column',
+    zIndex: 999,
     bottom: 25,
     right: 5,
     gap: 10,

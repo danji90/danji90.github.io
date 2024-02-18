@@ -712,6 +712,12 @@ const initialState = {
       url: 'https://geops.com/en/blog/migration-enzyme-react-testing-library',
       published: true,
     },
+    {
+      id: 'beyond_tellerrand_2023',
+      name: 'BeyondTellerrand 2023',
+      url: 'https://geops.com/en/blog/beyondtellerrand2023-conference',
+      published: true,
+    },
   ],
   workItems: [
     {
@@ -808,6 +814,10 @@ const initialState = {
     {
       name: 'scroll-into-view',
       url: 'https://github.com/KoryNunn/scroll-into-view',
+    },
+    {
+      name: 'Vite',
+      url: 'https://vitejs.dev',
     },
   ],
 };

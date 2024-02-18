@@ -132,14 +132,22 @@ const theme = createTheme({
         },
       },
     },
+    MuiLink: {
+      defaultProps: {
+        underline: 'none',
+      },
+      styleOverrides: {
+        root: {
+          '&:hover': { textDecoration: 'underline' },
+        },
+      },
+    },
   },
   styles: {
     link: {
       textDecoration: 'none',
       color: primaryColor,
-      '&:hover': {
-        textDecoration: 'underline',
-      },
+      '&:hover': { textDecoration: 'underline' },
     },
     scrollBarThin: {
       scrollbarWidth: 'thin',
