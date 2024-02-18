@@ -70,7 +70,7 @@
   },
   "scripts": {
     "build": "vite build",
-    "deploy": "gh-pages -d build",
+    "deploy": "gh-pages -d dist",
     "format": "prettier --write \"src/**/*.jsx\" && eslint \"src/**/*.jsx\" --fix && stylelint \"src/**/*.css\" \"src/**/*.scss\" --fix",
     "lint": "eslint \"src/**/*.js\" && stylelint \"src/**/*.css\" \"src/**/*.scss\"",
     "predeploy": "npm run build",
