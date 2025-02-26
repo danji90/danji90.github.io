@@ -14,12 +14,21 @@ jobs:
 
       - name: Setup Node
         uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Setup pnpm
+        run: corepack prepare pnpm@latest --activate
 
       - name: Install dependencies
-        uses: bahmutov/npm-install@v1
+        run: pnpm install --frozen-lockfile
 
       - name: Build project
-        run: npm run build
+        run: pnpm run build
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v4
