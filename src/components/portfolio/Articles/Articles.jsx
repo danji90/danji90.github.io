@@ -29,16 +29,14 @@ function Articles() {
           <div className={classes.article} key={item.id}>
             <DescriptionIcon className={classes.icon} />
             <Typography>
-              {item.published ? (
-                <Link href={item.url} target="_blank" rel="noopener noreferrer">
-                  {item.name}
-                </Link>
-              ) : (
-                <Link href={item.url} download>
-                  {item.name}
-                  {` (unpublished)`}
-                </Link>
-              )}
+              <Link
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                download={item.download}
+              >
+                {item.name}
+              </Link>
             </Typography>
           </div>
         );

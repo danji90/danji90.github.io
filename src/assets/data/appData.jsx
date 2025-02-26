@@ -693,44 +693,44 @@ const initialState = {
   articles: [
     {
       id: 'LBSNmobility',
-      name: 'Using Data from Location Based Social Networks in Human Mobility Analysis',
+      name: 'Using Data from Location Based Social Networks in Human Mobility Analysis (unpublished)',
       url: lbsnForMobilityAnalysis,
+      download: true,
     },
     {
       id: 'thesis',
       name: 'A Comparative Study in the Standardization of IoT Devices Using Geospatial Web Standards',
       url: 'https://ieeexplore.ieee.org/abstract/document/9224992',
-      published: true,
     },
     {
       id: 'geOps_cypress_export',
       name: 'Testing file exports with Cypress in CI',
       url: 'https://geops.com/blog/testing-file-exports-with-cypress-in-ci',
-      published: true,
     },
     {
       id: 'geops_maximum_canvas_size',
       name: 'Determining maximum HTML Canvas sizes',
       url: 'https://geops.com/en/blog/html-canvas-for-raster-exports',
-      published: true,
     },
     {
       id: 'geops_mapset_with_mui',
       name: 'mapset 2.0 with MUI           ',
       url: 'https://geops.com/en/blog/mapset-with-mui',
-      published: true,
     },
     {
       id: 'geops_react_testing_library',
       name: 'Migrating from enzyme to testing-library/react',
       url: 'https://geops.com/en/blog/migration-enzyme-react-testing-library',
-      published: true,
     },
     {
       id: 'beyond_tellerrand_2023',
       name: 'BeyondTellerrand 2023',
       url: 'https://geops.com/en/blog/beyondtellerrand2023-conference',
-      published: true,
+    },
+    {
+      id: 'perfnow',
+      name: 'performance.now() 2024',
+      url: 'https://geops.com/en/blog/performance-now-2024',
     },
   ],
   workItems: [
