@@ -558,6 +558,13 @@ const initialState = {
         "Material Design is a well established web desighn concept and is used all accross the web. material-ui is a library of React components, making client-side development swift and elegant. I've used material-ui in countless personal and professional projects",
     },
     {
+      id: 'nextjs',
+      name: 'NextJs',
+      progress: 60,
+      description:
+        'Most of my most recent projects are built on NextJs. This React framework allows for server-side rendering, static site generation and API routes. I have used NextJs in several projects.',
+    },
+    {
       id: 'openLayers',
       name: 'Openlayers',
       progress: 70,
