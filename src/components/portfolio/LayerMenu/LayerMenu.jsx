@@ -69,9 +69,12 @@ function LayerMenu() {
   const [value, setValue] = useState(currentBaseLayer?.name);
 
   const handleChange = (event) => {
-    const layer = baselayers.find((l) => l.key === event.target.value);
-    layer.setVisible(true);
-    setValue(event.target.value);
+    const layer = baselayers.find((l) => event.target.value === l.name);
+    baselayers.forEach((l) => {
+      // eslint-disable-next-line no-param-reassign
+      l.visible = l.name === layer.name;
+    });
+    setValue(layer.name);
   };
 
   const handleMenuOpen = useCallback(() => {
