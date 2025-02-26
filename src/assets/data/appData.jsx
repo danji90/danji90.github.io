@@ -555,7 +555,7 @@ const initialState = {
       name: 'Material-UI',
       progress: 80,
       description:
-        "Material Design is a well established web desighn concept and is used all accross the web. material-ui is a library of React components, making client-side development swift and elegant. I've used material-ui in countless personal and professional projects",
+        "Material Design is a well established web desighn concept and is used all accross the web. material-ui is a library of React components, making client-side development swift and elegant. I've used material-ui in countless personal and professional projects, including this portfolio.",
     },
     {
       id: 'nextjs',
@@ -563,6 +563,13 @@ const initialState = {
       progress: 60,
       description:
         'Most of my most recent projects are built on NextJs. This React framework allows for server-side rendering, static site generation and API routes. I have used NextJs in several projects.',
+    },
+    {
+      id: 'tailwind',
+      name: 'TailwindCSS',
+      progress: 80,
+      description:
+        'TailwindCSS is a utility-first CSS framework that allows for rapid styling of web applications. I have used TailwindCSS in several projects, mostly in combination with NextJs and HeadlessUI.',
     },
     {
       id: 'openLayers',

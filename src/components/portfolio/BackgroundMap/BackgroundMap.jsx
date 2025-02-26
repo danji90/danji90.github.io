@@ -64,7 +64,9 @@ const bgMap = new Map({
   layers: [
     new TileLayer({
       preload: Infinity,
-      source: new OSM(),
+      source: new OSM({
+        crossOrigin: 'anonymous',
+      }),
     }),
   ],
   controls: [],
