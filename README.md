@@ -1,6 +1,6 @@
 # Online portfolio
 
-Online portfolio for Daniel Marsh-Hunn. This online portfolio is bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Online portfolio for Daniel Marsh-Hunn. This online portfolio is bootstrapped with [Vite](https://vitejs.dev/).
 
 ## Applied technologies
 
