@@ -17,7 +17,7 @@ import Articles from '../components/portfolio/Articles/Articles';
 import Footer from '../components/portfolio/Footer/Footer';
 import PhotoGallery from '../components/portfolio/PhotoGallery/PhotoGallery';
 import Credits from '../components/portfolio/Credits/Credits';
-import MapContextProvider from '../components/MapContextProvider/MapContextProvider';
+import MapContextProvider from '../components/portfolio/MapContextProvider/MapContextProvider';
 
 const useStyles = makeStyles((theme) => {
   return {

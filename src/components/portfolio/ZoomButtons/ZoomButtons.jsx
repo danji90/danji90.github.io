@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState, useContext } from 'react';
-import { useSelector } from 'react-redux';
 import { IconButton } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { easeOut, easeIn } from 'ol/easing';
 import { Add, Remove } from '@mui/icons-material';
-import { MapContext } from '../../MapContextProvider/MapContextProvider';
+import { MapContext } from '../MapContextProvider/MapContextProvider';
+import MapButton from '../MapButton';
 
 const useStyles = makeStyles(() => ({
   mapBtnWrapper: {
@@ -15,14 +15,6 @@ const useStyles = makeStyles(() => ({
     bottom: 25,
     right: 5,
     gap: 10,
-  },
-  mapBtn: {
-    zIndex: 1,
-    backgroundColor: 'white',
-    boxShadow: ' 0 1px 4px rgb(0 0 0 / 30%)',
-    '&:hover': {
-      backgroundColor: 'white',
-    },
   },
 }));
 
@@ -81,24 +73,22 @@ function MapButtons() {
 
   return (
     <div className={classes.mapBtnWrapper}>
-      <IconButton
-        classes={{ root: classes.mapBtn }}
+      <MapButton
         title="Zoom in"
         disabled={zoom >= getView().getMaxZoom()}
         onClick={zoomIn}
         size="large"
       >
         <Add />
-      </IconButton>
-      <IconButton
-        classes={{ root: classes.mapBtn }}
+      </MapButton>
+      <MapButton
         title="Zoom out"
         disabled={zoom <= getView().getMinZoom()}
         onClick={zoomOut}
         size="large"
       >
         <Remove />
-      </IconButton>
+      </MapButton>
     </div>
   );
 }

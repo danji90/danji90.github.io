@@ -116,6 +116,8 @@
       "default-param-last": 0,
       "no-restricted-exports": 0,
       "no-unused-vars": "off",
+      "react/jsx-props-no-spreading": "off",
+      "react/require-default-props": "off",
       "react/jsx-filename-extension": [
         1,
         {

@@ -16,11 +16,11 @@ import Text from 'ol/style/Text';
 import Cluster from 'ol/source/Cluster';
 import { defaults } from 'ol/interaction';
 import { Layer } from 'mobility-toolbox-js/ol';
-import mapData from '../../assets/data/mapFeatures.json';
+import mapData from '../../../assets/data/mapFeatures.json';
 
-import eduIcon from '../../assets/images/edu.png';
-import workIcon from '../../assets/images/work.png';
-import residenceIcon from '../../assets/images/residence.png';
+import eduIcon from '../../../assets/images/edu.png';
+import workIcon from '../../../assets/images/work.png';
+import residenceIcon from '../../../assets/images/residence.png';
 
 const mapBoxKey =
   'pk.eyJ1IjoiZGFuamk5MCIsImEiOiJjazA2azNrbzMwMjM3M2VsdmQxaXYyMG9sIn0.bFXyO9IWGsCT2j2o0yXoOw';

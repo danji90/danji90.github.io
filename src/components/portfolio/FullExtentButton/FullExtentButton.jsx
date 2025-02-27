@@ -6,7 +6,8 @@ import makeStyles from '@mui/styles/makeStyles';
 import ZoomInMapIcon from '@mui/icons-material/ZoomInMap';
 import Cluster from 'ol/source/Cluster';
 import { unByKey } from 'ol/Observable';
-import { MapContext } from '../../MapContextProvider/MapContextProvider';
+import { MapContext } from '../MapContextProvider/MapContextProvider';
+import MapButton from '../MapButton';
 
 const useStyles = makeStyles(() => {
   return {
@@ -15,12 +16,6 @@ const useStyles = makeStyles(() => {
       top: 15,
       right: 5,
       zIndex: 1,
-      backgroundColor: 'white',
-      padding: 10,
-      boxShadow: ' 0 1px 4px rgb(0 0 0 / 30%)',
-      '&:hover': {
-        backgroundColor: 'white',
-      },
     },
   };
 });
@@ -46,8 +41,9 @@ function FullExtent({ featureSource, onClick }) {
   const [disabled] = useSetDisabled(featureSource);
 
   return (
-    <IconButton
+    <MapButton
       title="Zoom on features"
+      className={classes.fullExtenBtn}
       onClick={(evt) => {
         onClick(evt);
         map.getView().fit(featureSource.getExtent(), {
@@ -56,11 +52,10 @@ function FullExtent({ featureSource, onClick }) {
         });
       }}
       disabled={disabled}
-      classes={{ root: classes.fullExtenBtn }}
       size="large"
     >
       <ZoomInMapIcon />
-    </IconButton>
+    </MapButton>
   );
 }
 

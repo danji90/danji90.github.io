@@ -24,8 +24,8 @@ import { format } from 'date-fns';
 
 import Container from '../Container';
 import LayerMenu from '../LayerMenu/LayerMenu';
-import FullExtent from '../FullExtent/FullExtent';
-import MapButtons from '../MapButtons/MapButtons';
+import FullExtent from '../FullExtentButton/FullExtentButton';
+import MapButtons from '../ZoomButtons/ZoomButtons';
 import MapScrollOverlay from '../MapScrollOverlay';
 
 import eduIcon from '../../../assets/images/edu.png';
@@ -38,7 +38,8 @@ import mapData from '../../../assets/data/mapFeatures.json';
 import {
   initialTimeSpan,
   MapContext,
-} from '../../MapContextProvider/MapContextProvider';
+} from '../MapContextProvider/MapContextProvider';
+import FullScreenButton from '../FullScreenButton/FullScreenButton';
 
 const styleCache = {};
 const getStyle = (feature) => {
@@ -280,6 +281,7 @@ function LifeMap2({ section }) {
         <div className={classes.mapContainer}>
           <MapScrollOverlay />
           <LayerMenu />
+          {/* <FullScreenButton /> */}
           <FullExtent
             featureSource={clusterSource}
             onClick={() => setSelectedFeature(null)}
