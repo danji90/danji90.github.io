@@ -22,7 +22,7 @@ import makeStyles from '@mui/styles/makeStyles';
 import withStyles from '@mui/styles/withStyles';
 import { Layers } from '@mui/icons-material';
 
-import { MapContext } from '../LifeMap/MapContextProvider';
+import { MapContext } from '../../MapContextProvider/MapContextProvider';
 
 const useStyles = makeStyles(() => {
   return {

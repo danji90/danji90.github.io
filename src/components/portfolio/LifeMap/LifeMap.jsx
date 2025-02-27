@@ -40,7 +40,7 @@ import {
   MapContext,
   clusterLayer,
   clusterSource,
-} from './MapContextProvider';
+} from '../../MapContextProvider/MapContextProvider';
 
 const useStyles = makeStyles((theme) => {
   return {

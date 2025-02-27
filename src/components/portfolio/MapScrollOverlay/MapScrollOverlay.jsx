@@ -11,7 +11,7 @@ import { DragPan, MouseWheelZoom } from 'ol/interaction';
 import { platformModifierKeyOnly } from 'ol/events/condition';
 import { useSelector } from 'react-redux';
 import { unByKey } from 'ol/Observable';
-import { MapContext } from '../LifeMap/MapContextProvider';
+import { MapContext } from '../../MapContextProvider/MapContextProvider';
 
 const useStyles = makeStyles(() => {
   return {

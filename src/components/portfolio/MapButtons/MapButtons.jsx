@@ -4,7 +4,7 @@ import { IconButton } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { easeOut, easeIn } from 'ol/easing';
 import { Add, Remove } from '@mui/icons-material';
-import { MapContext } from '../LifeMap/MapContextProvider';
+import { MapContext } from '../../MapContextProvider/MapContextProvider';
 
 const useStyles = makeStyles(() => ({
   mapBtnWrapper: {

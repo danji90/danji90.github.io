@@ -16,14 +16,11 @@ import Text from 'ol/style/Text';
 import Cluster from 'ol/source/Cluster';
 import { defaults } from 'ol/interaction';
 import { Layer } from 'mobility-toolbox-js/ol';
-import aerial from './aerial.png';
-import osm from './osm.png';
-import topo from './topo.png';
-import mapData from '../../../assets/data/mapFeatures.json';
+import mapData from '../../assets/data/mapFeatures.json';
 
-import eduIcon from '../../../assets/images/edu.png';
-import workIcon from '../../../assets/images/work.png';
-import residenceIcon from '../../../assets/images/residence.png';
+import eduIcon from '../../assets/images/edu.png';
+import workIcon from '../../assets/images/work.png';
+import residenceIcon from '../../assets/images/residence.png';
 
 const styleCache = {};
 const getStyle = (feature) => {

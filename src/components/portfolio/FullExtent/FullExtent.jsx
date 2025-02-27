@@ -6,7 +6,7 @@ import makeStyles from '@mui/styles/makeStyles';
 import ZoomInMapIcon from '@mui/icons-material/ZoomInMap';
 import Cluster from 'ol/source/Cluster';
 import { unByKey } from 'ol/Observable';
-import { MapContext } from '../LifeMap/MapContextProvider';
+import { MapContext } from '../../MapContextProvider/MapContextProvider';
 
 const useStyles = makeStyles(() => {
   return {

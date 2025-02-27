@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
     flexDirection: 'column',
     height: '100vh',
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    backgroundColor: 'rgba(255, 255, 255, 0.6)',
     boxShadow:
       'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px',
   },
