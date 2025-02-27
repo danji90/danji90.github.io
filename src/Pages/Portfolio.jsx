@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import makeStyles from '@mui/styles/makeStyles';
+import Button from '@mui/material/Button';
 import Navbar from '../components/portfolio/Navbar/Navbar';
 import Home from '../components/portfolio/Home/Home';
 import AboutMe from '../components/portfolio/AboutMe/AboutMe';
@@ -16,6 +17,7 @@ import Articles from '../components/portfolio/Articles/Articles';
 import Footer from '../components/portfolio/Footer/Footer';
 import PhotoGallery from '../components/portfolio/PhotoGallery/PhotoGallery';
 import Credits from '../components/portfolio/Credits/Credits';
+import MapContextProvider from '../components/portfolio/LifeMap/MapContextProvider';
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -92,9 +94,11 @@ function Portfolio() {
               </div>
             </div>
             <div className={classes.fullWidth}>
-              <LifeMap
-                section={sections.find((section) => section.id === 'lifeMap')}
-              />
+              <MapContextProvider>
+                <LifeMap
+                  section={sections.find((section) => section.id === 'lifeMap')}
+                />
+              </MapContextProvider>
             </div>
             <div className={classes.columns}>
               <div className={classes.primaryColumn}>

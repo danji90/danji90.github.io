@@ -1,10 +1,17 @@
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import React, {
+  useState,
+  useCallback,
+  useEffect,
+  useMemo,
+  useContext,
+} from 'react';
 import { Typography } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { DragPan, MouseWheelZoom } from 'ol/interaction';
 import { platformModifierKeyOnly } from 'ol/events/condition';
 import { useSelector } from 'react-redux';
 import { unByKey } from 'ol/Observable';
+import { MapContext } from '../LifeMap/MapContextProvider';
 
 const useStyles = makeStyles(() => {
   return {
@@ -37,7 +44,7 @@ const MOUSE_SCROLL_EVENTS = ['scroll', 'mousescroll', 'wheel'];
 
 export default function MapScrollOverlay() {
   const classes = useStyles();
-  const map = useSelector((state) => state.portfolio.map);
+  const { map } = useContext(MapContext);
   const [showOverlay, setShowOverlay] = useState(false);
   const isMobile = useMemo(
     () => window.matchMedia('only screen and (max-width: 768px)').matches,
@@ -87,7 +94,7 @@ export default function MapScrollOverlay() {
       unByKey(onMoveStartKey);
       unByKey(onPostRenderKey);
       unByKey(onLoadTargetKey);
-      map.getTarget().removeEventListener('touchmove', onTouchMove);
+      map.getTarget()?.removeEventListener('touchmove', onTouchMove);
     };
   }, []);
 

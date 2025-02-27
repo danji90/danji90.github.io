@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { IconButton } from '@mui/material';
@@ -6,6 +6,7 @@ import makeStyles from '@mui/styles/makeStyles';
 import ZoomInMapIcon from '@mui/icons-material/ZoomInMap';
 import Cluster from 'ol/source/Cluster';
 import { unByKey } from 'ol/Observable';
+import { MapContext } from '../LifeMap/MapContextProvider';
 
 const useStyles = makeStyles(() => {
   return {
@@ -26,6 +27,7 @@ const useStyles = makeStyles(() => {
 
 const useSetDisabled = (featureSource) => {
   const [disabled, setDisabled] = useState(false);
+
   useEffect(() => {
     const onSourceChange = () =>
       setDisabled(featureSource?.getFeatures().length === 0);
@@ -39,7 +41,7 @@ const useSetDisabled = (featureSource) => {
 };
 
 function FullExtent({ featureSource, onClick }) {
-  const map = useSelector((state) => state.portfolio.map);
+  const { map } = useContext(MapContext);
   const classes = useStyles();
   const [disabled] = useSetDisabled(featureSource);
 

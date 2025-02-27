@@ -69,6 +69,7 @@
   "scripts": {
     "build": "vite build",
     "deploy": "gh-pages -d dist",
+    "dev": "vite",
     "format": "prettier --write \"src/**/*.jsx\" && eslint \"src/**/*.jsx\" --fix && stylelint \"src/**/*.css\" \"src/**/*.scss\" --fix",
     "lint": "eslint \"src/**/*.js\" && stylelint \"src/**/*.css\" \"src/**/*.scss\"",
     "predeploy": "npm run build",
@@ -114,6 +115,7 @@
       "arrow-body-style": 0,
       "default-param-last": 0,
       "no-restricted-exports": 0,
+      "no-unused-vars": "off",
       "react/jsx-filename-extension": [
         1,
         {

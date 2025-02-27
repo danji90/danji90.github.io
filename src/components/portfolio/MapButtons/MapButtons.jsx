@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { IconButton } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { easeOut, easeIn } from 'ol/easing';
 import { Add, Remove } from '@mui/icons-material';
+import { MapContext } from '../LifeMap/MapContextProvider';
 
 const useStyles = makeStyles(() => ({
   mapBtnWrapper: {
@@ -27,7 +28,7 @@ const useStyles = makeStyles(() => ({
 
 function MapButtons() {
   const classes = useStyles();
-  const map = useSelector((state) => state.portfolio.map);
+  const { map } = useContext(MapContext);
   const getView = useCallback(() => map.getView(), [map]);
   const [zoom, setZoom] = useState(getView().getZoom());
 
