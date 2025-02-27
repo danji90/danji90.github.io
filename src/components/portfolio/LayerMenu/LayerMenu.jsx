@@ -85,9 +85,12 @@ function LayerMenu() {
     setValue(layer.name);
   };
 
-  const handleMenuOpen = () => {
+  const handleMenuOpen = (timeout) => {
     setLayersOpen(true);
-    setDisabled(false);
+    clearTimeout(layerMenuTimout);
+    layerMenuTimout = setTimeout(() => {
+      setDisabled(false);
+    }, timeout);
   };
 
   const handleMenuClose = () => {
@@ -98,7 +101,7 @@ function LayerMenu() {
   return (
     <div className={classes.layerMenuWrapper}>
       <IconButton
-        onClick={handleMenuOpen}
+        onClick={() => handleMenuOpen(100)}
         onMouseEnter={handleMenuOpen}
         classes={{ root: classes.layersButton }}
         style={{ backgroundColor: 'white' }}
