@@ -38,9 +38,78 @@ import mapData from '../../../assets/data/mapFeatures.json';
 import {
   initialTimeSpan,
   MapContext,
-  clusterLayer,
-  clusterSource,
 } from '../../MapContextProvider/MapContextProvider';
+
+const styleCache = {};
+const getStyle = (feature) => {
+  const size = feature.get('features')?.length;
+  let style = styleCache[size];
+  if (!style) {
+    const color =
+      // eslint-disable-next-line no-nested-ternary
+      size > 25 ? '248, 128, 0' : size > 8 ? '248, 192, 0' : '128, 192, 64';
+    const radius = 12;
+    if (size > 1) {
+      style = [
+        new Style({
+          image: new CircleStyle({
+            scale: 1 / 4,
+            radius: radius + 4,
+            fill: new Fill({
+              color: `rgba(${color},0.3)`,
+            }),
+          }),
+        }),
+        new Style({
+          image: new CircleStyle({
+            scale: 1 / 4,
+            radius,
+            fill: new Fill({
+              color: `rgba(${color},0.6)`,
+            }),
+          }),
+          text: new Text({
+            font: '50px sans-serif',
+            scale: 1 / 4,
+            text: size.toString(),
+            offsetY: 1,
+            fill: new Fill({
+              color: '#000',
+            }),
+          }),
+        }),
+      ];
+    } else {
+      let src = eduIcon;
+      if (feature.get('features')?.[0].get('type') === 'work') {
+        src = workIcon;
+      }
+      if (feature.get('features')?.[0].get('type') === 'residence') {
+        src = residenceIcon;
+      }
+      style = new Style({
+        image: new Icon({
+          scale: 1 / 4,
+          imgSize: [144, 144],
+          src,
+        }),
+      });
+    }
+  }
+  return style;
+};
+
+export const clusterSource = new Cluster({
+  distance: 40,
+  source: new VectorSource(),
+});
+
+export const clusterLayer = new AnimatedCluster({
+  name: 'Cluster',
+  source: clusterSource,
+  visible: true,
+  style: (features, resolution) => getStyle(features, resolution, clusterLayer),
+});
 
 const useStyles = makeStyles((theme) => {
   return {
