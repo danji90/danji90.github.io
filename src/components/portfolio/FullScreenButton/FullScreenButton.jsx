@@ -7,28 +7,43 @@ import FullScreen from 'ol/control/FullScreen';
 import MapButton from '../MapButton';
 import { MapContext } from '../MapContextProvider/MapContextProvider';
 
-const useStyles = makeStyles(() => {
-  return {
-    fullScreenBtn: {
-      position: 'absolute',
-      top: 15,
-      right: 5,
-      zIndex: 1,
-    },
-  };
-});
+const isFullScreenCapable = (element) => {
+  if (!element) return false;
+  return (
+    element.requestFullscreen ||
+    element.msRequestFullscreen ||
+    element.mozRequestFullScreen ||
+    element.webkitExitFullscreen
+  );
+};
 
 function FullScreenButton({ elementRef }) {
-  const classes = useStyles();
   const { map, isFullScreen, setIsFullScreen } = useContext(MapContext);
+  const [modalFullScreen, setUseModalFullScreen] = useState(false);
+  const [error, setError] = useState(null);
 
   const toggleFullScreen = () => {
-    if (!document.fullscreenElement) {
-      if (elementRef.current) {
-        elementRef.current.requestFullscreen();
+    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+      const element = elementRef.current;
+      if (element) {
+        if (element.requestFullscreen) {
+          element.requestFullscreen();
+        } else if (element.msRequestFullscreen) {
+          element.msRequestFullscreen();
+        } else if (element.mozRequestFullScreen) {
+          element.mozRequestFullScreen();
+        } else if (element.webkitRequestFullscreen) {
+          element.webkitRequestFullscreen();
+        } else {
+          // eslint-disable-next-line no-console
+          console.error("Can't use full screen on this platform");
+        }
       }
-    } else {
+    } else if (document.exitFullscreen) {
       document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      // iOS Safari
+      document.webkitExitFullscreen();
     }
   };
 
@@ -43,12 +58,10 @@ function FullScreenButton({ elementRef }) {
       document.removeEventListener('fullscreenchange', handleFullScreenChange);
   }, []);
 
+  if (!isFullScreenCapable(elementRef.current)) return null;
+
   return (
-    <MapButton
-      className={classes.fullScreenBtn}
-      onClick={toggleFullScreen}
-      title="Toggle Fullscreen"
-    >
+    <MapButton onClick={toggleFullScreen} title="Toggle Fullscreen">
       {isFullScreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
     </MapButton>
   );

@@ -9,17 +9,6 @@ import { unByKey } from 'ol/Observable';
 import { MapContext } from '../MapContextProvider/MapContextProvider';
 import MapButton from '../MapButton';
 
-const useStyles = makeStyles(() => {
-  return {
-    fullExtenBtn: {
-      position: 'absolute',
-      top: 75,
-      right: 5,
-      zIndex: 1,
-    },
-  };
-});
-
 const useSetDisabled = (featureSource) => {
   const [disabled, setDisabled] = useState(false);
 
@@ -37,13 +26,11 @@ const useSetDisabled = (featureSource) => {
 
 function FullExtent({ featureSource, onClick }) {
   const { map } = useContext(MapContext);
-  const classes = useStyles();
   const [disabled] = useSetDisabled(featureSource);
 
   return (
     <MapButton
       title="Zoom on features"
-      className={classes.fullExtenBtn}
       onClick={(evt) => {
         onClick(evt);
         map.getView().fit(featureSource.getExtent(), {

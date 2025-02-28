@@ -181,6 +181,16 @@ const useStyles = makeStyles((theme) => {
     sliderWrapper: {
       padding: '0 20px',
     },
+    topRightBtns: {
+      position: 'absolute',
+      right: 0,
+      top: 0,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'flex-end',
+      padding: '15px 5px',
+      gap: 10,
+    },
   };
 });
 
@@ -284,11 +294,13 @@ function LifeMap2({ section }) {
         <div className={classes.mapContainer}>
           {!isFullScreen && <MapScrollOverlay />}
           <LayerMenu />
-          <FullScreenButton elementRef={containerRef} />
-          <FullExtent
-            featureSource={clusterSource}
-            onClick={() => setSelectedFeature(null)}
-          />
+          <div className={classes.topRightBtns}>
+            <FullScreenButton elementRef={containerRef} />
+            <FullExtent
+              featureSource={clusterSource}
+              onClick={() => setSelectedFeature(null)}
+            />
+          </div>
           <MapButtons />
           <BasicMap
             className={`rs-map ${classes.map}`}
