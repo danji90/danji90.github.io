@@ -360,6 +360,24 @@
           "type": "Point",
           "coordinates": [7.673145532608032, 51.92719370704247]
         }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "type": "residence",
+          "city": "Freiburg",
+          "country": "Germany",
+          "timestamp": [
+            ["2019-05-01T00:00:00.000Z", "2019-05-02T00:00:00.000Z"]
+          ],
+          "current": true,
+          "icon": "<img class='fas fa-home fa-2x'>",
+          "description": "Current place of living"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [7.851534, 48.003074]
+        }
       }
     ]
   }

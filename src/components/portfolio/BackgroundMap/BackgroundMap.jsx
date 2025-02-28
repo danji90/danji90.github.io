@@ -16,19 +16,14 @@ const sites = [
     zoom: 15,
   },
   {
-    id: 'johanneskofl',
-    center: fromLonLat([11.367928, 46.548887]),
-    zoom: 14,
-  },
-  {
-    id: 'konstantin',
-    center: fromLonLat([11.520948, 46.535964]),
-    zoom: 13,
-  },
-  {
     id: 'south-tyrol',
     center: fromLonLat([11.350735, 46.501792]),
     zoom: 10,
+  },
+  {
+    id: 'italy',
+    center: fromLonLat([11.90918, 43.176878]),
+    zoom: 6,
   },
   {
     id: 'flyTo-bmouth',
@@ -39,11 +34,43 @@ const sites = [
   {
     id: 'uk',
     center: fromLonLat([-1.793519, 50.727866]),
+    zoom: 8,
+  },
+  {
+    id: 'flyTo-gdl',
+    fly: true,
+    center: fromLonLat([-103.353657, 20.67288]),
+    zoom: 12,
+  },
+  {
+    id: 'mexico',
+    center: fromLonLat([-103.353657, 20.67288]),
+    zoom: 8,
+  },
+  {
+    id: 'flyTo-castellon',
+    fly: true,
+    center: fromLonLat([-0.039825, 39.986854]),
+    zoom: 15,
+  },
+  {
+    id: 'valencia',
+    center: fromLonLat([-0.039825, 39.986854]),
+    zoom: 8,
+  },
+  {
+    id: 'flyTo-freiburg',
+    fly: true,
+    center: fromLonLat([7.849695, 47.992561]),
+    zoom: 15,
+  },
+  {
+    id: 'baWü',
+    center: fromLonLat([7.849695, 47.992561]),
     zoom: 10,
   },
   {
-    id: 'flyTo-bz',
-    fly: true,
+    id: 'bz',
     center: fromLonLat([11.350735, 46.501792]),
     zoom: 13,
   },
