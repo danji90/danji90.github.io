@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useCallback } from 'react';
+import React, { useContext, useEffect, useCallback, useRef } from 'react';
 import withStyles from '@mui/styles/withStyles';
 import { Hidden, Link, Typography, Slider } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
@@ -126,6 +126,7 @@ const useStyles = makeStyles((theme) => {
       display: 'flex',
       flexDirection: 'column',
       height: '95%',
+      backgroundColor: 'white',
     },
     mapContainer: {
       position: 'relative',
@@ -267,7 +268,9 @@ function LifeMap2({ section }) {
     education,
     residence,
     layersOpen,
+    isFullScreen,
   } = useContext(MapContext);
+  const containerRef = useRef(null);
   useUpdateFeatures();
 
   return (
@@ -277,11 +280,11 @@ function LifeMap2({ section }) {
       id={section.id}
       fullWidthOnMobile
     >
-      <div className={classes.contentWrapper}>
+      <div className={classes.contentWrapper} ref={containerRef}>
         <div className={classes.mapContainer}>
-          <MapScrollOverlay />
+          {!isFullScreen && <MapScrollOverlay />}
           <LayerMenu />
-          {/* <FullScreenButton /> */}
+          <FullScreenButton elementRef={containerRef} />
           <FullExtent
             featureSource={clusterSource}
             onClick={() => setSelectedFeature(null)}

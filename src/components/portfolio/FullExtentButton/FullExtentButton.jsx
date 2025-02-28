@@ -13,7 +13,7 @@ const useStyles = makeStyles(() => {
   return {
     fullExtenBtn: {
       position: 'absolute',
-      top: 15,
+      top: 75,
       right: 5,
       zIndex: 1,
     },

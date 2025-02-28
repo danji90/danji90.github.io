@@ -75,8 +75,6 @@ const map = new Map({
   interactions: defaults({
     altShiftDragRotate: false,
     pinchRotate: false,
-    dragPan: false,
-    mouseWheelZoom: false,
   }),
 });
 
@@ -105,6 +103,7 @@ function MapContextProvider({ children }) {
   const [showEducation, setShowEducation] = useState(true);
   const [showResidence, setShowResidence] = useState(false);
   const [selectedFeature, setSelectedFeature] = useState(null);
+  const [isFullScreen, setIsFullScreen] = useState(null);
   const [timeSpan, setTimeSpan] = useState([
     Date.parse('1990-09-13T00:00:00.000Z'),
     Date.now(),
@@ -129,6 +128,8 @@ function MapContextProvider({ children }) {
       setSelectedFeature,
       timeSpan,
       setTimeSpan,
+      isFullScreen,
+      setIsFullScreen,
     }),
     [
       layersOpen,
@@ -136,6 +137,7 @@ function MapContextProvider({ children }) {
       showEducation,
       showResidence,
       selectedFeature,
+      isFullScreen,
       timeSpan,
     ],
   );
