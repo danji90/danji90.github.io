@@ -1,7 +1,14 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useContext,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Checkbox,
+  ClickAwayListener,
   FormControlLabel as MuiFormControlLabel,
   Hidden,
   RadioGroup,
@@ -15,12 +22,7 @@ import makeStyles from '@mui/styles/makeStyles';
 import withStyles from '@mui/styles/withStyles';
 import { Layers } from '@mui/icons-material';
 
-import {
-  setShowEducation,
-  setShowWork,
-  setShowResidence,
-  setLayersOpen,
-} from '../../../model/portfolio/actions';
+import { MapContext } from '../MapContextProvider/MapContextProvider';
 
 const useStyles = makeStyles(() => {
   return {
@@ -58,11 +60,17 @@ let layerMenuTimout;
 function LayerMenu() {
   const dispatch = useDispatch();
   const classes = useStyles();
-  const showResidence = useSelector((state) => state.portfolio.showResidence);
-  const showEducation = useSelector((state) => state.portfolio.showEducation);
-  const showWork = useSelector((state) => state.portfolio.showWork);
-  const layersOpen = useSelector((state) => state.portfolio.layersOpen);
-  const baselayers = useSelector((state) => state.portfolio.baselayers);
+  const {
+    baselayers,
+    showResidence,
+    showEducation,
+    showWork,
+    layersOpen,
+    setShowEducation,
+    setShowResidence,
+    setShowWork,
+    setLayersOpen,
+  } = useContext(MapContext);
   const [disabled, setDisabled] = useState(true);
   const ref = useRef();
   const currentBaseLayer = baselayers.find((baselayer) => baselayer.visible);
@@ -77,41 +85,23 @@ function LayerMenu() {
     setValue(layer.name);
   };
 
-  const handleMenuOpen = useCallback(() => {
-    dispatch(setLayersOpen(true));
-  }, [dispatch]);
-
-  const handleMenuClose = useCallback(() => {
-    dispatch(setLayersOpen(false));
-    setDisabled(true);
-  }, [dispatch]);
-
-  const clickAwayListener = useCallback(
-    (evt) => {
-      if (ref.current !== evt.target && !ref.current?.contains(evt.target)) {
-        handleMenuClose();
-      }
-    },
-    [ref, handleMenuClose],
-  );
-
-  useEffect(() => {
+  const handleMenuOpen = (timeout) => {
+    setLayersOpen(true);
     clearTimeout(layerMenuTimout);
-    if (layersOpen) {
-      setTimeout(() => {
-        setDisabled(false);
-      }, 50);
-      document.addEventListener('click', clickAwayListener);
-    } else {
-      setDisabled(true);
-      document.removeEventListener('click', clickAwayListener);
-    }
-  }, [layersOpen, ref, clickAwayListener]);
+    layerMenuTimout = setTimeout(() => {
+      setDisabled(false);
+    }, timeout);
+  };
+
+  const handleMenuClose = () => {
+    setLayersOpen(false);
+    setDisabled(true);
+  };
 
   return (
     <div className={classes.layerMenuWrapper}>
       <IconButton
-        onClick={handleMenuOpen}
+        onClick={() => handleMenuOpen(100)}
         onMouseEnter={handleMenuOpen}
         classes={{ root: classes.layersButton }}
         style={{ backgroundColor: 'white' }}
@@ -119,62 +109,72 @@ function LayerMenu() {
       >
         <Layers />
       </IconButton>
-      <Fade in={layersOpen}>
-        <Paper elevation={3} classes={{ root: classes.paper }} ref={ref}>
-          <div
-            className={`${classes.layerMenu} ${
-              disabled ? classes.disabled : ''
-            }`}
-            onMouseLeave={handleMenuClose}
-          >
-            <Hidden mdUp>
-              <RadioGroup value={value} onChange={handleChange}>
-                {baselayers.map((baselayer) => {
-                  return (
-                    <MuiFormControlLabel
-                      value={baselayer.name}
-                      control={<Radio color="primary" />}
-                      label={baselayer.name}
-                      key={baselayer.key}
-                    />
-                  );
-                })}
-              </RadioGroup>
-              <Divider />
-            </Hidden>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  color="primary"
-                  checked={showEducation}
-                  onChange={() => dispatch(setShowEducation(!showEducation))}
-                />
-              }
-              label="Education"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  color="primary"
-                  checked={showWork}
-                  onChange={() => dispatch(setShowWork(!showWork))}
-                />
-              }
-              label="Work"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  color="primary"
-                  checked={showResidence}
-                  onChange={() => dispatch(setShowResidence(!showResidence))}
-                />
-              }
-              label="Residence"
-            />
-          </div>
-        </Paper>
-      </Fade>
+      <ClickAwayListener
+        mouseEvent="onMouseDown"
+        touchEvent="onTouchStart"
+        onClickAway={() => {
+          if (layersOpen) {
+            handleMenuClose();
+          }
+        }}
+      >
+        <Fade in={layersOpen}>
+          <Paper elevation={3} classes={{ root: classes.paper }} ref={ref}>
+            <div
+              className={`${classes.layerMenu} ${
+                disabled ? classes.disabled : ''
+              }`}
+              onMouseLeave={handleMenuClose}
+            >
+              <Hidden mdUp>
+                <RadioGroup value={value} onChange={handleChange}>
+                  {baselayers.map((baselayer) => {
+                    return (
+                      <MuiFormControlLabel
+                        value={baselayer.name}
+                        control={<Radio color="primary" />}
+                        label={baselayer.name}
+                        key={baselayer.key}
+                      />
+                    );
+                  })}
+                </RadioGroup>
+                <Divider />
+              </Hidden>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    color="primary"
+                    checked={showEducation}
+                    onChange={() => setShowEducation(!showEducation)}
+                  />
+                }
+                label="Education"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    color="primary"
+                    checked={showWork}
+                    onChange={() => setShowWork(!showWork)}
+                  />
+                }
+                label="Work"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    color="primary"
+                    checked={showResidence}
+                    onChange={() => setShowResidence(!showResidence)}
+                  />
+                }
+                label="Residence"
+              />
+            </div>
+          </Paper>
+        </Fade>
+      </ClickAwayListener>
     </div>
   );
 }
