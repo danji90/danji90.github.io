@@ -1,55 +1,80 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react';
 import PropTypes from 'prop-types';
 import makeStyles from '@mui/styles/makeStyles';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullScreen from 'ol/control/FullScreen';
+import { Modal } from '@mui/material';
+import { createPortal } from 'react-dom';
 import MapButton from '../MapButton';
 import { MapContext } from '../MapContextProvider/MapContextProvider';
 
-const useStyles = makeStyles(() => {
-  return {
-    fullScreenBtn: {
-      position: 'absolute',
-      top: 15,
-      right: 5,
-      zIndex: 1,
-    },
-  };
-});
+const isFullScreenCapable = (element) => {
+  if (!element) return false;
+  return (
+    element.requestFullscreen ||
+    element.msRequestFullscreen ||
+    element.mozRequestFullScreen ||
+    element.webkitExitFullscreen
+  );
+};
 
 function FullScreenButton({ elementRef }) {
-  const classes = useStyles();
-  const { map, isFullScreen, setIsFullScreen } = useContext(MapContext);
+  const {
+    map,
+    isFullScreen,
+    setIsFullScreen,
+    fullScreenElement,
+    setFullScreenElement,
+  } = useContext(MapContext);
 
   const toggleFullScreen = () => {
-    if (!document.fullscreenElement) {
-      if (elementRef.current) {
-        elementRef.current.requestFullscreen();
+    const element = elementRef.current;
+    if (!isFullScreenCapable(element)) {
+      setIsFullScreen(!isFullScreen);
+    } else if (!document.fullscreenElement) {
+      if (element.requestFullscreen) {
+        element.requestFullscreen();
+      } else if (element.msRequestFullscreen) {
+        element.msRequestFullscreen();
+      } else if (element.mozRequestFullScreen) {
+        element.mozRequestFullScreen();
+      } else if (element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen();
       }
-    } else {
+    } else if (document.exitFullscreen) {
       document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
     }
   };
 
   useEffect(() => {
+    const abortCtrl = new AbortController();
+    const { signal } = abortCtrl;
     const handleFullScreenChange = () => {
-      setIsFullScreen(!!document.fullscreenElement);
+      setFullScreenElement(document.fullscreenElement);
       map.updateSize();
     };
-
-    document.addEventListener('fullscreenchange', handleFullScreenChange);
-    return () =>
-      document.removeEventListener('fullscreenchange', handleFullScreenChange);
-  }, []);
+    document.addEventListener('fullscreenchange', handleFullScreenChange, {
+      signal,
+    });
+    document.addEventListener('keydown', () => setIsFullScreen(false), {
+      signal,
+    });
+    handleFullScreenChange();
+    return () => {
+      abortCtrl.abort();
+    };
+  }, [isFullScreen]);
 
   return (
-    <MapButton
-      className={classes.fullScreenBtn}
-      onClick={toggleFullScreen}
-      title="Toggle Fullscreen"
-    >
-      {isFullScreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
+    <MapButton onClick={toggleFullScreen} title="Toggle Fullscreen">
+      {isFullScreen || fullScreenElement ? (
+        <FullscreenExitIcon />
+      ) : (
+        <FullscreenIcon />
+      )}
     </MapButton>
   );
 }

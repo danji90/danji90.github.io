@@ -7,7 +7,7 @@ export default defineConfig({
     react(),
     eslint({
       cache: false,
-      include: ['./src/**/*.js', './src/**/*.jsx'],
+      include: ['./src/**/*.js', './src/**/*.jsx', './src/**/**/*.jsx'],
       exclude: [],
     }),
   ],
@@ -16,4 +16,9 @@ export default defineConfig({
     open: true,
   },
   assetsInclude: ['**/*.JPEG', '**/*.JPG', '**/*.PNG'],
+  resolve: {
+    alias: {
+      '@': '/src',
+    },
+  },
 });

@@ -26,9 +26,6 @@ const defaultProps = {
 };
 
 const useStyles = makeStyles((theme) => ({
-  wrapper: {
-    position: (props) => (props.id ? 'relative' : 'static'),
-  },
   content: {
     opacity: 0,
     transform: 'scale(0)',
@@ -49,10 +46,6 @@ const useStyles = makeStyles((theme) => ({
     opacity: 1,
     transform: 'scale(1)',
   },
-  hashAnchor: {
-    position: 'absolute',
-    top: -70,
-  },
 }));
 
 function Container(props) {
@@ -66,15 +59,17 @@ function Container(props) {
   });
 
   return (
-    <div ref={ref} className={classes.wrapper}>
+    <>
       {id ? <div className={classes.hashAnchor} id={id} /> : null}
-      <div className={`${classes.content} ${inView ? classes.visible : ''}`}>
-        <div className={`${classes.container} ${className}`} style={styles}>
-          <Typography variant="h2">{title}</Typography>
-          {children}
+      <div ref={ref} className={classes.wrapper}>
+        <div className={`${classes.content} ${inView ? classes.visible : ''}`}>
+          <div className={`${classes.container} ${className}`} style={styles}>
+            <Typography variant="h2">{title}</Typography>
+            {children}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

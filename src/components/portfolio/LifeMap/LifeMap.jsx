@@ -1,4 +1,11 @@
-import React, { useContext, useEffect, useCallback, useRef } from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useCallback,
+  useRef,
+  useMemo,
+  useState,
+} from 'react';
 import withStyles from '@mui/styles/withStyles';
 import { Hidden, Link, Typography, Slider } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
@@ -22,10 +29,11 @@ import GeoJSON from 'ol/format/GeoJSON';
 import 'react-spatial/themes/default/index.scss';
 import { format } from 'date-fns';
 
+import { unByKey } from 'ol/Observable';
 import Container from '../Container';
 import LayerMenu from '../LayerMenu/LayerMenu';
 import FullExtent from '../FullExtentButton/FullExtentButton';
-import MapButtons from '../ZoomButtons/ZoomButtons';
+import ZoomButtons from '../ZoomButtons/ZoomButtons';
 import MapScrollOverlay from '../MapScrollOverlay';
 
 import eduIcon from '../../../assets/images/edu.png';
@@ -109,11 +117,26 @@ export const clusterLayer = new AnimatedCluster({
   name: 'Cluster',
   source: clusterSource,
   visible: true,
+  zIndex: 99999,
   style: (features, resolution) => getStyle(features, resolution, clusterLayer),
 });
 
 const useStyles = makeStyles((theme) => {
   return {
+    fullScreenModal: {
+      // For iOS we need to fall back to a custom full screen modal
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      height: '100% !important',
+      width: '100%',
+      zIndex: 1000,
+      padding: 0,
+      border: 0,
+      display: 'flex',
+      flexDirection: 'column',
+      backgroundColor: 'white',
+    },
     lifemap: {
       height: '100vh',
       [theme.breakpoints.down('sm')]: {
@@ -181,6 +204,16 @@ const useStyles = makeStyles((theme) => {
     sliderWrapper: {
       padding: '0 20px',
     },
+    topRightBtns: {
+      position: 'absolute',
+      right: 0,
+      top: 0,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'flex-end',
+      padding: '15px 5px',
+      gap: 10,
+    },
   };
 });
 
@@ -204,55 +237,61 @@ const useUpdateFeatures = () => {
     work,
     education,
     residence,
-    layersOpen,
+    isFullScreen,
   } = useContext(MapContext);
 
   useEffect(() => {
     if (!map.getLayers().getArray().includes(clusterLayer)) {
       map.addLayer(clusterLayer);
     }
+    function updateFeatures() {
+      clusterSource.getSource().clear();
+      let newFeatures = [];
+      if (showEducation) {
+        newFeatures = newFeatures.concat(education);
+      }
+      if (showWork) {
+        newFeatures = newFeatures.concat(work);
+      }
+      if (showResidence) {
+        newFeatures = newFeatures.concat(residence);
+      }
 
-    clusterSource.getSource().clear();
-    let newFeatures = [];
-    if (showEducation) {
-      newFeatures = newFeatures.concat(education);
-    }
-    if (showWork) {
-      newFeatures = newFeatures.concat(work);
-    }
-    if (showResidence) {
-      newFeatures = newFeatures.concat(residence);
-    }
+      const timeFiltered = newFeatures.filter((feature) => {
+        let display = false;
+        const timeStamps = feature.get('timestamp');
+        const isCurrent = feature.get('current');
+        timeStamps.forEach((timestamp) => {
+          const startOfDay = new Date();
+          startOfDay.setUTCHours(0, 0, 0, 0);
+          const featureDates = {
+            start: Date.parse(timestamp[0]),
+            end: isCurrent ? startOfDay.getTime() : Date.parse(timestamp[1]),
+          };
+          const inputDates = {
+            start: timeSpan[0],
+            end: timeSpan[1],
+          };
 
-    const timeFiltered = newFeatures.filter((feature) => {
-      let display = false;
-      const timeStamps = feature.get('timestamp');
-      const isCurrent = feature.get('current');
-      timeStamps.forEach((timestamp) => {
-        const startOfDay = new Date();
-        startOfDay.setUTCHours(0, 0, 0, 0);
-        const featureDates = {
-          start: Date.parse(timestamp[0]),
-          end: isCurrent ? startOfDay.getTime() : Date.parse(timestamp[1]),
-        };
-        const inputDates = {
-          start: timeSpan[0],
-          end: timeSpan[1],
-        };
-
-        if (!display) {
-          display =
-            featureDates.start <= inputDates.end &&
-            inputDates.start <= featureDates.end;
-        }
+          if (!display) {
+            display =
+              featureDates.start <= inputDates.end &&
+              inputDates.start <= featureDates.end;
+          }
+        });
+        return display;
       });
-      return display;
-    });
-    clusterSource.getSource().addFeatures(timeFiltered);
-  }, [map, showResidence, showWork, showEducation, timeSpan]);
+      clusterSource.getSource().addFeatures(timeFiltered);
+    }
+    updateFeatures();
+    const targetListener = map.on('change:target', updateFeatures);
+    return () => {
+      unByKey(targetListener);
+    };
+  }, [map, showResidence, showWork, showEducation, timeSpan, isFullScreen]);
 };
 
-function LifeMap2({ section }) {
+function LifeMapContent() {
   const classes = useStyles();
   const {
     baselayers,
@@ -268,137 +307,158 @@ function LifeMap2({ section }) {
     education,
     residence,
     layersOpen,
-    isFullScreen,
+    isFullScreen: isFullScreenIOS,
+    fullScreenElement,
   } = useContext(MapContext);
   const containerRef = useRef(null);
   useUpdateFeatures();
 
   return (
-    <Container
-      title="Life map"
-      className={classes.lifemap}
-      id={section.id}
-      fullWidthOnMobile
+    <div
+      className={
+        !isFullScreenIOS ? classes.contentWrapper : classes.fullScreenModal // For iOS fullscreen
+      }
+      ref={containerRef}
     >
-      <div className={classes.contentWrapper} ref={containerRef}>
-        <div className={classes.mapContainer}>
-          {!isFullScreen && <MapScrollOverlay />}
-          <LayerMenu />
+      <div className={classes.mapContainer}>
+        {!isFullScreenIOS && !fullScreenElement && <MapScrollOverlay />}
+        <LayerMenu />
+        <div className={classes.topRightBtns}>
           <FullScreenButton elementRef={containerRef} />
           <FullExtent
             featureSource={clusterSource}
             onClick={() => setSelectedFeature(null)}
           />
-          <MapButtons />
-          <BasicMap
-            className={`rs-map ${classes.map}`}
-            zoom={2}
-            viewOptions={{
-              minZoom: 2.3,
-              maxZoom: 21,
-            }}
-            layers={baselayers}
-            map={map}
-            onFeaturesClick={(features) => {
-              if (!features || !features.length) {
-                setSelectedFeature(null);
-                return;
-              }
+        </div>
+        <ZoomButtons />
+        <BasicMap
+          className={`rs-map ${classes.map}`}
+          zoom={map?.getView()?.getZoom() ?? 2}
+          center={map?.getView()?.getCenter()}
+          viewOptions={{
+            minZoom: 2.3,
+            maxZoom: 21,
+          }}
+          layers={baselayers}
+          map={map}
+          onFeaturesClick={(features) => {
+            if (!features || !features.length) {
+              setSelectedFeature(null);
+              return;
+            }
 
-              const clusteredFeatures = features[0].get('features');
-              if (clusteredFeatures?.length > 1) {
-                setSelectedFeature(null);
-                const coordinates = clusteredFeatures.map((feature) =>
-                  feature.getGeometry().getCoordinates(),
-                );
-                const combinedGeom = new MultiPoint(coordinates);
-                map.getView().fit(combinedGeom, {
-                  padding: [100, 100, 100, 100],
-                  duration: 300,
-                });
-                return;
-              }
-              setSelectedFeature(features[0].get('features')[0]);
-            }}
-            onFeaturesHover={(features) => {
-              if (features.length) {
-                document.body.style.cursor = 'pointer';
-              } else {
-                document.body.style.cursor = 'auto';
-              }
-            }}
-          />
-          {selectedFeature && (
-            <Popup
-              map={map}
-              header={selectedFeature.get('city')}
-              feature={selectedFeature}
-              onCloseClick={() => setSelectedFeature(null)}
-              panIntoView
-            >
-              <div className={classes.popup}>
-                {selectedFeature.get('title') && (
+            const clusteredFeatures = features[0].get('features');
+            if (clusteredFeatures?.length > 1) {
+              setSelectedFeature(null);
+              const coordinates = clusteredFeatures.map((feature) =>
+                feature.getGeometry().getCoordinates(),
+              );
+              const combinedGeom = new MultiPoint(coordinates);
+              map.getView().fit(combinedGeom, {
+                padding: [100, 100, 100, 100],
+                duration: 300,
+              });
+              return;
+            }
+            setSelectedFeature(features[0].get('features')[0]);
+          }}
+          onFeaturesHover={(features) => {
+            if (features.length) {
+              document.body.style.cursor = 'pointer';
+            } else {
+              document.body.style.cursor = 'auto';
+            }
+          }}
+        />
+        {selectedFeature && (
+          <Popup
+            map={map}
+            header={selectedFeature.get('city')}
+            feature={selectedFeature}
+            onCloseClick={() => setSelectedFeature(null)}
+            panIntoView
+          >
+            <div className={classes.popup}>
+              {selectedFeature.get('title') && (
+                <>
+                  <Typography variant="body1">
+                    {selectedFeature.get('title')}
+                  </Typography>
+                  <br />
+                </>
+              )}
+              {selectedFeature.get('link') &&
+                selectedFeature.get('facility') && (
                   <>
-                    <Typography variant="body1">
-                      {selectedFeature.get('title')}
-                    </Typography>
+                    <Link
+                      href={`${selectedFeature.get('link')}`}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      {selectedFeature.get('facility')}
+                    </Link>
+                    <br />
                     <br />
                   </>
                 )}
-                {selectedFeature.get('link') &&
-                  selectedFeature.get('facility') && (
-                    <>
-                      <Link
-                        href={`${selectedFeature.get('link')}`}
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
-                        {selectedFeature.get('facility')}
-                      </Link>
-                      <br />
-                      <br />
-                    </>
-                  )}
-                <Typography variant="body2">
-                  {selectedFeature.get('description')}
-                </Typography>
-              </div>
-            </Popup>
-          )}
-          <Copyright map={map} />
-          <div className={classes.baselayerSwitcherWrapper}>
-            <Hidden mdDown>
-              <BaseLayerSwitcher
-                map={map}
-                layers={baselayers}
-                layerImages={layerImages}
-              />
-            </Hidden>
-          </div>
-        </div>
-        <div className={classes.timeSlider}>
-          <Typography variant="h3" align="center">
-            {`${format(timeSpan[0], 'dd.MM.yyyy')} - ${format(
-              timeSpan[1],
-              'dd.MM.yyyy',
-            )}`}
-          </Typography>
-          <div className={classes.sliderWrapper}>
-            <Slider
-              min={initialTimeSpan[0]}
-              max={initialTimeSpan[1]}
-              onChange={(evt, value) => setTimeSpan(value)}
-              value={timeSpan}
+              <Typography variant="body2">
+                {selectedFeature.get('description')}
+              </Typography>
+            </div>
+          </Popup>
+        )}
+        <Copyright map={map} />
+        <div className={classes.baselayerSwitcherWrapper}>
+          <Hidden mdDown>
+            <BaseLayerSwitcher
+              map={map}
+              layers={baselayers}
+              layerImages={layerImages}
             />
-          </div>
+          </Hidden>
         </div>
       </div>
-    </Container>
+      <div className={classes.timeSlider}>
+        <Typography variant="h3" align="center">
+          {`${format(timeSpan[0], 'dd.MM.yyyy')} - ${format(
+            timeSpan[1],
+            'dd.MM.yyyy',
+          )}`}
+        </Typography>
+        <div className={classes.sliderWrapper}>
+          <Slider
+            min={initialTimeSpan[0]}
+            max={initialTimeSpan[1]}
+            onChange={(evt, value) => setTimeSpan(value)}
+            value={timeSpan}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+function LifeMap({ section }) {
+  const classes = useStyles();
+  const { isFullScreen: isFullScreenIOS } = useContext(MapContext);
+  const containerRef = useRef(null);
+
+  return (
+    <>
+      {isFullScreenIOS && <LifeMapContent />} {/** iOS full screen modal */}
+      <Container
+        title="Life map"
+        className={classes.lifemap}
+        id={section.id}
+        fullWidthOnMobile
+      >
+        {!isFullScreenIOS && <LifeMapContent />}
+      </Container>
+    </>
   );
 }
 
-LifeMap2.propTypes = {
+LifeMap.propTypes = {
   section: PropTypes.object.isRequired,
 };
 
-export default LifeMap2;
+export default LifeMap;

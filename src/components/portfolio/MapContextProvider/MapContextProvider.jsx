@@ -104,6 +104,7 @@ function MapContextProvider({ children }) {
   const [showResidence, setShowResidence] = useState(false);
   const [selectedFeature, setSelectedFeature] = useState(null);
   const [isFullScreen, setIsFullScreen] = useState(null);
+  const [fullScreenElement, setFullScreenElement] = useState(null);
   const [timeSpan, setTimeSpan] = useState([
     Date.parse('1990-09-13T00:00:00.000Z'),
     Date.now(),
@@ -130,6 +131,8 @@ function MapContextProvider({ children }) {
       setTimeSpan,
       isFullScreen,
       setIsFullScreen,
+      fullScreenElement,
+      setFullScreenElement,
     }),
     [
       layersOpen,
@@ -138,6 +141,7 @@ function MapContextProvider({ children }) {
       showResidence,
       selectedFeature,
       isFullScreen,
+      fullScreenElement,
       timeSpan,
     ],
   );
