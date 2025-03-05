@@ -159,6 +159,11 @@ function HideOnScroll({ children }) {
     if (homeContainer) {
       observer.observe(homeContainer);
     }
+    return () => {
+      if (homeContainer) {
+        observer.disconnect();
+      }
+    };
   }, [homeContainer, observer]);
 
   return isTabletDown ? (
@@ -229,7 +234,7 @@ ExperienceMenu.defaultProps = {
   anchor: null,
 };
 
-const scrollToSection = (sectionId, callback) => {
+const scrollToSection = (sectionId, callback, isTabletDown) => {
   const targetElement = document.getElementById(sectionId);
   // eslint-disable-next-line no-return-assign
   const defaultCallback = () => (window.location.hash = `#/#${sectionId}`);
@@ -242,7 +247,7 @@ const scrollToSection = (sectionId, callback) => {
       align:
         sectionId !== 'home'
           ? {
-              top: 0,
+              topOffset: isTabletDown ? -280 : -460,
             }
           : undefined,
     },
@@ -270,10 +275,10 @@ function NavBar() {
       } else {
         dispatch(setXpOpen(false));
         dispatch(setMenuOpen(false));
-        scrollToSection(section.id);
+        scrollToSection(section.id, undefined, isMdDown);
       }
     },
-    [dispatch, xpOpen],
+    [dispatch, xpOpen, isMdDown],
   );
 
   useEffect(() => {
@@ -282,8 +287,8 @@ function NavBar() {
       return;
     }
     const hash = window.location.hash.split('#/#')[1];
-    scrollToSection(hash);
-  }, []);
+    scrollToSection(hash, undefined, isMdDown);
+  }, [isMdDown]);
 
   return (
     <>
