@@ -30,29 +30,34 @@ import 'react-spatial/themes/default/index.scss';
 import { format } from 'date-fns';
 
 import { unByKey } from 'ol/Observable';
+import Stroke from 'ol/style/Stroke';
 import Container from '../Container';
 import LayerMenu from '../LayerMenu/LayerMenu';
 import FullExtent from '../FullExtentButton/FullExtentButton';
 import ZoomButtons from '../ZoomButtons/ZoomButtons';
 import MapScrollOverlay from '../MapScrollOverlay';
-
-import eduIcon from '../../../assets/images/edu.png';
-import workIcon from '../../../assets/images/work.png';
-import residenceIcon from '../../../assets/images/residence.png';
-import aerial from './aerial.png';
-import osm from './osm.png';
-import topo from './topo.png';
-import mapData from '../../../assets/data/mapFeatures.json';
 import {
   initialTimeSpan,
   MapContext,
 } from '../MapContextProvider/MapContextProvider';
 import FullScreenButton from '../FullScreenButton/FullScreenButton';
+import MapTimelineOverlay from '../MapTimelineOverlay';
+
+import aerial from './aerial.png';
+import osm from './osm.png';
+import topo from './topo.png';
+
+import getIconSource from '../../utils/getIconSource';
+import { DRAWER_WIDTH } from '../MapTimelineOverlay/MapTimelineOverlay';
 
 const styleCache = {};
 const getStyle = (feature) => {
   const size = feature.get('features')?.length;
-  let style = styleCache[size];
+  const type = feature.get('features')?.[0].get('type');
+  const isSelected = feature.get('features')?.[0].get('selected');
+
+  let style =
+    styleCache[size === 1 ? `${type}${isSelected ? '-selected' : ''}` : size];
   if (!style) {
     const color =
       // eslint-disable-next-line no-nested-ternary
@@ -88,14 +93,9 @@ const getStyle = (feature) => {
           }),
         }),
       ];
+      styleCache[size] = style;
     } else {
-      let src = eduIcon;
-      if (feature.get('features')?.[0].get('type') === 'work') {
-        src = workIcon;
-      }
-      if (feature.get('features')?.[0].get('type') === 'residence') {
-        src = residenceIcon;
-      }
+      const src = getIconSource(type);
       style = new Style({
         image: new Icon({
           scale: 1 / 4,
@@ -103,6 +103,21 @@ const getStyle = (feature) => {
           src,
         }),
       });
+      if (isSelected) {
+        style = [
+          new Style({
+            image: new CircleStyle({
+              scale: 1 / 4,
+              radius: 24,
+              fill: new Fill({
+                color: 'rgba(255, 0, 0,0.4)',
+              }),
+            }),
+          }),
+          style,
+        ];
+      }
+      styleCache[`${type}${isSelected ? '-selected' : ''}`] = style;
     }
   }
   return style;
@@ -206,7 +221,8 @@ const useStyles = makeStyles((theme) => {
     },
     topRightBtns: {
       position: 'absolute',
-      right: 0,
+      right: (props) => (props.selectedFeature ? DRAWER_WIDTH : 0),
+      transition: 'right 0.2s',
       top: 0,
       display: 'flex',
       flexDirection: 'column',
@@ -239,6 +255,18 @@ const useUpdateFeatures = () => {
     residence,
     isFullScreen,
   } = useContext(MapContext);
+
+  useEffect(() => {
+    clusterSource
+      .getSource()
+      .getFeatures()
+      .forEach((feature) => {
+        feature.set('selected', false);
+      });
+    if (selectedFeature) {
+      selectedFeature.set('selected', true);
+    }
+  }, [selectedFeature]);
 
   useEffect(() => {
     if (!map.getLayers().getArray().includes(clusterLayer)) {
@@ -292,7 +320,6 @@ const useUpdateFeatures = () => {
 };
 
 function LifeMapContent() {
-  const classes = useStyles();
   const {
     baselayers,
     map,
@@ -310,6 +337,7 @@ function LifeMapContent() {
     isFullScreen: isFullScreenIOS,
     fullScreenElement,
   } = useContext(MapContext);
+  const classes = useStyles({ selectedFeature });
   const containerRef = useRef(null);
   useUpdateFeatures();
 
@@ -324,13 +352,14 @@ function LifeMapContent() {
         {!isFullScreenIOS && !fullScreenElement && <MapScrollOverlay />}
         <LayerMenu />
         <div className={classes.topRightBtns}>
+          <ZoomButtons />
           <FullScreenButton elementRef={containerRef} />
           <FullExtent
             featureSource={clusterSource}
             onClick={() => setSelectedFeature(null)}
           />
         </div>
-        <ZoomButtons />
+        <MapTimelineOverlay />
         <BasicMap
           className={`rs-map ${classes.map}`}
           zoom={map?.getView()?.getZoom() ?? 2}
@@ -360,6 +389,8 @@ function LifeMapContent() {
               });
               return;
             }
+            const feature = features[0].get('features')[0];
+            feature.set('selected', true);
             setSelectedFeature(features[0].get('features')[0]);
           }}
           onFeaturesHover={(features) => {
@@ -370,7 +401,7 @@ function LifeMapContent() {
             }
           }}
         />
-        {selectedFeature && (
+        {/* {selectedFeature && (
           <Popup
             map={map}
             header={selectedFeature.get('city')}
@@ -406,7 +437,7 @@ function LifeMapContent() {
               </Typography>
             </div>
           </Popup>
-        )}
+        )} */}
         <Copyright map={map} />
         <div className={classes.baselayerSwitcherWrapper}>
           <Hidden mdDown>
