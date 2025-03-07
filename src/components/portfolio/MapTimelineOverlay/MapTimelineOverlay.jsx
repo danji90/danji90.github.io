@@ -2,16 +2,8 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import { Button, Icon } from '@mui/material';
 import { Close, ChevronLeft } from '@mui/icons-material';
 import scrollIntoView from 'scroll-into-view';
@@ -28,6 +20,7 @@ import { MapContext } from '../MapContextProvider/MapContextProvider';
 
 import getIconSource from '../../utils/getIconSource';
 import MapButton from '../MapButton';
+import unselectAllFeatures from '../../utils/unselectAllFeatures';
 
 const AccordionSummary = styled((props) => (
   <MuiAccordionSummary
@@ -59,7 +52,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-end',
-  backgroundColor: '#282c34',
+  backgroundColor: theme.palette.text.primary,
   position: 'fixed',
   width: DRAWER_WIDTH,
   zIndex: 1000,
@@ -83,7 +76,7 @@ export default function MapTimelineOverlay({ features }) {
     isFullScreen: isFullScreenIOS,
     fullScreenElement,
   } = useContext(MapContext);
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   const itemRefs = useRef(null);
 
   useEffect(() => {
@@ -123,14 +116,14 @@ export default function MapTimelineOverlay({ features }) {
         }}
         variant="persistent"
         anchor="right"
-        open={open || !!selectedFeature}
+        open={!!selectedFeature}
       >
         <DrawerHeader>
           <IconButton
             size="small"
             onClick={() => {
               setSelectedFeature(null);
-              setOpen(false);
+              // setOpen(false);
             }}
           >
             <Close sx={{ width: 20, height: 20, color: 'white' }} />

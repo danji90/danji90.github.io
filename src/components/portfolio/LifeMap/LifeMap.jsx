@@ -48,6 +48,7 @@ import topo from './topo.png';
 
 import getIconSource from '../../utils/getIconSource';
 import { DRAWER_WIDTH } from '../MapTimelineOverlay/MapTimelineOverlay';
+import unselectAllFeatures from '../../utils/unselectAllFeatures';
 
 const styleCache = {};
 const getStyle = (feature) => {
@@ -293,7 +294,6 @@ const useUpdateFeatures = () => {
       map.addLayer(clusterLayer);
     }
     function updateFeatures() {
-      clusterSource.getSource().clear();
       let newFeatures = [];
       if (showEducation) {
         newFeatures = newFeatures.concat(education);
@@ -329,6 +329,11 @@ const useUpdateFeatures = () => {
         });
         return display;
       });
+      if (!timeFiltered.some((feat) => feat === selectedFeature)) {
+        unselectAllFeatures(clusterSource.getSource().getFeatures());
+        setSelectedFeature(null);
+      }
+      clusterSource.getSource().clear();
       clusterSource.getSource().addFeatures(timeFiltered);
       setMapFeatures(timeFiltered);
     }
