@@ -257,6 +257,7 @@ const useUpdateFeatures = () => {
     residence,
     isFullScreen,
   } = useContext(MapContext);
+  const [mapFeatures, setMapFeatures] = useState([]);
 
   useEffect(() => {
     clusterSource
@@ -329,6 +330,7 @@ const useUpdateFeatures = () => {
         return display;
       });
       clusterSource.getSource().addFeatures(timeFiltered);
+      setMapFeatures(timeFiltered);
     }
     updateFeatures();
     const targetListener = map.on('change:target', updateFeatures);
@@ -336,6 +338,8 @@ const useUpdateFeatures = () => {
       unByKey(targetListener);
     };
   }, [map, showResidence, showWork, showEducation, timeSpan, isFullScreen]);
+
+  return mapFeatures;
 };
 
 function LifeMapContent() {
@@ -358,7 +362,7 @@ function LifeMapContent() {
   } = useContext(MapContext);
   const classes = useStyles({ selectedFeature });
   const containerRef = useRef(null);
-  useUpdateFeatures();
+  const currentFeatures = useUpdateFeatures();
 
   return (
     <div
@@ -373,12 +377,9 @@ function LifeMapContent() {
         <div className={classes.topRightBtns}>
           <ZoomButtons />
           <FullScreenButton elementRef={containerRef} />
-          <FullExtent
-            featureSource={clusterSource}
-            onClick={() => setSelectedFeature(null)}
-          />
+          <FullExtent featureSource={clusterSource} />
         </div>
-        <MapTimelineOverlay />
+        <MapTimelineOverlay features={currentFeatures} />
         <BasicMap
           className={`rs-map ${classes.map}`}
           zoom={map?.getView()?.getZoom() ?? 2}
@@ -397,7 +398,6 @@ function LifeMapContent() {
 
             const clusteredFeatures = features[0].get('features');
             if (clusteredFeatures?.length > 1) {
-              setSelectedFeature(null);
               const coordinates = clusteredFeatures.map((feature) =>
                 feature.getGeometry().getCoordinates(),
               );
@@ -405,6 +405,7 @@ function LifeMapContent() {
               map.getView().fit(combinedGeom, {
                 padding: [100, 100, 100, 100],
                 duration: 300,
+                callback: () => setSelectedFeature(null),
               });
               return;
             }
