@@ -14,7 +14,6 @@ import PropTypes from 'prop-types';
 import BasicMap from 'react-spatial/components/BasicMap';
 import BaseLayerSwitcher from 'react-spatial/components/BaseLayerSwitcher';
 import Copyright from 'react-spatial/components/Copyright';
-import Popup from 'react-spatial/components/Popup';
 import MultiPoint from 'ol/geom/MultiPoint';
 import VectorSource from 'ol/source/Vector';
 import AnimatedCluster from 'ol-ext/layer/AnimatedCluster';
@@ -27,7 +26,7 @@ import Map from 'ol/Map';
 import Cluster from 'ol/source/Cluster';
 import GeoJSON from 'ol/format/GeoJSON';
 import 'react-spatial/themes/default/index.scss';
-import { format } from 'date-fns';
+import { format, max } from 'date-fns';
 
 import { unByKey } from 'ol/Observable';
 import Stroke from 'ol/style/Stroke';
@@ -98,7 +97,7 @@ const getStyle = (feature) => {
       const src = getIconSource(type);
       style = new Style({
         image: new Icon({
-          scale: 1 / 4,
+          scale: 1 / 5,
           imgSize: [144, 144],
           src,
         }),
@@ -107,10 +106,13 @@ const getStyle = (feature) => {
         style = [
           new Style({
             image: new CircleStyle({
-              scale: 1 / 4,
-              radius: 24,
+              radius: 20,
+              stroke: new Stroke({
+                width: 4,
+                color: '#63a000',
+              }),
               fill: new Fill({
-                color: 'rgba(255, 0, 0,0.4)',
+                color: 'rgba(255, 255, 255,1)',
               }),
             }),
           }),
@@ -265,6 +267,23 @@ const useUpdateFeatures = () => {
       });
     if (selectedFeature) {
       selectedFeature.set('selected', true);
+      const clusterFeature = clusterSource.getFeatures().find((feature) => {
+        const clusterFeats = feature.get('features');
+        return (
+          clusterFeats?.length > 1 && clusterFeats?.includes(selectedFeature)
+        );
+      });
+      const isNotInView = !selectedFeature
+        .getGeometry()
+        .intersectsExtent(map.getView().calculateExtent(map.getSize()));
+
+      if (clusterFeature || isNotInView) {
+        map.getView().fit(selectedFeature.getGeometry(), {
+          padding: [100, 100, 100, 100],
+          duration: 300,
+          maxZoom: 16,
+        });
+      }
     }
   }, [selectedFeature]);
 
@@ -401,43 +420,6 @@ function LifeMapContent() {
             }
           }}
         />
-        {/* {selectedFeature && (
-          <Popup
-            map={map}
-            header={selectedFeature.get('city')}
-            feature={selectedFeature}
-            onCloseClick={() => setSelectedFeature(null)}
-            panIntoView
-          >
-            <div className={classes.popup}>
-              {selectedFeature.get('title') && (
-                <>
-                  <Typography variant="body1">
-                    {selectedFeature.get('title')}
-                  </Typography>
-                  <br />
-                </>
-              )}
-              {selectedFeature.get('link') &&
-                selectedFeature.get('facility') && (
-                  <>
-                    <Link
-                      href={`${selectedFeature.get('link')}`}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      {selectedFeature.get('facility')}
-                    </Link>
-                    <br />
-                    <br />
-                  </>
-                )}
-              <Typography variant="body2">
-                {selectedFeature.get('description')}
-              </Typography>
-            </div>
-          </Popup>
-        )} */}
         <Copyright map={map} />
         <div className={classes.baselayerSwitcherWrapper}>
           <Hidden mdDown>
