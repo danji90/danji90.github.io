@@ -24,18 +24,18 @@ const useSetDisabled = (featureSource) => {
   return [disabled, setDisabled];
 };
 
-function FullExtent({ featureSource, onClick }) {
-  const { map } = useContext(MapContext);
+function FullExtent({ featureSource }) {
+  const { map, setSelectedFeature } = useContext(MapContext);
   const [disabled] = useSetDisabled(featureSource);
 
   return (
     <MapButton
       title="Zoom on features"
       onClick={(evt) => {
-        onClick(evt);
         map.getView().fit(featureSource.getExtent(), {
           padding: [50, 50, 50, 50],
           duration: 300,
+          callback: () => setSelectedFeature(null),
         });
       }}
       disabled={disabled}
@@ -48,12 +48,10 @@ function FullExtent({ featureSource, onClick }) {
 
 FullExtent.propTypes = {
   featureSource: PropTypes.instanceOf(Cluster),
-  onClick: PropTypes.func,
 };
 
 FullExtent.defaultProps = {
   featureSource: null,
-  onClick: () => {},
 };
 
 export default FullExtent;

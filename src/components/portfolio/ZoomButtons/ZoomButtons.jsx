@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState, useContext } from 'react';
-import { IconButton } from '@mui/material';
+import { Button, IconButton } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { easeOut, easeIn } from 'ol/easing';
 import { Add, Remove } from '@mui/icons-material';
@@ -9,12 +9,15 @@ import MapButton from '../MapButton';
 const useStyles = makeStyles(() => ({
   mapBtnWrapper: {
     display: 'flex',
-    position: 'absolute',
     flexDirection: 'column',
-    zIndex: 999,
-    bottom: 25,
-    right: 5,
-    gap: 10,
+  },
+  zoomOutBtn: {
+    borderTopRightRadius: 0,
+    borderTopLeftRadius: 0,
+  },
+  zoomBtn: {
+    borderBottomRightRadius: 0,
+    borderBottomLeftRadius: 0,
   },
 }));
 
@@ -78,6 +81,7 @@ function MapButtons() {
         disabled={zoom >= getView().getMaxZoom()}
         onClick={zoomIn}
         size="large"
+        className={classes.zoomBtn}
       >
         <Add />
       </MapButton>
@@ -86,6 +90,7 @@ function MapButtons() {
         disabled={zoom <= getView().getMinZoom()}
         onClick={zoomOut}
         size="large"
+        className={classes.zoomOutBtn}
       >
         <Remove />
       </MapButton>
