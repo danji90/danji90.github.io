@@ -7,7 +7,14 @@ import React, {
   useState,
 } from 'react';
 import withStyles from '@mui/styles/withStyles';
-import { Hidden, Link, Typography, Slider } from '@mui/material';
+import {
+  Hidden,
+  Link,
+  Typography,
+  Slider,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -200,7 +207,9 @@ const useStyles = makeStyles((theme) => {
     },
     baselayerSwitcherWrapper: {
       position: 'absolute',
-      bottom: 5,
+      bottom: (props) =>
+        props.selectedFeature && props.isTabletDown ? '50%' : 5,
+      transition: 'bottom 0.2s',
       left: 5,
     },
     popup: {
@@ -213,6 +222,10 @@ const useStyles = makeStyles((theme) => {
     },
     timeSlider: {
       padding: '10px 0',
+      boxShadow: (props) =>
+        props.selectedFeature && props.isTabletDown
+          ? '0 -4px 10px rgba(0, 0, 0, 0.1)'
+          : undefined,
       [theme.breakpoints.down('sm')]: {
         '& h3': {
           marginLeft: 30,
@@ -224,7 +237,8 @@ const useStyles = makeStyles((theme) => {
     },
     topRightBtns: {
       position: 'absolute',
-      right: (props) => (props.selectedFeature ? DRAWER_WIDTH : 0),
+      right: (props) =>
+        props.selectedFeature && !props.isTabletDown ? DRAWER_WIDTH : 0,
       transition: 'right 0.2s',
       top: 0,
       display: 'flex',
@@ -365,7 +379,9 @@ function LifeMapContent() {
     isFullScreen: isFullScreenIOS,
     fullScreenElement,
   } = useContext(MapContext);
-  const classes = useStyles({ selectedFeature });
+  const theme = useTheme();
+  const isTabletDown = useMediaQuery(theme.breakpoints.down('lg'));
+  const classes = useStyles({ selectedFeature, isTabletDown });
   const containerRef = useRef(null);
   const currentFeatures = useUpdateFeatures();
 
@@ -384,7 +400,10 @@ function LifeMapContent() {
           <FullScreenButton elementRef={containerRef} />
           <FullExtent featureSource={clusterSource} />
         </div>
-        <MapTimelineOverlay features={currentFeatures} />
+        <MapTimelineOverlay
+          features={currentFeatures}
+          container={containerRef.current}
+        />
         <BasicMap
           className={`rs-map ${classes.map}`}
           zoom={map?.getView()?.getZoom() ?? 2}
