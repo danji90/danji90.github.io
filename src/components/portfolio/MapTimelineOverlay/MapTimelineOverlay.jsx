@@ -54,7 +54,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 export const DRAWER_WIDTH = 300;
 
-function DrawerComponent({ children, ...props }) {
+function DrawerComponent({ children, open, ...props }) {
   const theme = useTheme();
   const isTabletDown = useMediaQuery(theme.breakpoints.down('lg'));
   const { setSelectedFeature } = useContext(MapContext);
@@ -83,27 +83,37 @@ function DrawerComponent({ children, ...props }) {
     );
   }
   return (
-    <Drawer
-      anchor="right"
-      variant="persistent"
+    //   <Drawer
+    //   anchor="right"
+    //   variant="persistent"
+    //   PaperProps={{
+    //     sx: {
+    //       // position: 'absolute',
+    //       width: DRAWER_WIDTH,
+    //       boxSizing: 'border-box',
+    //     },
+    //   }}
+    //   transitionDuration={1000}
+    //   {...props}
+    // >
+    //   {children}
+    // </Drawer>
+    <Box
       sx={{
-        width: DRAWER_WIDTH,
-        flexShrink: 0,
-        '& .MuiDrawer-paper': {
-          position: 'absolute',
-          width: DRAWER_WIDTH,
-          boxSizing: 'border-box',
-        },
+        width: open ? DRAWER_WIDTH : 0,
+        backgroundColor: 'white',
+        overflow: 'hidden',
+        transition: 'width 0.3s ease-in-out',
       }}
-      {...props}
     >
       {children}
-    </Drawer>
+    </Box>
   );
 }
 
 DrawerComponent.propTypes = {
   children: PropTypes.node,
+  open: PropTypes.bool,
 };
 
 function TimeLine({ features }) {
@@ -139,7 +149,13 @@ function TimeLine({ features }) {
   }, [selectedFeature, itemRefs?.current, features]);
 
   return (
-    <Box sx={{ overflow: 'auto', marginTop: 3 }}>
+    <Box
+      sx={{
+        overflow: 'auto',
+        marginTop: 3,
+        height: '100%',
+      }}
+    >
       {features
         ?.filter((feat) => {
           const type = feat.get('type');
@@ -180,8 +196,11 @@ function TimeLine({ features }) {
               }}
               expanded={selected}
               onChange={() => setSelectedFeature(feat)}
-              // key={feat.ol_uid}
               sx={{
+                paper: {
+                  minWidth: DRAWER_WIDTH,
+                  overflow: 'hidden',
+                },
                 border: 'none',
                 '&::before': {
                   display: 'none',
@@ -285,8 +304,8 @@ function TimeLine({ features }) {
                 <Typography
                   sx={{
                     position: 'relative',
-                    backgroundColor: 'rgba(255,255,255,0.4)',
                     zIndex: 50,
+                    padding: '0 5px 35px 11px',
                     '&:before': {
                       content: '""',
                       width: 10,
@@ -299,14 +318,15 @@ function TimeLine({ features }) {
                     },
                     '&:after': {
                       content: '""',
-                      width: '100%',
-                      height: 'calc(100% + 28px)',
+                      width: 'calc(100% + 10px)',
+                      height: 'calc(100% - 25px) ',
                       position: 'absolute',
                       top: -10,
-                      left: 11,
-                      background:
-                        'linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.75) 10%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.75) 90%, rgba(255,255,255,0) 100%)',
+                      left: -4,
+                      backgroundColor: 'white',
                       zIndex: -1,
+                      border: `2px solid ${theme.palette.primary.main}`,
+                      borderRadius: 4,
                     },
                   }}
                 >
@@ -353,9 +373,12 @@ export default function MapTimelineOverlay({ features }) {
             justifyContent: 'flex-end',
             backgroundColor: theme.palette.text.primary,
             position: 'fixed',
-            width: { xs: '100%', md: 'calc(100% - 60px)', lg: DRAWER_WIDTH },
-            // width: '100%',
+            width: selectedFeature
+              ? { xs: '100%', md: 'calc(100% - 60px)', lg: DRAWER_WIDTH }
+              : 0,
+            transition: 'width 0.3s ease-in-out',
             zIndex: 1000,
+            overflow: 'hidden',
           }}
         >
           <IconButton

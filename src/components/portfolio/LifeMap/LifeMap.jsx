@@ -177,9 +177,11 @@ const useStyles = makeStyles((theme) => {
       backgroundColor: 'white',
     },
     mapContainer: {
-      position: 'relative',
-      flexGrow: 8,
       overflow: 'hidden',
+      position: 'relative',
+      display: 'flex',
+      height: '100%',
+      transition: 'width 0.3s',
       [theme.breakpoints.down('sm')]: {
         height: '90vh',
       },
@@ -199,6 +201,7 @@ const useStyles = makeStyles((theme) => {
       },
     },
     map: {
+      width: '100%',
       position: 'absolute',
       top: 0,
       bottom: 0,
@@ -237,8 +240,7 @@ const useStyles = makeStyles((theme) => {
     },
     topRightBtns: {
       position: 'absolute',
-      right: (props) =>
-        props.selectedFeature && !props.isTabletDown ? DRAWER_WIDTH : 0,
+      right: 0,
       transition: 'right 0.2s',
       top: 0,
       display: 'flex',
@@ -385,6 +387,13 @@ function LifeMapContent() {
   const containerRef = useRef(null);
   const currentFeatures = useUpdateFeatures();
 
+  useEffect(() => {
+    const listener = map.on('change:size', () => console.log('size changed'));
+    return () => {
+      unByKey(listener);
+    };
+  }, [map, isFullScreenIOS, fullScreenElement, selectedFeature]);
+
   return (
     <div
       className={
@@ -393,68 +402,66 @@ function LifeMapContent() {
       ref={containerRef}
     >
       <div className={classes.mapContainer}>
-        {!isFullScreenIOS && !fullScreenElement && <MapScrollOverlay />}
-        <LayerMenu />
-        <div className={classes.topRightBtns}>
-          <ZoomButtons />
-          <FullScreenButton elementRef={containerRef} />
-          <FullExtent featureSource={clusterSource} />
+        <div style={{ position: 'relative', flexGrow: 1, height: '100%' }}>
+          <BasicMap
+            className={`rs-map ${classes.map}`}
+            zoom={map?.getView()?.getZoom() ?? 2}
+            center={map?.getView()?.getCenter()}
+            viewOptions={{
+              minZoom: 2.3,
+              maxZoom: 21,
+            }}
+            layers={baselayers}
+            map={map}
+            onFeaturesClick={(features) => {
+              if (!features || !features.length) {
+                setSelectedFeature(null);
+                return;
+              }
+              const clusteredFeatures = features[0].get('features');
+              if (clusteredFeatures?.length > 1) {
+                const coordinates = clusteredFeatures.map((feature) =>
+                  feature.getGeometry().getCoordinates(),
+                );
+                const combinedGeom = new MultiPoint(coordinates);
+                map.getView().fit(combinedGeom, {
+                  padding: [100, 100, 100, 100],
+                  duration: 300,
+                  callback: () => setSelectedFeature(null),
+                });
+                return;
+              }
+              const feature = features[0].get('features')[0];
+              feature.set('selected', true);
+              setSelectedFeature(features[0].get('features')[0]);
+            }}
+            onFeaturesHover={(features) => {
+              if (features.length) {
+                document.body.style.cursor = 'pointer';
+              } else {
+                document.body.style.cursor = 'auto';
+              }
+            }}
+          />
+          {!isFullScreenIOS && !fullScreenElement && <MapScrollOverlay />}
+          <LayerMenu />
+          <div className={classes.topRightBtns}>
+            <ZoomButtons />
+            <FullScreenButton elementRef={containerRef} />
+            <FullExtent featureSource={clusterSource} />
+          </div>
+          <Copyright map={map} />
+          <div className={classes.baselayerSwitcherWrapper}>
+            <Hidden mdDown>
+              <BaseLayerSwitcher
+                map={map}
+                layers={baselayers}
+                layerImages={layerImages}
+              />
+            </Hidden>
+          </div>
         </div>
-        <MapTimelineOverlay
-          features={currentFeatures}
-          container={containerRef.current}
-        />
-        <BasicMap
-          className={`rs-map ${classes.map}`}
-          zoom={map?.getView()?.getZoom() ?? 2}
-          center={map?.getView()?.getCenter()}
-          viewOptions={{
-            minZoom: 2.3,
-            maxZoom: 21,
-          }}
-          layers={baselayers}
-          map={map}
-          onFeaturesClick={(features) => {
-            if (!features || !features.length) {
-              setSelectedFeature(null);
-              return;
-            }
-
-            const clusteredFeatures = features[0].get('features');
-            if (clusteredFeatures?.length > 1) {
-              const coordinates = clusteredFeatures.map((feature) =>
-                feature.getGeometry().getCoordinates(),
-              );
-              const combinedGeom = new MultiPoint(coordinates);
-              map.getView().fit(combinedGeom, {
-                padding: [100, 100, 100, 100],
-                duration: 300,
-                callback: () => setSelectedFeature(null),
-              });
-              return;
-            }
-            const feature = features[0].get('features')[0];
-            feature.set('selected', true);
-            setSelectedFeature(features[0].get('features')[0]);
-          }}
-          onFeaturesHover={(features) => {
-            if (features.length) {
-              document.body.style.cursor = 'pointer';
-            } else {
-              document.body.style.cursor = 'auto';
-            }
-          }}
-        />
-        <Copyright map={map} />
-        <div className={classes.baselayerSwitcherWrapper}>
-          <Hidden mdDown>
-            <BaseLayerSwitcher
-              map={map}
-              layers={baselayers}
-              layerImages={layerImages}
-            />
-          </Hidden>
-        </div>
+        <MapTimelineOverlay features={currentFeatures} />
       </div>
       <div className={classes.timeSlider}>
         <Typography variant="h3" align="center">
