@@ -91,6 +91,7 @@ function TimeLine({ features }) {
       sx={{
         overflow: 'auto',
         height: 'calc(100% - 30px)',
+        minWidth: DRAWER_WIDTH,
       }}
     >
       {features
@@ -135,7 +136,7 @@ function TimeLine({ features }) {
               onChange={() => setSelectedFeature(feat)}
               sx={{
                 paper: {
-                  width: DRAWER_WIDTH,
+                  minWidth: DRAWER_WIDTH,
                   overflow: 'hidden',
                 },
                 border: 'none',
@@ -325,7 +326,7 @@ export default function MapTimelineOverlay({ features }) {
         sx={{
           backgroundColor: 'white',
           position: 'absolute',
-          zIndex: 1000,
+          zIndex: 1600,
           overflowX: 'hidden',
           ...styles,
         }}
