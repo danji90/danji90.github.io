@@ -151,9 +151,10 @@ function TimeLine({ features }) {
                 expandIcon={null}
                 sx={{
                   padding: 0,
-                  background: selected
-                    ? 'linear-gradient(180deg, rgba(0,0,0,0.06206232492997199) 0%, rgba(255,255,255,1) 15%)'
-                    : 'rgba(0,0,0,0.06206232492997199)',
+                  // background: selected
+                  //   ? 'linear-gradient(180deg, rgba(0,0,0,0.06206232492997199) 0%, rgba(255,255,255,1) 15%)'
+                  //   : 'rgba(0,0,0,0.06206232492997199)',
+                  backgroundColor: 'white',
                   '& .MuiAccordionSummary-content': {
                     minHeight: 100,
                     display: 'flex',
@@ -234,9 +235,9 @@ function TimeLine({ features }) {
               <AccordionDetails
                 sx={{
                   borderTop: 0,
-                  background: selected
-                    ? 'linear-gradient(180deg, rgba(255,255,255,1) 85%, rgba(0,0,0,0.06206232492997199) 100%)'
-                    : 'rgba(0,0,0,0.06206232492997199) 100%)',
+                  // background: selected
+                  //   ? 'linear-gradient(180deg, rgba(255,255,255,1) 85%, rgba(0,0,0,0.06206232492997199) 100%)'
+                  //   : 'rgba(0,0,0,0.06206232492997199) 100%)',
                 }}
               >
                 <Typography
@@ -307,7 +308,7 @@ export default function MapTimelineOverlay({ features }) {
   // const [open, setOpen] = useState(false);
 
   return (
-    <>
+    <div>
       {/* <MapButton
         sx={{
           position: 'absolute',
@@ -328,6 +329,7 @@ export default function MapTimelineOverlay({ features }) {
           position: 'absolute',
           zIndex: 1600,
           overflowX: 'hidden',
+          boxShadow: '-10px 0px 8px -5px rgba(0, 0, 0, 0.3)',
           ...styles,
         }}
       >
@@ -353,7 +355,7 @@ export default function MapTimelineOverlay({ features }) {
         </Box>
         <TimeLine features={features} />
       </Box>
-    </>
+    </div>
   );
 }
 
