@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -54,68 +54,6 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 export const DRAWER_WIDTH = 300;
 
-function DrawerComponent({ children, open, ...props }) {
-  const theme = useTheme();
-  const isTabletDown = useMediaQuery(theme.breakpoints.down('lg'));
-  const { setSelectedFeature } = useContext(MapContext);
-
-  if (isTabletDown) {
-    return (
-      <SwipeableDrawer
-        anchor="bottom"
-        variant="persistent"
-        onClose={() => setSelectedFeature(null)}
-        sx={{
-          width: '100%',
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            borderTop: 'none',
-            position: 'absolute',
-            width: '100%',
-            boxSizing: 'border-box',
-            maxHeight: '50%',
-          },
-        }}
-        {...props}
-      >
-        {children}
-      </SwipeableDrawer>
-    );
-  }
-  return (
-    //   <Drawer
-    //   anchor="right"
-    //   variant="persistent"
-    //   PaperProps={{
-    //     sx: {
-    //       // position: 'absolute',
-    //       width: DRAWER_WIDTH,
-    //       boxSizing: 'border-box',
-    //     },
-    //   }}
-    //   transitionDuration={1000}
-    //   {...props}
-    // >
-    //   {children}
-    // </Drawer>
-    <Box
-      sx={{
-        width: open ? DRAWER_WIDTH : 0,
-        backgroundColor: 'white',
-        overflow: 'hidden',
-        transition: 'width 0.3s ease-in-out',
-      }}
-    >
-      {children}
-    </Box>
-  );
-}
-
-DrawerComponent.propTypes = {
-  children: PropTypes.node,
-  open: PropTypes.bool,
-};
-
 function TimeLine({ features }) {
   const theme = useTheme();
   const isTabletDown = useMediaQuery(theme.breakpoints.down('lg'));
@@ -152,8 +90,7 @@ function TimeLine({ features }) {
     <Box
       sx={{
         overflow: 'auto',
-        marginTop: 3,
-        height: '100%',
+        height: 'calc(100% - 30px)',
       }}
     >
       {features
@@ -198,7 +135,7 @@ function TimeLine({ features }) {
               onChange={() => setSelectedFeature(feat)}
               sx={{
                 paper: {
-                  minWidth: DRAWER_WIDTH,
+                  width: DRAWER_WIDTH,
                   overflow: 'hidden',
                 },
                 border: 'none',
@@ -347,6 +284,25 @@ TimeLine.propTypes = {
 export default function MapTimelineOverlay({ features }) {
   const theme = useTheme();
   const { setSelectedFeature, selectedFeature } = useContext(MapContext);
+  const isTabletDown = useMediaQuery(theme.breakpoints.down('lg'));
+
+  const styles = useMemo(() => {
+    const desktop = {
+      width: selectedFeature ? DRAWER_WIDTH : 0,
+      transition: 'width 0.3s ease-in-out',
+      right: 0,
+      top: 0,
+      height: '100%',
+    };
+    const mobile = {
+      width: '100%',
+      height: selectedFeature ? '50%' : 0,
+      bottom: 0,
+      left: 0,
+      transition: 'height 0.3s ease-in-out',
+    };
+    return isTabletDown ? mobile : desktop;
+  }, [isTabletDown, selectedFeature]);
   // const [open, setOpen] = useState(false);
 
   return (
@@ -365,20 +321,23 @@ export default function MapTimelineOverlay({ features }) {
       >
         <ChevronLeft />
       </MapButton> */}
-      <DrawerComponent open={!!selectedFeature}>
+      <Box
+        sx={{
+          backgroundColor: 'white',
+          position: 'absolute',
+          zIndex: 1000,
+          overflowX: 'hidden',
+          ...styles,
+        }}
+      >
         <Box
           sx={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'flex-end',
+            height: 30,
+            width: '100%',
             backgroundColor: theme.palette.text.primary,
-            position: 'fixed',
-            width: selectedFeature
-              ? { xs: '100%', md: 'calc(100% - 60px)', lg: DRAWER_WIDTH }
-              : 0,
-            transition: 'width 0.3s ease-in-out',
-            zIndex: 1000,
-            overflow: 'hidden',
           }}
         >
           <IconButton
@@ -392,7 +351,7 @@ export default function MapTimelineOverlay({ features }) {
           </IconButton>
         </Box>
         <TimeLine features={features} />
-      </DrawerComponent>
+      </Box>
     </>
   );
 }
