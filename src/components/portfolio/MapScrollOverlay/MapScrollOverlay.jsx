@@ -21,7 +21,7 @@ const useStyles = makeStyles(() => {
       width: '100%',
       padding: 10,
       backgroundColor: 'rgba(0,0,0,0.5)',
-      zIndex: 9999,
+      zIndex: 1500,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',

@@ -49,9 +49,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Container(props) {
-  const { children, title, id, styles, className } = props;
+  const { children, title, id, styles, className, fullWidthOnMobile } = props;
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down('lg'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const classes = useStyles(props);
   const { ref, inView } = useInView({
     threshold: isTablet ? 0 : 0.1,
@@ -64,7 +65,14 @@ function Container(props) {
       <div ref={ref} className={classes.wrapper}>
         <div className={`${classes.content} ${inView ? classes.visible : ''}`}>
           <div className={`${classes.container} ${className}`} style={styles}>
-            <Typography variant="h2">{title}</Typography>
+            <Typography
+              variant="h2"
+              sx={{
+                paddingLeft: fullWidthOnMobile && isMobile ? '30px' : undefined,
+              }}
+            >
+              {title}
+            </Typography>
             {children}
           </div>
         </div>

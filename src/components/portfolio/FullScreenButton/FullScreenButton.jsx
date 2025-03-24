@@ -59,9 +59,17 @@ function FullScreenButton({ elementRef }) {
     document.addEventListener('fullscreenchange', handleFullScreenChange, {
       signal,
     });
-    document.addEventListener('keydown', () => setIsFullScreen(false), {
-      signal,
-    });
+    document.addEventListener(
+      'keydown',
+      (evt) => {
+        if (evt.which === 27) {
+          setIsFullScreen(false);
+        }
+      },
+      {
+        signal,
+      },
+    );
     handleFullScreenChange();
     return () => {
       abortCtrl.abort();

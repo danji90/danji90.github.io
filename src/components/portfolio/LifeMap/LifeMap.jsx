@@ -7,14 +7,20 @@ import React, {
   useState,
 } from 'react';
 import withStyles from '@mui/styles/withStyles';
-import { Hidden, Link, Typography, Slider } from '@mui/material';
+import {
+  Hidden,
+  Link,
+  Typography,
+  Slider,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import BasicMap from 'react-spatial/components/BasicMap';
 import BaseLayerSwitcher from 'react-spatial/components/BaseLayerSwitcher';
 import Copyright from 'react-spatial/components/Copyright';
-import Popup from 'react-spatial/components/Popup';
 import MultiPoint from 'ol/geom/MultiPoint';
 import VectorSource from 'ol/source/Vector';
 import AnimatedCluster from 'ol-ext/layer/AnimatedCluster';
@@ -27,32 +33,38 @@ import Map from 'ol/Map';
 import Cluster from 'ol/source/Cluster';
 import GeoJSON from 'ol/format/GeoJSON';
 import 'react-spatial/themes/default/index.scss';
-import { format } from 'date-fns';
+import { format, max } from 'date-fns';
 
 import { unByKey } from 'ol/Observable';
+import Stroke from 'ol/style/Stroke';
 import Container from '../Container';
 import LayerMenu from '../LayerMenu/LayerMenu';
 import FullExtent from '../FullExtentButton/FullExtentButton';
 import ZoomButtons from '../ZoomButtons/ZoomButtons';
 import MapScrollOverlay from '../MapScrollOverlay';
-
-import eduIcon from '../../../assets/images/edu.png';
-import workIcon from '../../../assets/images/work.png';
-import residenceIcon from '../../../assets/images/residence.png';
-import aerial from './aerial.png';
-import osm from './osm.png';
-import topo from './topo.png';
-import mapData from '../../../assets/data/mapFeatures.json';
 import {
   initialTimeSpan,
   MapContext,
 } from '../MapContextProvider/MapContextProvider';
 import FullScreenButton from '../FullScreenButton/FullScreenButton';
+import MapTimelineOverlay from '../MapTimelineOverlay';
+
+import aerial from './aerial.png';
+import osm from './osm.png';
+import topo from './topo.png';
+
+import getIconSource from '../../utils/getIconSource';
+import { DRAWER_WIDTH } from '../MapTimelineOverlay/MapTimelineOverlay';
+import unselectAllFeatures from '../../utils/unselectAllFeatures';
 
 const styleCache = {};
 const getStyle = (feature) => {
   const size = feature.get('features')?.length;
-  let style = styleCache[size];
+  const type = feature.get('features')?.[0].get('type');
+  const isSelected = feature.get('features')?.[0].get('selected');
+
+  let style =
+    styleCache[size === 1 ? `${type}${isSelected ? '-selected' : ''}` : size];
   if (!style) {
     const color =
       // eslint-disable-next-line no-nested-ternary
@@ -88,21 +100,34 @@ const getStyle = (feature) => {
           }),
         }),
       ];
+      styleCache[size] = style;
     } else {
-      let src = eduIcon;
-      if (feature.get('features')?.[0].get('type') === 'work') {
-        src = workIcon;
-      }
-      if (feature.get('features')?.[0].get('type') === 'residence') {
-        src = residenceIcon;
-      }
+      const src = getIconSource(type);
       style = new Style({
         image: new Icon({
-          scale: 1 / 4,
+          scale: 1 / 5,
           imgSize: [144, 144],
           src,
         }),
       });
+      if (isSelected) {
+        style = [
+          new Style({
+            image: new CircleStyle({
+              radius: 20,
+              stroke: new Stroke({
+                width: 4,
+                color: '#63a000',
+              }),
+              fill: new Fill({
+                color: 'rgba(255, 255, 255,1)',
+              }),
+            }),
+          }),
+          style,
+        ];
+      }
+      styleCache[`${type}${isSelected ? '-selected' : ''}`] = style;
     }
   }
   return style;
@@ -153,8 +178,7 @@ const useStyles = makeStyles((theme) => {
     },
     mapContainer: {
       position: 'relative',
-      flexGrow: 8,
-      overflow: 'hidden',
+      height: '100%',
       [theme.breakpoints.down('sm')]: {
         height: '90vh',
       },
@@ -174,6 +198,7 @@ const useStyles = makeStyles((theme) => {
       },
     },
     map: {
+      width: '100%',
       position: 'absolute',
       top: 0,
       bottom: 0,
@@ -182,7 +207,9 @@ const useStyles = makeStyles((theme) => {
     },
     baselayerSwitcherWrapper: {
       position: 'absolute',
-      bottom: 5,
+      bottom: (props) =>
+        props.selectedFeature && props.isTabletDown ? '50%' : 5,
+      transition: 'bottom 0.2s',
       left: 5,
     },
     popup: {
@@ -195,6 +222,10 @@ const useStyles = makeStyles((theme) => {
     },
     timeSlider: {
       padding: '10px 0',
+      boxShadow: (props) =>
+        props.selectedFeature && props.isTabletDown
+          ? '0 -4px 10px rgba(0, 0, 0, 0.1)'
+          : undefined,
       [theme.breakpoints.down('sm')]: {
         '& h3': {
           marginLeft: 30,
@@ -206,13 +237,16 @@ const useStyles = makeStyles((theme) => {
     },
     topRightBtns: {
       position: 'absolute',
-      right: 0,
+      right: (props) =>
+        props.selectedFeature && !props.isTabletDown ? DRAWER_WIDTH : 0,
+      transition: 'right 0.3s ease-in-out',
       top: 0,
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'flex-end',
       padding: '15px 5px',
       gap: 10,
+      zIndex: 1700,
     },
   };
 });
@@ -224,6 +258,8 @@ const layerImages = {
 };
 
 const useUpdateFeatures = () => {
+  const theme = useTheme();
+  const isTabletDown = useMediaQuery(theme.breakpoints.down('lg'));
   const {
     baselayers,
     map,
@@ -239,13 +275,54 @@ const useUpdateFeatures = () => {
     residence,
     isFullScreen,
   } = useContext(MapContext);
+  const [mapFeatures, setMapFeatures] = useState([]);
+
+  useEffect(() => {
+    clusterSource
+      .getSource()
+      .getFeatures()
+      .forEach((feature) => {
+        feature.set('selected', false);
+      });
+    if (selectedFeature) {
+      selectedFeature.set('selected', true);
+      const clusterFeature = clusterSource.getFeatures().find((feature) => {
+        const clusterFeats = feature.get('features');
+        return (
+          clusterFeats?.length > 1 && clusterFeats?.includes(selectedFeature)
+        );
+      });
+      const geom = selectedFeature.getGeometry();
+      const isNotInView = !geom.intersectsExtent(
+        map.getView().calculateExtent(map.getSize()),
+      );
+      const padding = isTabletDown
+        ? [100, 100, 300, 100]
+        : [100, 300, 100, 100];
+
+      if (!clusterFeature && !isNotInView) {
+        map.getView().fit(geom, {
+          padding,
+          maxZoom: map.getView().getZoom(),
+          duration: 300,
+        });
+      }
+
+      if (clusterFeature || isNotInView) {
+        map.getView().fit(geom, {
+          duration: 300,
+          maxZoom: 16,
+          padding,
+        });
+      }
+    }
+  }, [selectedFeature]);
 
   useEffect(() => {
     if (!map.getLayers().getArray().includes(clusterLayer)) {
       map.addLayer(clusterLayer);
     }
     function updateFeatures() {
-      clusterSource.getSource().clear();
       let newFeatures = [];
       if (showEducation) {
         newFeatures = newFeatures.concat(education);
@@ -281,7 +358,13 @@ const useUpdateFeatures = () => {
         });
         return display;
       });
+      if (!timeFiltered.some((feat) => feat === selectedFeature)) {
+        unselectAllFeatures(clusterSource.getSource().getFeatures());
+        setSelectedFeature(null);
+      }
+      clusterSource.getSource().clear();
       clusterSource.getSource().addFeatures(timeFiltered);
+      setMapFeatures(timeFiltered);
     }
     updateFeatures();
     const targetListener = map.on('change:target', updateFeatures);
@@ -289,10 +372,11 @@ const useUpdateFeatures = () => {
       unByKey(targetListener);
     };
   }, [map, showResidence, showWork, showEducation, timeSpan, isFullScreen]);
+
+  return mapFeatures;
 };
 
 function LifeMapContent() {
-  const classes = useStyles();
   const {
     baselayers,
     map,
@@ -310,8 +394,11 @@ function LifeMapContent() {
     isFullScreen: isFullScreenIOS,
     fullScreenElement,
   } = useContext(MapContext);
+  const theme = useTheme();
+  const isTabletDown = useMediaQuery(theme.breakpoints.down('lg'));
+  const classes = useStyles({ selectedFeature, isTabletDown });
   const containerRef = useRef(null);
-  useUpdateFeatures();
+  const currentFeatures = useUpdateFeatures();
 
   return (
     <div
@@ -321,16 +408,6 @@ function LifeMapContent() {
       ref={containerRef}
     >
       <div className={classes.mapContainer}>
-        {!isFullScreenIOS && !fullScreenElement && <MapScrollOverlay />}
-        <LayerMenu />
-        <div className={classes.topRightBtns}>
-          <FullScreenButton elementRef={containerRef} />
-          <FullExtent
-            featureSource={clusterSource}
-            onClick={() => setSelectedFeature(null)}
-          />
-        </div>
-        <ZoomButtons />
         <BasicMap
           className={`rs-map ${classes.map}`}
           zoom={map?.getView()?.getZoom() ?? 2}
@@ -346,10 +423,8 @@ function LifeMapContent() {
               setSelectedFeature(null);
               return;
             }
-
             const clusteredFeatures = features[0].get('features');
             if (clusteredFeatures?.length > 1) {
-              setSelectedFeature(null);
               const coordinates = clusteredFeatures.map((feature) =>
                 feature.getGeometry().getCoordinates(),
               );
@@ -357,9 +432,12 @@ function LifeMapContent() {
               map.getView().fit(combinedGeom, {
                 padding: [100, 100, 100, 100],
                 duration: 300,
+                callback: () => setSelectedFeature(null),
               });
               return;
             }
+            const feature = features[0].get('features')[0];
+            feature.set('selected', true);
             setSelectedFeature(features[0].get('features')[0]);
           }}
           onFeaturesHover={(features) => {
@@ -370,43 +448,13 @@ function LifeMapContent() {
             }
           }}
         />
-        {selectedFeature && (
-          <Popup
-            map={map}
-            header={selectedFeature.get('city')}
-            feature={selectedFeature}
-            onCloseClick={() => setSelectedFeature(null)}
-            panIntoView
-          >
-            <div className={classes.popup}>
-              {selectedFeature.get('title') && (
-                <>
-                  <Typography variant="body1">
-                    {selectedFeature.get('title')}
-                  </Typography>
-                  <br />
-                </>
-              )}
-              {selectedFeature.get('link') &&
-                selectedFeature.get('facility') && (
-                  <>
-                    <Link
-                      href={`${selectedFeature.get('link')}`}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      {selectedFeature.get('facility')}
-                    </Link>
-                    <br />
-                    <br />
-                  </>
-                )}
-              <Typography variant="body2">
-                {selectedFeature.get('description')}
-              </Typography>
-            </div>
-          </Popup>
-        )}
+        {!isFullScreenIOS && !fullScreenElement && <MapScrollOverlay />}
+        <LayerMenu />
+        <div className={classes.topRightBtns}>
+          <ZoomButtons />
+          <FullScreenButton elementRef={containerRef} />
+          <FullExtent featureSource={clusterSource} />
+        </div>
         <Copyright map={map} />
         <div className={classes.baselayerSwitcherWrapper}>
           <Hidden mdDown>
@@ -417,6 +465,7 @@ function LifeMapContent() {
             />
           </Hidden>
         </div>
+        <MapTimelineOverlay features={currentFeatures} />
       </div>
       <div className={classes.timeSlider}>
         <Typography variant="h3" align="center">
