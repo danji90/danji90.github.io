@@ -15,6 +15,7 @@ import MuiAccordion from '@mui/material/Accordion';
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import { min } from 'date-fns';
+import { transform } from 'ol/proj';
 import mapData from '../../../assets/data/mapFeatures.json';
 import { MapContext } from '../MapContextProvider/MapContextProvider';
 
@@ -59,7 +60,7 @@ function YearChip({ year, sx }) {
   return (
     <Box
       sx={{
-        position: 'absolute',
+        position: 'sticky',
         top: 0,
         left: 32,
         backgroundColor: 'white',
@@ -69,7 +70,8 @@ function YearChip({ year, sx }) {
         border: '1px solid #ccc',
         fontSize: 12,
         fontWeight: 'bold',
-        zIndex: 100,
+        zIndex: 99999,
+        width: 'min-content',
         ...sx,
       }}
     >
@@ -140,10 +142,18 @@ function TimeLine({ features }) {
         overflow: 'auto',
         height: 'calc(100% - 30px)',
         minWidth: DRAWER_WIDTH,
-        position: 'relative',
         backgroundColor: 'rgba(0, 0, 0, .03)',
       }}
     >
+      <Box
+        sx={{
+          width: 10,
+          height: 20,
+          marginLeft: '27x',
+          top: 0,
+          background: theme.palette.text.primary,
+        }}
+      />
       {sortedFeatures.map((feat, index) => {
         const { type, city, description, title, timestamp } =
           feat.getProperties();
@@ -152,168 +162,170 @@ function TimeLine({ features }) {
           getTimestamp(timestamp[0]),
         ).getUTCFullYear();
         const yearChanged =
-          index > 0 &&
           featFullYear !==
-            new Date(
-              getTimestamp(sortedFeatures[index - 1]?.get('timestamp')[0]),
-            ).getUTCFullYear();
+          new Date(
+            getTimestamp(sortedFeatures[index - 1]?.get('timestamp')[0]),
+          ).getUTCFullYear();
 
         return (
-          <Box key={feat.ol_uid} sx={{ position: 'relative' }}>
+          <>
             {yearChanged ? (
               <YearChip
                 year={new Date(getTimestamp(timestamp[0])).getUTCFullYear()}
+                sx={{ marginBottom: '-10px' }}
               />
             ) : null}
-            <MuiAccordion
-              disableGutters
-              square
-              elevation={0}
-              ref={(el) => {
-                itemRefs.current = {
-                  ...(itemRefs.current || {}),
-                  [feat.ol_uid]: el,
-                };
-              }}
-              expanded={selected}
-              onChange={() => setSelectedFeature(feat)}
-              sx={{
-                border: 'none',
-                '&::before': {
-                  display: 'none',
-                },
-                '&:hover': {
-                  backgroundColor: 'rgba(0, 0, 0, .03)',
-                },
-              }}
-            >
-              <AccordionSummary
-                aria-controls="panel1d-content"
-                id="panel1d-header"
-                expandIcon={null}
+            <Box key={feat.ol_uid} sx={{ position: 'relative' }}>
+              <MuiAccordion
+                disableGutters
+                square
+                elevation={0}
+                ref={(el) => {
+                  itemRefs.current = {
+                    ...(itemRefs.current || {}),
+                    [feat.ol_uid]: el,
+                  };
+                }}
+                expanded={selected}
+                onChange={() => setSelectedFeature(feat)}
                 sx={{
-                  padding: 0,
-                  '& .MuiAccordionSummary-content': {
-                    minHeight: 100,
-                    display: 'flex',
-                    gap: 2,
-                    marginY: 0,
+                  border: 'none',
+                  '&::before': {
+                    display: 'none',
+                  },
+                  '&:hover': {
+                    backgroundColor: 'rgba(0, 0, 0, .03)',
                   },
                 }}
               >
-                <Box
+                <AccordionSummary
+                  aria-controls="panel1d-content"
+                  id="panel1d-header"
+                  expandIcon={null}
                   sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    position: 'relative',
+                    padding: 0,
+                    '& .MuiAccordionSummary-content': {
+                      minHeight: index === 0 ? 110 : 100,
+                      display: 'flex',
+                      gap: 2,
+                      marginY: 0,
+                    },
                   }}
                 >
                   <Box
                     sx={{
-                      width: 10,
-                      height: '100%',
-                      position: 'absolute',
-                      left: 19,
-                      top: 0,
-                      background: selected
-                        ? `linear-gradient(180deg, ${theme.palette.text.primary} 0%, ${theme.palette.primary.main} 20%, ${theme.palette.primary.main} 100%)`
-                        : theme.palette.text.primary,
-                      zIndex: 1,
-                    }}
-                  />
-                  <Box
-                    sx={() => {
-                      const currentColor = selected
-                        ? theme.palette.primary.main
-                        : theme.palette.text.primary;
-                      return {
-                        zIndex: 2,
-                        margin: '5px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        width: 30,
-                        height: 30,
-                        padding: 0.5,
-                        borderRadius: '50%',
-                        transition: 'background 0.1s ease-out',
-                        background: currentColor,
-                      };
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      position: 'relative',
                     }}
                   >
-                    <img
-                      src={getIconSource(type)}
-                      alt={type}
-                      style={{
-                        width: 24,
-                        height: 24,
-                        borderRadius: '50%',
-                        background: 'white',
-                        padding: 3,
+                    <Box
+                      sx={{
+                        width: 10,
+                        height: '100%',
+                        position: 'absolute',
+                        left: 19,
+                        top: 0,
+                        background: selected
+                          ? `linear-gradient(180deg, ${theme.palette.text.primary} 0%, ${theme.palette.primary.main} 20%, ${theme.palette.primary.main} 100%)`
+                          : theme.palette.text.primary,
+                        zIndex: 1,
                       }}
                     />
+                    <Box
+                      sx={() => {
+                        const currentColor = selected
+                          ? theme.palette.primary.main
+                          : theme.palette.text.primary;
+                        return {
+                          zIndex: 2,
+                          margin: '5px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: 30,
+                          height: 30,
+                          padding: 0.5,
+                          borderRadius: '50%',
+                          transition: 'background 0.1s ease-out',
+                          background: currentColor,
+                        };
+                      }}
+                    >
+                      <img
+                        src={getIconSource(type)}
+                        alt={type}
+                        style={{
+                          width: 24,
+                          height: 24,
+                          borderRadius: '50%',
+                          background: 'white',
+                          padding: 3,
+                        }}
+                      />
+                    </Box>
                   </Box>
-                </Box>
-                <Box
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        padding: '10px 0 5px',
+                        fontWeight: 'bold',
+                        lineHeight: 1.2,
+                      }}
+                    >
+                      {title}
+                    </Typography>
+                    <Typography variant="caption">{city}</Typography>
+                  </Box>
+                </AccordionSummary>
+                <AccordionDetails
                   sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
+                    borderTop: 0,
+                    backgroundColor: 'rgba(0, 0, 0, .03)',
                   }}
                 >
                   <Typography
                     sx={{
-                      padding: '10px 0 5px',
-                      fontWeight: 'bold',
-                      lineHeight: 1.2,
+                      position: 'relative',
+                      zIndex: 50,
+                      padding: '0 5px 35px 11px',
+                      '&:before': {
+                        content: '""',
+                        width: 10,
+                        height: 'calc(100% + 32px)',
+                        position: 'absolute',
+                        top: -16,
+                        left: 11,
+                        background: `linear-gradient(180deg, ${theme.palette.primary.main} 90%, ${theme.palette.text.primary} 100%)`,
+                        zIndex: -2,
+                      },
+                      '&:after': {
+                        content: '""',
+                        width: 'calc(100% + 10px)',
+                        height: 'calc(100% - 25px) ',
+                        position: 'absolute',
+                        top: -10,
+                        left: -4,
+                        backgroundColor: 'white',
+                        zIndex: -1,
+                        border: `2px solid ${theme.palette.primary.main}`,
+                        borderRadius: 4,
+                      },
                     }}
                   >
-                    {title}
+                    {description}
                   </Typography>
-                  <Typography variant="caption">{city}</Typography>
-                </Box>
-              </AccordionSummary>
-              <AccordionDetails
-                sx={{
-                  borderTop: 0,
-                  backgroundColor: 'rgba(0, 0, 0, .03)',
-                }}
-              >
-                <Typography
-                  sx={{
-                    position: 'relative',
-                    zIndex: 50,
-                    padding: '0 5px 35px 11px',
-                    '&:before': {
-                      content: '""',
-                      width: 10,
-                      height: 'calc(100% + 32px)',
-                      position: 'absolute',
-                      top: -16,
-                      left: 11,
-                      background: `linear-gradient(180deg, ${theme.palette.primary.main} 90%, ${theme.palette.text.primary} 100%)`,
-                      zIndex: -2,
-                    },
-                    '&:after': {
-                      content: '""',
-                      width: 'calc(100% + 10px)',
-                      height: 'calc(100% - 25px) ',
-                      position: 'absolute',
-                      top: -10,
-                      left: -4,
-                      backgroundColor: 'white',
-                      zIndex: -1,
-                      border: `2px solid ${theme.palette.primary.main}`,
-                      borderRadius: 4,
-                    },
-                  }}
-                >
-                  {description}
-                </Typography>
-              </AccordionDetails>
-            </MuiAccordion>
-          </Box>
+                </AccordionDetails>
+              </MuiAccordion>
+            </Box>
+          </>
         );
       })}
       <YearChip
@@ -393,6 +405,10 @@ export default function MapTimelineOverlay({ features }) {
             backgroundColor: theme.palette.text.primary,
           }}
         >
+          <YearChip
+            year={1990}
+            sx={{ position: 'static', marginLeft: '33px', transform: 'none' }}
+          />
           <IconButton
             size="small"
             onClick={() => {
