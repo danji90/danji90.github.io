@@ -60,7 +60,7 @@ function YearChip({ year, sx }) {
     <Box
       sx={{
         position: 'sticky',
-        top: 0,
+        top: 15,
         left: 32,
         backgroundColor: 'white',
         padding: '0 5px',
@@ -411,10 +411,6 @@ export default function MapTimelineOverlay({ features }) {
             zIndex: 1200,
           }}
         >
-          {/* <YearChip
-            year={1990}
-            sx={{ position: 'static', marginLeft: '33px', transform: 'none' }}
-          /> */}
           {selectedFeature ? (
             <IconButton
               size="small"
