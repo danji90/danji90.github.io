@@ -69,8 +69,11 @@ function YearChip({ year, sx }) {
         border: '1px solid #ccc',
         fontSize: 12,
         fontWeight: 'bold',
-        zIndex: 99999,
-        width: 28,
+        zIndex: 1700,
+        width: 30,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
         ...sx,
       }}
     >
@@ -332,7 +335,6 @@ function TimeLine({ features }) {
         year={new Date().getUTCFullYear()}
         sx={{
           position: 'static',
-          width: 'min-content',
           marginBottom: 1,
           transform: 'translate(32%, 0)',
         }}
