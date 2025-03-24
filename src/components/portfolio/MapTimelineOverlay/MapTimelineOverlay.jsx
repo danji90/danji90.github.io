@@ -48,6 +48,41 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 export const DRAWER_WIDTH = 300;
 
+function getTimestamp(val) {
+  if (Array.isArray(val)) {
+    return val[0];
+  }
+  return val;
+}
+
+function YearChip({ year, sx }) {
+  return (
+    <Box
+      sx={{
+        position: 'absolute',
+        top: 0,
+        left: 32,
+        backgroundColor: 'white',
+        padding: '0 5px',
+        transform: 'translate(-50%, -50%)',
+        borderRadius: 4,
+        border: '1px solid #ccc',
+        fontSize: 12,
+        fontWeight: 'bold',
+        zIndex: 100,
+        ...sx,
+      }}
+    >
+      {year}
+    </Box>
+  );
+}
+
+YearChip.propTypes = {
+  year: PropTypes.number,
+  sx: PropTypes.object,
+};
+
 function TimeLine({ features }) {
   const theme = useTheme();
   const isTabletDown = useMediaQuery(theme.breakpoints.down('lg'));
@@ -70,6 +105,25 @@ function TimeLine({ features }) {
   } = useContext(MapContext);
   // const [open, setOpen] = useState(false);
   const itemRefs = useRef(null);
+  const sortedFeatures = features
+    ?.filter((feat) => {
+      const type = feat.get('type');
+      if (type === 'work') {
+        return showWork;
+      }
+      if (type === 'residence') {
+        return showResidence;
+      }
+      if (type === 'education') {
+        return showEducation;
+      }
+      return false;
+    })
+    .sort((a, b) => {
+      const timestampA = getTimestamp(a.get('timestamp')[0]);
+      const timestampB = getTimestamp(b.get('timestamp')[0]);
+      return new Date(timestampA) - new Date(timestampB);
+    });
 
   useEffect(() => {
     if (selectedFeature && itemRefs?.current?.[selectedFeature.ol_uid]) {
@@ -86,36 +140,31 @@ function TimeLine({ features }) {
         overflow: 'auto',
         height: 'calc(100% - 30px)',
         minWidth: DRAWER_WIDTH,
+        position: 'relative',
+        backgroundColor: 'rgba(0, 0, 0, .03)',
       }}
     >
-      {features
-        ?.filter((feat) => {
-          const type = feat.get('type');
-          if (type === 'work') {
-            return showWork;
-          }
-          if (type === 'residence') {
-            return showResidence;
-          }
-          if (type === 'education') {
-            return showEducation;
-          }
-          return false;
-        })
-        .sort((a, b) => {
-          const timestampA = Array.isArray(a.get('timestamp')[0])
-            ? a.get('timestamp')[0][0]
-            : a.get('timestamp')[0];
-          const timestampB = Array.isArray(b.get('timestamp')[0])
-            ? b.get('timestamp')[0][0]
-            : b.get('timestamp')[0];
-          return new Date(timestampA) - new Date(timestampB);
-        })
-        .map((feat) => {
-          const { type, city, description, title } = feat.getProperties();
-          const selected = feat.ol_uid === selectedFeature?.ol_uid;
+      {sortedFeatures.map((feat, index) => {
+        const { type, city, description, title, timestamp } =
+          feat.getProperties();
+        const selected = feat.ol_uid === selectedFeature?.ol_uid;
+        const featFullYear = new Date(
+          getTimestamp(timestamp[0]),
+        ).getUTCFullYear();
+        const yearChanged =
+          index > 0 &&
+          featFullYear !==
+            new Date(
+              getTimestamp(sortedFeatures[index - 1]?.get('timestamp')[0]),
+            ).getUTCFullYear();
 
-          return (
+        return (
+          <Box key={feat.ol_uid} sx={{ position: 'relative' }}>
+            {yearChanged ? (
+              <YearChip
+                year={new Date(getTimestamp(timestamp[0])).getUTCFullYear()}
+              />
+            ) : null}
             <MuiAccordion
               disableGutters
               square
@@ -133,6 +182,9 @@ function TimeLine({ features }) {
                 '&::before': {
                   display: 'none',
                 },
+                '&:hover': {
+                  backgroundColor: 'rgba(0, 0, 0, .03)',
+                },
               }}
             >
               <AccordionSummary
@@ -141,7 +193,6 @@ function TimeLine({ features }) {
                 expandIcon={null}
                 sx={{
                   padding: 0,
-                  backgroundColor: 'white',
                   '& .MuiAccordionSummary-content': {
                     minHeight: 100,
                     display: 'flex',
@@ -199,7 +250,7 @@ function TimeLine({ features }) {
                         height: 24,
                         borderRadius: '50%',
                         background: 'white',
-                        padding: 2,
+                        padding: 3,
                       }}
                     />
                   </Box>
@@ -226,6 +277,7 @@ function TimeLine({ features }) {
               <AccordionDetails
                 sx={{
                   borderTop: 0,
+                  backgroundColor: 'rgba(0, 0, 0, .03)',
                 }}
               >
                 <Typography
@@ -261,8 +313,18 @@ function TimeLine({ features }) {
                 </Typography>
               </AccordionDetails>
             </MuiAccordion>
-          );
-        })}
+          </Box>
+        );
+      })}
+      <YearChip
+        year={new Date().getUTCFullYear()}
+        sx={{
+          position: 'static',
+          width: 'min-content',
+          marginBottom: 1,
+          transform: 'translate(32%, 0)',
+        }}
+      />
     </Box>
   );
 }
