@@ -15,7 +15,6 @@ import MuiAccordion from '@mui/material/Accordion';
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import { min } from 'date-fns';
-import { transform } from 'ol/proj';
 import mapData from '../../../assets/data/mapFeatures.json';
 import { MapContext } from '../MapContextProvider/MapContextProvider';
 
@@ -140,16 +139,17 @@ function TimeLine({ features }) {
     <Box
       sx={{
         overflow: 'auto',
-        height: 'calc(100% - 30px)',
+        height: '100%',
         minWidth: DRAWER_WIDTH,
         backgroundColor: 'rgba(0, 0, 0, .03)',
       }}
     >
+      <YearChip year={1990} sx={{ top: 15 }} />
       <Box
         sx={{
           width: 10,
-          height: 20,
-          marginLeft: '27x',
+          height: 40,
+          marginLeft: '27px',
           top: 0,
           background: theme.palette.text.primary,
         }}
@@ -367,7 +367,10 @@ export default function MapTimelineOverlay({ features }) {
     };
     return isTabletDown ? mobile : desktop;
   }, [isTabletDown, selectedFeature]);
-  // const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false)
+
+  const desktopHeaderWidth = selectedFeature ? DRAWER_WIDTH : 0;
+  const mobileHeaderHeight = selectedFeature ? 30 : 0;
 
   return (
     <div>
@@ -400,24 +403,29 @@ export default function MapTimelineOverlay({ features }) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'flex-end',
-            height: 30,
-            width: '100%',
+            height: isTabletDown ? mobileHeaderHeight : 30,
+            width: isTabletDown ? '100%' : desktopHeaderWidth,
+            transition: 'width 0.3s ease-in-out',
             backgroundColor: theme.palette.text.primary,
+            position: 'fixed',
+            zIndex: 1200,
           }}
         >
-          <YearChip
+          {/* <YearChip
             year={1990}
             sx={{ position: 'static', marginLeft: '33px', transform: 'none' }}
-          />
-          <IconButton
-            size="small"
-            onClick={() => {
-              setSelectedFeature(null);
-              // setOpen(false);
-            }}
-          >
-            <Close sx={{ width: 20, height: 20, color: 'white' }} />
-          </IconButton>
+          /> */}
+          {selectedFeature ? (
+            <IconButton
+              size="small"
+              onClick={() => {
+                setSelectedFeature(null);
+                // setOpen(false);
+              }}
+            >
+              <Close sx={{ width: 20, height: 20, color: 'white' }} />
+            </IconButton>
+          ) : null}
         </Box>
         <TimeLine features={features} />
       </Box>
