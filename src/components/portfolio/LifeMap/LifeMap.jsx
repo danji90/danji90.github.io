@@ -246,7 +246,6 @@ const useStyles = makeStyles((theme) => {
       alignItems: 'flex-end',
       padding: '15px 5px',
       gap: 10,
-      zIndex: 1700,
     },
   };
 });
