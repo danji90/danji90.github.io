@@ -246,6 +246,7 @@ const useStyles = makeStyles((theme) => {
       alignItems: 'flex-end',
       padding: '15px 5px',
       gap: 10,
+      zIndex: 1700,
     },
   };
 });
@@ -255,23 +256,6 @@ const layerImages = {
   aerial,
   topo,
 };
-
-// function useZoomOnSelectedFeature() {
-//   const theme = useTheme();
-//   const isTabletDown = useMediaQuery(theme.breakpoints.down('lg'));
-//   const { map, selectedFeature } = useContext(MapContext);
-
-//   useEffect(() => {
-//     if (selectedFeature) {
-//       const viewExtent
-//       const geom = selectedFeature.getGeometry();
-//       map.getView().fit(geom, {
-//         padding: [100, 300, 100, 100],
-//         maxZoom: map.getView().getZoom(),
-//       });
-//     }
-//   }, [selectedFeature, isTabletDown]);
-// }
 
 const useUpdateFeatures = () => {
   const theme = useTheme();
@@ -415,8 +399,6 @@ function LifeMapContent() {
   const classes = useStyles({ selectedFeature, isTabletDown });
   const containerRef = useRef(null);
   const currentFeatures = useUpdateFeatures();
-
-  // useZoomOnSelectedFeature();
 
   return (
     <div

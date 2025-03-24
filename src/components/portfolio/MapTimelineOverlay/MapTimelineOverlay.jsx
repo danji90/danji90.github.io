@@ -4,13 +4,7 @@ import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import {
-  Button,
-  Icon,
-  SwipeableDrawer,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Button, Icon, useMediaQuery, useTheme } from '@mui/material';
 import { Close, ChevronLeft } from '@mui/icons-material';
 import scrollIntoView from 'scroll-into-view';
 import { Feature } from 'ol';
@@ -76,16 +70,6 @@ function TimeLine({ features }) {
   } = useContext(MapContext);
   // const [open, setOpen] = useState(false);
   const itemRefs = useRef(null);
-  const [hoverItem, setHoverItem] = useState(null);
-
-  const handleMouseMove = (event, id) => {
-    const { left, top, width, height } =
-      event.currentTarget.getBoundingClientRect();
-    const x = ((event.clientX - left) / width) * 100;
-    const y = ((event.clientY - top) / height) * 100;
-    event.currentTarget.style.setProperty('--x', `${x}%`);
-    event.currentTarget.style.setProperty('--y', `${y}%`);
-  };
 
   useEffect(() => {
     if (selectedFeature && itemRefs?.current?.[selectedFeature.ol_uid]) {
@@ -144,17 +128,8 @@ function TimeLine({ features }) {
               }}
               expanded={selected}
               onChange={() => setSelectedFeature(feat)}
-              onMouseMove={(evt) => handleMouseMove(evt, feat.ol_uid)}
-              onMouseEnter={() => setHoverItem(feat.ol_uid)}
-              onMouseLeave={() => setHoverItem(null)}
               sx={{
-                //       borderImage:
-                //         mousePos.id === feat.ol_uid
-                //           ? `radial-gradient(circle at ${mousePos.x} ${mousePos.y},
-                // rgba(255, 0, 0, 1) 0%,
-                // rgba(255, 0, 0, 0) 50%) 1`
-                //           : 'none',
-                // border: 'none',
+                border: 'none',
                 '&::before': {
                   display: 'none',
                 },
@@ -212,10 +187,7 @@ function TimeLine({ features }) {
                         padding: 0.5,
                         borderRadius: '50%',
                         transition: 'background 0.1s ease-out',
-                        background:
-                          !selected && hoverItem === feat.ol_uid
-                            ? `radial-gradient(circle at var(--x, 50%) var(--y, 50%), ${theme.palette.primary.main} 30%, ${theme.palette.text.primary} 70%)`
-                            : currentColor,
+                        background: currentColor,
                       };
                     }}
                   >
@@ -254,9 +226,6 @@ function TimeLine({ features }) {
               <AccordionDetails
                 sx={{
                   borderTop: 0,
-                  // background: selected
-                  //   ? 'linear-gradient(180deg, rgba(255,255,255,1) 85%, rgba(0,0,0,0.06206232492997199) 100%)'
-                  //   : 'rgba(0,0,0,0.06206232492997199) 100%)',
                 }}
               >
                 <Typography
@@ -348,7 +317,7 @@ export default function MapTimelineOverlay({ features }) {
           position: 'absolute',
           zIndex: 1600,
           overflowX: 'hidden',
-          boxShadow: '-10px 0px 8px -5px rgba(0, 0, 0, 0.3)',
+          boxShadow: '-10px 0px 50px -8px rgba(0, 0, 0, 0.3)',
           ...styles,
         }}
       >
