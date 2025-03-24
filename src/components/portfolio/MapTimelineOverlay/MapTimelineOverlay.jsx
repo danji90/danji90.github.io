@@ -76,6 +76,16 @@ function TimeLine({ features }) {
   } = useContext(MapContext);
   // const [open, setOpen] = useState(false);
   const itemRefs = useRef(null);
+  const [hoverItem, setHoverItem] = useState(null);
+
+  const handleMouseMove = (event, id) => {
+    const { left, top, width, height } =
+      event.currentTarget.getBoundingClientRect();
+    const x = ((event.clientX - left) / width) * 100;
+    const y = ((event.clientY - top) / height) * 100;
+    event.currentTarget.style.setProperty('--x', `${x}%`);
+    event.currentTarget.style.setProperty('--y', `${y}%`);
+  };
 
   useEffect(() => {
     if (selectedFeature && itemRefs?.current?.[selectedFeature.ol_uid]) {
@@ -134,12 +144,17 @@ function TimeLine({ features }) {
               }}
               expanded={selected}
               onChange={() => setSelectedFeature(feat)}
+              onMouseMove={(evt) => handleMouseMove(evt, feat.ol_uid)}
+              onMouseEnter={() => setHoverItem(feat.ol_uid)}
+              onMouseLeave={() => setHoverItem(null)}
               sx={{
-                paper: {
-                  minWidth: DRAWER_WIDTH,
-                  overflow: 'hidden',
-                },
-                border: 'none',
+                //       borderImage:
+                //         mousePos.id === feat.ol_uid
+                //           ? `radial-gradient(circle at ${mousePos.x} ${mousePos.y},
+                // rgba(255, 0, 0, 1) 0%,
+                // rgba(255, 0, 0, 0) 50%) 1`
+                //           : 'none',
+                // border: 'none',
                 '&::before': {
                   display: 'none',
                 },
@@ -151,9 +166,6 @@ function TimeLine({ features }) {
                 expandIcon={null}
                 sx={{
                   padding: 0,
-                  // background: selected
-                  //   ? 'linear-gradient(180deg, rgba(0,0,0,0.06206232492997199) 0%, rgba(255,255,255,1) 15%)'
-                  //   : 'rgba(0,0,0,0.06206232492997199)',
                   backgroundColor: 'white',
                   '& .MuiAccordionSummary-content': {
                     minHeight: 100,
@@ -167,51 +179,58 @@ function TimeLine({ features }) {
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    position: 'relative',
                   }}
                 >
                   <Box
                     sx={{
                       width: 10,
-                      flexGrow: 1,
-                      marginBottom: -0.5,
+                      height: '100%',
+                      position: 'absolute',
+                      left: 19,
+                      top: 0,
                       background: selected
-                        ? `linear-gradient(180deg, ${theme.palette.text.primary} 0%, ${theme.palette.primary.main} 100%)`
+                        ? `linear-gradient(180deg, ${theme.palette.text.primary} 0%, ${theme.palette.primary.main} 20%, ${theme.palette.primary.main} 100%)`
                         : theme.palette.text.primary,
+                      zIndex: 1,
                     }}
                   />
-                  <Icon
-                    sx={{
-                      width: 40,
-                      height: 40,
-                      backgroundColor: 'white',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      borderRadius: '50%',
-                      border: `4px solid ${
-                        selected
-                          ? theme.palette.primary.main
-                          : theme.palette.text.primary
-                      }`,
+                  <Box
+                    sx={() => {
+                      const currentColor = selected
+                        ? theme.palette.primary.main
+                        : theme.palette.text.primary;
+                      return {
+                        zIndex: 2,
+                        margin: '5px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: 30,
+                        height: 30,
+                        padding: 0.5,
+                        borderRadius: '50%',
+                        transition: 'background 0.1s ease-out',
+                        background:
+                          !selected && hoverItem === feat.ol_uid
+                            ? `radial-gradient(circle at var(--x, 50%) var(--y, 50%), ${theme.palette.primary.main} 30%, ${theme.palette.text.primary} 70%)`
+                            : currentColor,
+                      };
                     }}
                   >
                     <img
                       src={getIconSource(type)}
                       alt={type}
-                      style={{ width: 24, height: 24 }}
+                      style={{
+                        width: 24,
+                        height: 24,
+                        borderRadius: '50%',
+                        background: 'white',
+                        padding: 2,
+                      }}
                     />
-                  </Icon>
-                  <Box
-                    sx={{
-                      width: 10,
-                      flexGrow: 1,
-                      marginTop: -0.5,
-                      background: selected
-                        ? theme.palette.primary.main
-                        : theme.palette.text.primary,
-                    }}
-                  />
+                  </Box>
                 </Box>
                 <Box
                   sx={{
