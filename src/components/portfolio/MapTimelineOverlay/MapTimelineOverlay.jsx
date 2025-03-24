@@ -70,7 +70,7 @@ function YearChip({ year, sx }) {
         fontSize: 12,
         fontWeight: 'bold',
         zIndex: 99999,
-        width: 'min-content',
+        width: 28,
         ...sx,
       }}
     >
