@@ -103,30 +103,27 @@ const getStyle = (feature) => {
       styleCache[size] = style;
     } else {
       const src = getIconSource(type);
-      style = new Style({
-        image: new Icon({
-          scale: 1 / 5,
-          imgSize: [144, 144],
-          src,
-        }),
-      });
-      if (isSelected) {
-        style = [
-          new Style({
-            image: new CircleStyle({
-              radius: 20,
-              stroke: new Stroke({
-                width: 4,
-                color: '#63a000',
-              }),
-              fill: new Fill({
-                color: 'rgba(255, 255, 255,1)',
-              }),
+      style = [
+        new Style({
+          image: new CircleStyle({
+            radius: isSelected ? 20 : 16,
+            stroke: new Stroke({
+              width: isSelected ? 4 : 3,
+              color: isSelected ? '#63a000' : '#565656',
+            }),
+            fill: new Fill({
+              color: 'rgba(255, 255, 255,1)',
             }),
           }),
-          style,
-        ];
-      }
+        }),
+        new Style({
+          image: new Icon({
+            scale: isSelected ? 1 / 5 : 1 / 7,
+            imgSize: [144, 144],
+            src,
+          }),
+        }),
+      ];
       styleCache[`${type}${isSelected ? '-selected' : ''}`] = style;
     }
   }
