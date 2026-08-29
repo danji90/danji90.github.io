@@ -1,11 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-  useContext,
-} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useRef, useContext } from 'react';
 import {
   Checkbox,
   ClickAwayListener,
@@ -58,7 +51,6 @@ const FormControlLabel = withStyles({
 let layerMenuTimout;
 
 function LayerMenu() {
-  const dispatch = useDispatch();
   const classes = useStyles();
   const {
     baselayers,

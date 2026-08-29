@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import makeStyles from '@mui/styles/makeStyles';
-import Button from '@mui/material/Button';
 import Navbar from '../components/portfolio/Navbar/Navbar';
 import Home from '../components/portfolio/Home/Home';
 import AboutMe from '../components/portfolio/AboutMe/AboutMe';

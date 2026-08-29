@@ -1,11 +1,7 @@
-import React, { useEffect, useState, useContext, useRef } from 'react';
+import React, { useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
-import makeStyles from '@mui/styles/makeStyles';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
-import FullScreen from 'ol/control/FullScreen';
-import { Modal } from '@mui/material';
-import { createPortal } from 'react-dom';
 import MapButton from '../MapButton';
 import { MapContext } from '../MapContextProvider/MapContextProvider';
 

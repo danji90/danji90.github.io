@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState, useContext } from 'react';
-import { Button, IconButton } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { easeOut, easeIn } from 'ol/easing';
 import { Add, Remove } from '@mui/icons-material';

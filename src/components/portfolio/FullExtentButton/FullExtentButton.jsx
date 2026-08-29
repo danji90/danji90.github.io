@@ -1,8 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
-import { IconButton } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import ZoomInMapIcon from '@mui/icons-material/ZoomInMap';
 import Cluster from 'ol/source/Cluster';
 import { unByKey } from 'ol/Observable';
@@ -31,7 +28,7 @@ function FullExtent({ featureSource }) {
   return (
     <MapButton
       title="Zoom on features"
-      onClick={(evt) => {
+      onClick={() => {
         map.getView().fit(featureSource.getExtent(), {
           padding: [50, 50, 50, 50],
           duration: 300,
