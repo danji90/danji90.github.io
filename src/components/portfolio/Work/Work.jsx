@@ -1,4 +1,3 @@
-/* eslint-disable react/no-array-index-key */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
@@ -63,9 +62,12 @@ function Work({ section }) {
                     <Typography>{item.list.header}</Typography>
                   )}
                   <List>
-                    {item.list.items.map((listItem, i) => {
+                    {item.list.items.map((listItem) => {
                       return (
-                        <ListItem key={i} className={classes.listItem}>
+                        <ListItem
+                          key={crypto.randomUUID()}
+                          className={classes.listItem}
+                        >
                           <MdTaskAlt className={classes.icon} />
                           <Typography>{parseHtml(listItem)}</Typography>
                         </ListItem>

@@ -10,7 +10,6 @@ import makeStyles from '@mui/styles/makeStyles';
 import { DragPan, MouseWheelZoom } from 'ol/interaction';
 import { platformModifierKeyOnly } from 'ol/events/condition';
 import { unByKey } from 'ol/Observable';
-import { useSelector } from 'react-redux';
 import { MapContext } from '../MapContextProvider/MapContextProvider';
 
 const useStyles = makeStyles(() => {

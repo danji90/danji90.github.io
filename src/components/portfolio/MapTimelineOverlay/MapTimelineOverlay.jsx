@@ -1,12 +1,10 @@
-import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useMemo, useRef } from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import { Button, Icon, useMediaQuery, useTheme } from '@mui/material';
-import { Close, ChevronLeft } from '@mui/icons-material';
-import scrollIntoView from 'scroll-into-view';
+import { useMediaQuery, useTheme } from '@mui/material';
+import { Close } from '@mui/icons-material';
 import { Feature } from 'ol';
 import PropTypes from 'prop-types';
 
@@ -14,13 +12,9 @@ import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 import MuiAccordion from '@mui/material/Accordion';
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
-import { min } from 'date-fns';
-import mapData from '../../../assets/data/mapFeatures.json';
 import { MapContext } from '../MapContextProvider/MapContextProvider';
 
 import getIconSource from '../../utils/getIconSource';
-import MapButton from '../MapButton';
-import unselectAllFeatures from '../../utils/unselectAllFeatures';
 
 const AccordionSummary = styled((props) => (
   <MuiAccordionSummary
@@ -89,25 +83,13 @@ YearChip.propTypes = {
 
 function TimeLine({ features }) {
   const theme = useTheme();
-  const isTabletDown = useMediaQuery(theme.breakpoints.down('lg'));
   const {
-    work,
-    education,
-    residence,
-    baselayers,
-    map,
     selectedFeature,
     setSelectedFeature,
-    timeSpan,
-    setTimeSpan,
     showResidence,
     showWork,
     showEducation,
-    layersOpen,
-    isFullScreen: isFullScreenIOS,
-    fullScreenElement,
   } = useContext(MapContext);
-  // const [open, setOpen] = useState(false);
   const itemRefs = useRef(null);
   const sortedFeatures = features
     ?.filter((feat) => {
@@ -171,7 +153,7 @@ function TimeLine({ features }) {
           ).getUTCFullYear();
 
         return (
-          <>
+          <Fragment key={feat.ol_uid}>
             {yearChanged ? (
               <YearChip
                 year={new Date(getTimestamp(timestamp[0])).getUTCFullYear()}
@@ -328,7 +310,7 @@ function TimeLine({ features }) {
                 </AccordionDetails>
               </MuiAccordion>
             </Box>
-          </>
+          </Fragment>
         );
       })}
       <YearChip

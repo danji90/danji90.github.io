@@ -21,6 +21,8 @@ import geomundus from '../images/geomundus.jpg';
 import geomundus1 from '../images/geomundus1.jpg';
 import elippss from '../images/elippss.jpg';
 import elippss1 from '../images/elippss1.jpg';
+import alma1 from '../images/alma1.png';
+import alma2 from '../images/alma2.png';
 
 const initialState = {
   sections: [
@@ -175,6 +177,64 @@ const initialState = {
   ],
   projects: [
     {
+      id: 'alma',
+      name: 'ALMA',
+      facility: {
+        name: 'geOps - Spatial Web',
+        url: 'https://www.geops.ch/',
+      },
+      description:
+        'ALMA supports public authorities in managing the register of contaminated sites – from data collection to publication in the KbS.',
+      images: [
+        {
+          name: 'tree_app-logo.png',
+          path: alma2,
+        },
+        {
+          name: 'tree_app.png',
+          path: alma1,
+          latest: true,
+        },
+      ],
+      tools: [
+        {
+          name: 'GraphQL',
+          webLink: 'https://graphql.org/',
+        },
+        {
+          name: 'TypeScript',
+          webLink: 'https://www.typescriptlang.org/',
+        },
+        {
+          name: 'HeadlessUI',
+          webLink: 'https://headlessui.dev/',
+        },
+        {
+          name: 'ReactJs',
+          webLink: 'https://reactjs.org/',
+        },
+        {
+          name: 'React Semantic-UI',
+          webLink: 'https://react.semantic-ui.com/',
+        },
+        {
+          name: 'OpenLayers',
+          webLink: 'https://openlayers.org/',
+        },
+        {
+          name: 'Redux',
+          webLink: 'https://redux.js.org/',
+        },
+        {
+          name: 'Cypress',
+          webLink: 'https://www.cypress.io/',
+        },
+      ],
+      keyWords: ['environmental management', 'cadastre', 'contaminated Sites'],
+      webLink: 'https://alma-os.ch/',
+      latest: true,
+    },
+    {
       id: 'tree-app',
       name: 'Tree-App',
       facility: {
@@ -200,25 +260,32 @@ const initialState = {
           webLink: 'https://reactjs.org/',
         },
         {
-          name: 'React Semantic-UI',
-          webLink: 'https://react.semantic-ui.com/',
+          name: 'TailwindCSS',
+          webLink: 'https://tailwindcss.com/',
         },
         {
           name: 'OpenLayers',
           webLink: 'https://openlayers.org/',
         },
         {
-          name: 'Redux',
-          webLink: 'https://redux.js.org/',
+          name: 'Zustand',
+          webLink: 'https://zustand-demo.pmnd.rs/',
         },
         {
           name: 'Cypress',
           webLink: 'https://www.cypress.io/',
         },
+        {
+          name: 'TypeScript',
+          webLink: 'https://www.typescriptlang.org/',
+        },
+        {
+          name: 'HeadlessUI',
+          webLink: 'https://headlessui.dev/',
+        },
       ],
       keyWords: ['WSL, PWA, Forestry, Climate Change'],
       webLink: 'https://tree-app.ch/',
-      latest: true,
     },
     {
       id: 'trafimage-maps',

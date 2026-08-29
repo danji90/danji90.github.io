@@ -5,22 +5,9 @@ import Map from 'ol/Map';
 import TileLayer from 'ol/layer/Tile';
 import XYZ from 'ol/source/XYZ';
 import OSM from 'ol/source/OSM';
-import MultiPoint from 'ol/geom/MultiPoint';
-import VectorSource from 'ol/source/Vector';
-import AnimatedCluster from 'ol-ext/layer/AnimatedCluster';
-import Style from 'ol/style/Style';
-import CircleStyle from 'ol/style/Circle';
-import Fill from 'ol/style/Fill';
-import Icon from 'ol/style/Icon';
-import Text from 'ol/style/Text';
-import Cluster from 'ol/source/Cluster';
 import { defaults } from 'ol/interaction';
 import { Layer } from 'mobility-toolbox-js/ol';
 import mapData from '../../../assets/data/mapFeatures.json';
-
-import eduIcon from '../../../assets/images/edu.png';
-import workIcon from '../../../assets/images/work.png';
-import residenceIcon from '../../../assets/images/residence.png';
 
 const mapBoxKey =
   'pk.eyJ1IjoiZGFuamk5MCIsImEiOiJjazA2azNrbzMwMjM3M2VsdmQxaXYyMG9sIn0.bFXyO9IWGsCT2j2o0yXoOw';

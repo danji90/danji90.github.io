@@ -1,22 +1,12 @@
-import React, {
-  useContext,
-  useEffect,
-  useCallback,
-  useRef,
-  useMemo,
-  useState,
-} from 'react';
-import withStyles from '@mui/styles/withStyles';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
   Hidden,
-  Link,
   Typography,
   Slider,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import BasicMap from 'react-spatial/components/BasicMap';
 import BaseLayerSwitcher from 'react-spatial/components/BaseLayerSwitcher';
@@ -29,11 +19,9 @@ import CircleStyle from 'ol/style/Circle';
 import Fill from 'ol/style/Fill';
 import Icon from 'ol/style/Icon';
 import Text from 'ol/style/Text';
-import Map from 'ol/Map';
 import Cluster from 'ol/source/Cluster';
-import GeoJSON from 'ol/format/GeoJSON';
 import 'react-spatial/themes/default/index.scss';
-import { format, max } from 'date-fns';
+import { format } from 'date-fns';
 
 import { unByKey } from 'ol/Observable';
 import Stroke from 'ol/style/Stroke';
@@ -257,12 +245,10 @@ const useUpdateFeatures = () => {
   const theme = useTheme();
   const isTabletDown = useMediaQuery(theme.breakpoints.down('lg'));
   const {
-    baselayers,
     map,
     selectedFeature,
     setSelectedFeature,
     timeSpan,
-    setTimeSpan,
     showResidence,
     showWork,
     showEducation,
@@ -380,13 +366,6 @@ function LifeMapContent() {
     setSelectedFeature,
     timeSpan,
     setTimeSpan,
-    showResidence,
-    showWork,
-    showEducation,
-    work,
-    education,
-    residence,
-    layersOpen,
     isFullScreen: isFullScreenIOS,
     fullScreenElement,
   } = useContext(MapContext);
@@ -485,7 +464,6 @@ function LifeMapContent() {
 function LifeMap({ section }) {
   const classes = useStyles();
   const { isFullScreen: isFullScreenIOS } = useContext(MapContext);
-  const containerRef = useRef(null);
 
   return (
     <>
