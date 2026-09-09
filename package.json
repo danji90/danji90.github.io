@@ -16,7 +16,7 @@
     "husky": "8.0.1",
     "install": "0.13.0",
     "mapbox-gl": "1.12.0",
-    "maplibre-gl": "4.0.1",
+    "maplibre-gl": "6.4.1",
     "mobility-toolbox-js": "2.4.4",
     "ol": "6.4.3",
     "ol-ext": "3.2.1",
